@@ -187,6 +187,13 @@ const games = [
       details: "A horror-themed game developed during a thrilling game jam."
     },
     {
+        title: "Airte",
+        date: "2012-10-02",
+        jam: "Horror GMI",
+        image: "./games/images/2012_connect4.png",
+        details: "A horror-themed game developed during a thrilling game jam."
+      },
+    {
       title: "Tetris 3D Online Tournament",
       date: "2011-03-11",
       collaboration: "",
