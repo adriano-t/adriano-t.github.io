@@ -186,7 +186,7 @@ const games = [
     title: "Calm Time",
     date: "2013-11-22",
     collaboration: "Mad, Virgil, Lod",
-    image: "./games/images/2013_calm_time.jpg",
+    image: "./games/images/2013_calm_time.png",
     short_desc: "",
     details: "A relaxing game experience designed to calm and inspire."
   },
