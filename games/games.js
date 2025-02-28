@@ -3,7 +3,8 @@ const games = [
     title: "Super Squishy Candy Console",
     date: "2024-12-01",
     collaboration: "Bloody",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2024_super_squishy.png",
+    short_desc: "A game made for Goldensun, during the Secret santa jam 2024.",
     details: "A game made for Goldensun, during the Secret santa jam 2024."
   },
   {
