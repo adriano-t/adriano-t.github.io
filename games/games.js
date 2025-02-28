@@ -7,26 +7,29 @@ const games = [
     details: "A game made for Goldensun, during the Secret santa jam 2024."
   },
   {
-    title: "Chakana",
+    title: "Chakana (Chapter 1)",
     date: "2024-10-01",
     collaboration: "Bloody",
     image: "./games/images/2024_chakana.gif",
     short_desc: "An ordinary date takes a dark turn",
-    details: "You planned for a quiet evening. The table is set, the atmosphere is warm, and the night seems to be unfolding just as you'd hoped. But as the meal progresses, something feels off. In this atmospheric horror game, explore your home as strange events disrupt your date, leaving you to navigate through questions, confrontations, and your own dread. Each decision can bring you closer to unraveling the mystery or plunge you deeper into its grip. The time is running out, manage the eerie silence, and tread carefully to keep your secrets hidden—or risk exposing yourself. Face a twisting psychological horror that questions how far you'd go to protect yourself from your fate."
+    details: "You planned for a quiet evening. The table is set, the atmosphere is warm, and the night seems to be unfolding just as you'd hoped. But as the meal progresses, something feels off. In this atmospheric horror game, explore your home as strange events disrupt your date, leaving you to navigate through questions, confrontations, and your own dread. Each decision can bring you closer to unraveling the mystery or plunge you deeper into its grip. The time is running out, manage the eerie silence, and tread carefully to keep your secrets hidden—or risk exposing yourself. Face a twisting psychological horror that questions how far you'd go to protect yourself from your fate.",
+    url: "https://tiz010.itch.io/chakana-chapter-1",
   },
   {
     title: "Farming Simulator But with guns",
     date: "2024-01-31",
     collaboration: "Karim",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    details: "A farming simulator with a surprising twist of action and combat."
+    image: "./games/images/2024_farming_simulator_but_with_guns.png",
+    details: "A farming simulator with a surprising twist of action and combat.",
+    url: "https://globalgamejam.org/games/2024/farming-simulator-guns-9"
   },
   {
     title: "Pigments",
     date: "2023-12-20",
     collaboration: "Bloody",
     image: "./games/images/2023_pigments.gif",
-    details: "Experience a colorful journey in a world of artistic challenges."
+    details: "Experience a colorful journey in a world of artistic challenges.",
+    url: "https://tiz010.itch.io/pigments",
   },
   {
     title: "Christmas Combo",
