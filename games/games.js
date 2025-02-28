@@ -224,6 +224,14 @@ const games = [
     url: "https://tizsoft.altervista.org/connect4/ConnectDG_1_2.zip",
   },
   {
+    title: "Solitair Worm",
+    date: "2012-04-18",
+    image: "./games/images/2012_solitair_worm.png",
+    short_desc: "A game about a giant worm that eats everything in its path",
+    details: "A game about a giant worm that eats everything in its path",
+    url: "",
+  },
+  {
     title: "Tetris 3D Online Tournament",
     date: "2011-03-11",
     collaboration: "",
