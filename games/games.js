@@ -29,15 +29,18 @@ const games = [
     date: "2023-12-20",
     collaboration: "Bloody",
     image: "./games/images/2023_pigments.gif",
-    details: "Experience a colorful journey in a world of artistic challenges.",
+    short_desc: "Uncover the secrets of an alien world.",
+    details: "Explore eerie landscapes, awakening memories and forming an enigmatic connection with your surroundings. With no text, the controls and story seamlessly reveal themselves as you delve into this mysterious puzzle platformer",
     url: "https://tiz010.itch.io/pigments",
   },
   {
     title: "Christmas Combo",
     date: "2022-12-29",
     collaboration: "Bloody",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    details: "Celebrate the holidays with an exciting blend of genres."
+    image: "./games/images/2022_christmas_combo.png",
+    short_desc: "Hit all the targets with a single shot, sliding on the ice.",
+    details: "Hit all the targets with a single shot, sliding on the ice.",
+    url: "https://drive.google.com/file/d/1tOE9xA1tyBAL4H7gym1rklpDRdpS9Zwm/view?usp=sharing"
   },
   {
     title: "CaveBox",
