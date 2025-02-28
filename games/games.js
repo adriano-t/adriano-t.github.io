@@ -194,7 +194,7 @@ const games = [
     title: "7 Days",
     date: "2013-05-14",
     collaboration: "Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2013_7days.png",
     short_desc: "Find out what is going on in the strange house where you just woke up",
     details: "Find out what is going on in the strange house where you just woke up",
     url: "https://gamejolt.com/games/7days/14592"
