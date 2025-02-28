@@ -59,7 +59,7 @@ const games = [
     details: "A fast-paced game developed during a competitive game jam."
   },
   {
-    title: "Mirror Layers Nuovo",
+    title: "Mirror Layers",
     date: "2021-10-30",
     collaboration: "Mad, Erry, Lod",
     image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
@@ -158,12 +158,13 @@ const games = [
     details: "Explore a living, breathing biotransphere in this innovative game."
   },
   {
-    title: "Mirror Layers Originale",
+    title: "Mirror Layers (Asylum Jam)",
     date: "2016-11-14",
-    collaboration: "Erry, Virgil, Lod, Soufian Addioui, (other friend of Virgil)",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    short_desc: "",
-    details: "The original mirror layers experience that started it all."
+    collaboration: "Erry, Virgil, Lod, Soufian Addioui, (other Virgil's friend)",
+    image: "./games/images/2016_mirror_layers.png",
+    short_desc: "We ask you only to give us a part of you: Part of your identity.",
+    details: "We ask you only to give us a part of you: Part of your identity.",
+    url: "https://gamejolt.com/games/mirrorlayers/208588",
   },
   {
     title: "Flappy Fish 2",
