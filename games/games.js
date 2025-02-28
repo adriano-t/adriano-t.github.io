@@ -203,18 +203,18 @@ const games = [
     title: "Airte",
     date: "2012-10-02",
     jam: "Horror GMI",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2012_airte.png",
     short_desc: "A soul named Airte. Once a metalhead, now seeking faith in the afterlife.",
     details: "A lost soul named Airte, once a devoted metalhead, had a revelation on his deathbed—he must put his faith in Jesus Christ. But in the afterlife, The Diaulo seeks to drag him back to his old ways, forcing him to listen to a haunting song that commands worship of 'Satan, infinite trinity.' Yet, Jesus 3 has granted Airte a divine gift: The Light Weapon. With his radiant white companion by his side and bare feet upon holy ground, Airte must purge the demonic forces emerging from the accursed walls. The goal? Absorb the light emitted by tormented souls. Collect 1,000, and Airte will finally find his redemption. Controls: WASD + Mouse",
-    url: "http://tizsoft.altervista.org/Airte/Airte.zip"
+    url: "https://tizsoft.altervista.org/Airte/Airte.zip"
   },
   {
-    title: "Airte",
-    date: "2012-10-02",
+    title: "Connect 4",
+    date: "2012-08-03",
     image: "./games/images/2012_connect4.png",
     short_desc: "A classic game of Connect 4. Online multiplayer",
     details: "A classic game of Connect 4. Online multiplayer",
-    url: undefined,
+    url: "https://tizsoft.altervista.org/connect4/ConnectDG_1_2.zip",
   },
   {
     title: "Tetris 3D Online Tournament",
