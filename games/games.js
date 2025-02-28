@@ -25,7 +25,7 @@ const games = [
     title: "Pigments",
     date: "2023-12-20",
     collaboration: "Bloody",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2023_pigments.gif",
     details: "Experience a colorful journey in a world of artistic challenges."
   },
   {
@@ -178,15 +178,15 @@ const games = [
     title: "Undead Pixels",
     date: "2014-02-10",
     collaboration: "Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    short_desc: "",
-    details: "A retro-style game with undead challenges and pixel art."
+    image: "./games/images/2014_undead_pixels.jpg",
+    short_desc: "Survive zombie hordes in this retro-inspired pixel art game for Android.",
+    details: "Survive zombie hordes in this retro-inspired pixel art game for Android."
   },
   {
     title: "Calm Time",
     date: "2013-11-22",
     collaboration: "Mad, Virgil, Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2013_calm_time.jpg",
     short_desc: "",
     details: "A relaxing game experience designed to calm and inspire."
   },
