@@ -204,8 +204,8 @@ const games = [
       title: "Transporter",
       date: "2011-02-08",
       collaboration: "",
-      image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-      details: "A fast-paced action game centered around transportation challenges."
+      image: "./games/images/2011_transporter.png",
+      details: "My first released game. A simple physics-based puzzle platformer"
     }
   ];
   
