@@ -10,7 +10,7 @@ const games = [
     title: "Chakana",
     date: "2024-10-01",
     collaboration: "Bloody",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2024_chakana.gif",
     short_desc: "An ordinary date takes a dark turn",
     details: "You planned for a quiet evening. The table is set, the atmosphere is warm, and the night seems to be unfolding just as you'd hoped. But as the meal progresses, something feels off. In this atmospheric horror game, explore your home as strange events disrupt your date, leaving you to navigate through questions, confrontations, and your own dread. Each decision can bring you closer to unraveling the mystery or plunge you deeper into its grip. The time is running out, manage the eerie silence, and tread carefully to keep your secrets hidden—or risk exposing yourself. Face a twisting psychological horror that questions how far you'd go to protect yourself from your fate."
   },
