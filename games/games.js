@@ -197,7 +197,7 @@ const games = [
       title: "Tetris 3D Online Tournament",
       date: "2011-03-11",
       collaboration: "",
-      image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+      image: "./games/images/2011_tetris.png",
       details: "A competitive 3D Tetris tournament game."
     },
     {
