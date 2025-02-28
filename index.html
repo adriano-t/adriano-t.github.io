@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tiz - Games Portfolio</title>
+  <meta name="description" content="Explore Tiz's game portfolio featuring unique projects, collaborations, and game jams. Discover engaging game experiences and download your favorites.">
+  <meta name="keywords" content="Tiz, Games, Game Portfolio, Indie Games, Game Development, Game Jams">
+  <meta name="author" content="Tiz">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Tiz - Games Portfolio">
+  <meta property="og:description" content="Explore Tiz's game portfolio featuring unique projects, collaborations, and game jams.">
+  <meta property="og:image" content="https://example.com/og-image.jpg">
+  <meta property="og:url" content="https://example.com">
+  <meta property="og:type" content="website">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./games.js"></script>
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+  <div class="container mx-auto p-6 text-center max-w-4xl">
+    <h1 class="text-4xl font-bold text-gray-900">My Games</h1>
+    <p class="text-lg text-gray-600 mt-2">The complete list of games I created in my entire life</p>
+    <!-- Game cards container -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8" id="game-cards-container"></div>
+  </div>
+
+  <!-- Modal Structure for Game Details -->
+  <div id="game-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h4 id="modal-title" class="text-xl font-bold"></h4>
+      <p id="modal-date" class="text-gray-700"></p>
+      <p id="modal-collaboration" class="text-gray-700"></p>
+      <p id="modal-jam" class="text-gray-700"></p>
+      <p id="modal-details" class="text-gray-700"></p>
+      <button id="modal-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Close</button>
+    </div>
+  </div>
+
+  <div class="bg-gray-800 text-white text-center py-6 mt-auto">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <h3 class="text-lg font-bold">About Tiz</h3>
+        <p class="text-sm text-gray-400">Passionate game developer creating immersive experiences.</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold">Follow Tiz</h3>
+        <p class="text-sm text-gray-400">Stay updated on Tiz's latest projects and announcements.</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-bold">Contact Tiz</h3>
+        <p class="text-sm text-gray-400">Reach out to Tiz for collaborations and inquiries.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.getElementById('game-cards-container');
+      const modal = document.getElementById('game-modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDate = document.getElementById('modal-date');
+      const modalCollab = document.getElementById('modal-collaboration');
+      const modalJam = document.getElementById('modal-jam');
+      const modalDetails = document.getElementById('modal-details');
+      const modalClose = document.getElementById('modal-close');
+      
+      games.forEach((game) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105';
+        card.innerHTML = `
+          <img src="${game.image}" alt="${game.title}" class="w-full h-64 object-cover">
+          <div class="p-4">
+            <h3 class="text-xl font-bold text-gray-900">${game.title}</h3>
+            <p class="text-gray-600 text-sm mt-1">${game.date}</p>
+            ${game.short_desc ? `<p class="text-gray-700 mt-2">${game.short_desc}</p>` : ''}
+          </div>
+        `;
+        
+        card.addEventListener('click', function() {
+          modalTitle.textContent = game.title;
+          modalDate.innerHTML = `<strong>Date:</strong> ${game.date}`;
+          modalCollab.innerHTML = game.collaboration ? `<strong>Collaboration:</strong> ${game.collaboration}` : '';
+          modalJam.innerHTML = game.jam ? `<strong>Jam:</strong> ${game.jam}` : '';
+          modalDetails.innerHTML = game.details ? `<strong>Details:</strong> ${game.details}` : '';
+          modal.classList.remove('hidden');
+        });
+        
+        container.appendChild(card);
+      });
+      
+      modalClose.addEventListener('click', function() {
+        modal.classList.add('hidden');
+      });
+    });
+  </script>
+</body>
+</html>
