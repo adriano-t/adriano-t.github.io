@@ -82,7 +82,7 @@ const games = [
     date: "2021-11-26",
     collaboration: "SerpensSolida, Ballman",
     jam: "Terrorottobre",
-    image: "./games/images/2021_blink.png",
+    image: "./games/images/2021_blink.jpg",
     short_desc: "You are going to visit someone at the local graveyard, what could possibly go wrong?",
     details: "You are going to visit someone at the local graveyard, what could possibly go wrong?",
     url: "https://gamejolt.com/games/blink/550462",
