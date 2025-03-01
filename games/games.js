@@ -63,7 +63,7 @@ const games = [
     title: "Mirror Layers",
     date: "2021-10-30",
     collaboration: "Mad, Erry, Lod",
-    image: "./games/images/2021_mirror_layers.png",
+    image: "./games/images/2021_mirror_layers.jpg",
     short_desc: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
     details: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
     url: "https://store.steampowered.com/app/1490980/Mirror_Layers/",
