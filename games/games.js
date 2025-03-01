@@ -82,9 +82,10 @@ const games = [
     date: "2021-11-26",
     collaboration: "SerpensSolida, Ballman",
     jam: "Terrorottobre",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "A fast, blinking adventure that keeps you on your toes."
+    image: "./games/images/2021_blink.png",
+    short_desc: "You are going to visit someone at the local graveyard, what could possibly go wrong?",
+    details: "You are going to visit someone at the local graveyard, what could possibly go wrong?",
+    url: "https://gamejolt.com/games/blink/550462",
   },
   {
     title: "A Day",
@@ -98,6 +99,7 @@ const games = [
   {
     title: "A Day To bring them happiness",
     date: "2020-11-22",
+    jam: "startup cities gamejam",
     collaboration: "Hyper, Mad",
     image: "./games/images/2021_a_day_to_bring.png",
     short_desc: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
