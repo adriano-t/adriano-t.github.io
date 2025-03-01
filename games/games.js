@@ -4,7 +4,7 @@ const games = [
     date: "2024-12-01",
     collaboration: "Bloody",
     image: "./games/images/2024_super_squishy.png",
-    short_desc: "A game made for Goldensun, during the Secret santa jam 2024.",
+    short_desc: "It's christmas and you find this strange console under the tree.",
     details: "A game made for Goldensun, during the Secret santa jam 2024."
   },
   {
@@ -63,9 +63,10 @@ const games = [
     title: "Mirror Layers",
     date: "2021-10-30",
     collaboration: "Mad, Erry, Lod",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "Discover new dimensions in this layered mirror world."
+    image: "./games/images/2021_mirror_layers.png",
+    short_desc: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
+    details: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
+    url: "https://store.steampowered.com/app/1490980/Mirror_Layers/",
   },
   {
     title: "Mirror Layers Prologue",
