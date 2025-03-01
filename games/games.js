@@ -63,7 +63,7 @@ const games = [
     title: "Mirror Layers",
     date: "2021-10-30",
     collaboration: "Mad, Erry, Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "Discover new dimensions in this layered mirror world."
   },
@@ -71,7 +71,7 @@ const games = [
     title: "Mirror Layers Prologue",
     date: "2021-09-17",
     collaboration: "Mad, Erry, Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "The beginning of an epic journey through reflective worlds."
   },
@@ -80,7 +80,7 @@ const games = [
     date: "2021-11-26",
     collaboration: "SerpensSolida, Ballman",
     jam: "Terrorottobre",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "A fast, blinking adventure that keeps you on your toes."
   },
@@ -88,7 +88,7 @@ const games = [
     title: "A Day",
     date: "2021-02-04",
     collaboration: "Hyper, Mad",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "Experience a day full of surprises and dynamic gameplay."
   },
@@ -96,7 +96,7 @@ const games = [
     title: "A Day To bring them happiness",
     date: "2020-11-22",
     collaboration: "Hyper, Mad",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "A heartfelt game designed to bring joy and happiness."
   },
@@ -130,7 +130,7 @@ const games = [
     title: "Atmospair",
     date: "2020-02-04",
     collaboration: "Cla, Lod, SerpensSolida, Pietro Prebianca",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "A game that blends atmospheric design with innovative gameplay."
   },
@@ -139,7 +139,7 @@ const games = [
     date: "2019-01-01",
     collaboration: "GMI (Mad, Doom, Cla, Ball, Jak, Lod, etc)",
     jam: "Global game jam 2019 - Home Theme",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "A heartwarming game developed during a global game jam."
   },
@@ -157,7 +157,7 @@ const games = [
     date: "2018-01-31",
     collaboration: "Pietro, WhySere",
     jam: "Global game jam 2018",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "Explore a living, breathing biotransphere in this innovative game."
   },
@@ -174,7 +174,7 @@ const games = [
     title: "Flappy Fish 2",
     date: "2016-06-08",
     collaboration: "Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "A sequel to the popular Flappy Fish game with new challenges."
   },
@@ -182,7 +182,7 @@ const games = [
     title: "Tainted",
     date: "2014-08-27",
     collaboration: "Mad, Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/no_image.jpg",
     short_desc: "",
     details: "A dark and twisted game that challenges conventional gameplay."
   },
