@@ -74,7 +74,8 @@ const games = [
     collaboration: "Mad, Erry, Lod",
     image: "./games/images/2021_mirror_layers_prologue.png",
     short_desc: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
-    details: "This prologue will give you only a glimpse of what you'll find in Mirror Layers."
+    details: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
+    url: "https://mymadnessworks.itch.io/mirrorlayers-escaperoom",
   },
   {
     title: "Blink",
