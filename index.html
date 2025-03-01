@@ -36,6 +36,8 @@
       <p id="modal-jam" class="text-gray-700"></p>
       <p id="modal-details" class="text-gray-700"></p>
       <button id="modal-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Close</button>
+      <!-- New Download Button -->
+      <a id="modal-download" href="#" target="_blank" class="mt-4 px-4 py-2 bg-green-500 text-white rounded inline-block">Download Game</a>
     </div>
   </div>
 
@@ -62,6 +64,7 @@
       const modalJam = document.getElementById('modal-jam');
       const modalDetails = document.getElementById('modal-details');
       const modalClose = document.getElementById('modal-close');
+      const modalDownload = document.getElementById('modal-download');
       const games_count = document.getElementById('games_count');
       games_count.innerHTML = games.length;
       
@@ -69,6 +72,7 @@
         const card = document.createElement('div');
         card.className = 'bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105';
         card.innerHTML = `
+
           <img src="${game.image}" alt="${game.title}" class="w-full h-64 object-cover">
           <div class="p-4">
             <h3 class="text-xl font-bold text-gray-900">${game.title}</h3>
@@ -83,6 +87,8 @@
           modalCollab.innerHTML = game.collaboration ? `<strong>Collaboration:</strong> ${game.collaboration}` : '';
           modalJam.innerHTML = game.jam ? `<strong>Jam:</strong> ${game.jam}` : '';
           modalDetails.innerHTML = game.details ? `<strong>Details:</strong> ${game.details}` : '';
+          // Set the URL for the download button
+          modalDownload.href = game.url || '#';  // If game.url is not set, it defaults to '#'
           modal.classList.remove('hidden');
         });
         
