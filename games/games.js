@@ -47,7 +47,7 @@ const games = [
     date: "2022-11-13",
     collaboration: "Bloody",
     image: "./games/images/2022_cavebox.webp",
-    details: "Explore mysterious caves filled with challenges and secrets."
+    details: "Text game about mysterious caves filled with challenges and secrets."
   },
   {
     title: "Herikoputa",
@@ -55,8 +55,8 @@ const games = [
     collaboration: "Erry",
     jam: "Competizione GMI",
     image: "./games/images/2022_herikoputa.png",
-    short_desc: "",
-    details: "A fast-paced game developed during a competitive game jam."
+    short_desc: "Launch yourself with your friends through a dangerous path, armed with torpedos",
+    details: "Launch yourself with your friends through a dangerous path, armed with torpedos"
   },
   {
     title: "Mirror Layers",
