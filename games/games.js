@@ -188,9 +188,11 @@ const games = [
     title: "Tainted",
     date: "2014-08-27",
     collaboration: "Mad, Lod",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "A dark and twisted game that challenges conventional gameplay."
+    jam: "ludum dare 30",
+    image: "./games/images/2014_tainted.png",
+    short_desc: "This game is NOT MEANT to be played with TeamSpeak or other chat/vocal chat systems.",
+    details: "This game is NOT MEANT to be played with TeamSpeak or other chat/vocal chat systems.",
+    url: "https://gamejolt.com/games/tainted/33307",
   },
   {
     title: "Undead Pixels",
