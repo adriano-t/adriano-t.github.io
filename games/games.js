@@ -172,12 +172,12 @@ const games = [
     url: "https://gamejolt.com/games/mirrorlayers/208588",
   },
   {
-    title: "Flappy Fish 2",
+    title: "Flappy Fish",
     date: "2016-06-08",
     collaboration: "Lod",
     image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "A sequel to the popular Flappy Fish game with new challenges."
+    short_desc: "Flappy bird clone under the sea",
+    details: "Flappy bird clone under the sea",
   },
   {
     title: "Tainted",
