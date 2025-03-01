@@ -180,7 +180,7 @@ const games = [
     title: "Flappy Fish",
     date: "2016-06-08",
     collaboration: "Lod",
-    image: "./games/images/no_image.png",
+    image: "./games/images/2016_flappy_fish.png",
     short_desc: "Flappy bird clone under the sea",
     details: "Flappy bird clone under the sea",
   },
