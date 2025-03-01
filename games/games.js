@@ -141,13 +141,13 @@ const games = [
     details: "A game that blends atmospheric design with innovative gameplay."
   },
   {
-    title: "Everybody’s Home",
+    title: "Everybody's Home",
     date: "2019-01-01",
     collaboration: "GMI (Mad, Doom, Cla, Ball, Jak, Lod, etc)",
-    jam: "Global game jam 2019 - Home Theme",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "A heartwarming game developed during a global game jam."
+    jam: "Global game jam 2019 - Tema 'Casa'",
+    image: "./games/images/2019_everybodys_home.png",
+    short_desc: "Per me casa sono i robot che ti attaccano",
+    details: "Per me casa sono i robot che ti attaccano"
   },
   {
     title: "Frog Feast",
