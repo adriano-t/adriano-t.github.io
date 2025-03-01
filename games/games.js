@@ -47,6 +47,7 @@ const games = [
     date: "2022-11-13",
     collaboration: "Bloody",
     image: "./games/images/2022_cavebox.webp",
+    short_desc: "Text game about mysterious caves filled with challenges and secrets.",
     details: "Text game about mysterious caves filled with challenges and secrets."
   },
   {
