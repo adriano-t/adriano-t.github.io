@@ -5,7 +5,8 @@ const games = [
     collaboration: "Bloody",
     image: "./games/images/2024_super_squishy.png",
     short_desc: "It's christmas and you find this strange console under the tree.",
-    details: "A game made for Goldensun, during the Secret santa jam 2024."
+    details: "A game made for Goldensun, during the Secret santa jam 2024.",
+    url: "https://drive.google.com/file/d/1pOqIAWmYEhRungu67GUmsYFrDekJLvQB/view?usp=sharing",
   },
   {
     title: "Chakana (Chapter 1)",
