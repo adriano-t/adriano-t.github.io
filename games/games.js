@@ -155,11 +155,11 @@ const games = [
   {
     title: "Biotransphere",
     date: "2018-01-31",
-    collaboration: "Pietro, WhySere",
+    collaboration: "Pietro, WhySere, Chiara Giannangeli, Haze_93, redPurpose",
     jam: "Global game jam 2018",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "Explore a living, breathing biotransphere in this innovative game."
+    image: "./games/images/2018_biotransphere.png",
+    short_desc: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol",
+    details: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol, to save the decimated population and all other species from the brink of extinction... Use your Gun to transfer between objects, physical properties such as Temperature, Weight, and Light. Absorb with RMB Convey with LMB Interactions: Temperature: Fire, Cauldron Weight: Mobile Crates Light: Luminous Sphere, Lamps"
   },
   {
     title: "Mirror Layers (Asylum Jam)",
