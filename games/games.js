@@ -135,10 +135,11 @@ const games = [
   {
     title: "Atmospair",
     date: "2020-02-04",
+    jam: "Global game jam 2020 - Tema 'Repair'",
     collaboration: "Cla, Lod, SerpensSolida, Pietro Prebianca",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "A game that blends atmospheric design with innovative gameplay."
+    image: "./games/images/2020_atmospair.png",
+    short_desc: "A game about repairing the atmosphere",
+    details: "A game about repairing the atmosphere",
   },
   {
     title: "Everybody's Home",
