@@ -90,17 +90,19 @@ const games = [
     title: "A Day",
     date: "2021-02-04",
     collaboration: "Hyper, Mad",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "Experience a day full of surprises and dynamic gameplay."
+    image: "./games/images/2021_a_day.jpg",
+    short_desc: "In A Day you'll be able to control 8 different characters in a 2D side-scrolling open map: give them life by chaining their actions, rewind the time and reach for the highest score possible! This day is yours to make!",
+    details: "In A Day you'll be able to control 8 different characters in a 2D side-scrolling open map: give them life by chaining their actions, rewind the time and reach for the highest score possible! This day is yours to make!",
+    url: "https://store.steampowered.com/app/1507990/A_Day__to_bring_them_happiness",
   },
   {
     title: "A Day To bring them happiness",
     date: "2020-11-22",
     collaboration: "Hyper, Mad",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "A heartfelt game designed to bring joy and happiness."
+    image: "./games/images/2021_a_day_to_bring.png",
+    short_desc: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
+    details: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
+    url: "https://mymadnessworks.itch.io/a-day",
   },
   {
     title: "Surroundead",
