@@ -136,10 +136,10 @@ const games = [
     title: "Atmospair",
     date: "2020-02-04",
     jam: "Global game jam 2020 - Tema 'Repair'",
-    collaboration: "Cla, Lod, SerpensSolida, Pietro Prebianca",
+    collaboration: "Cla, Lod, SerpensSolida, Pietro Prebianca, Nadeea",
     image: "./games/images/2020_atmospair.png",
-    short_desc: "A game about repairing the atmosphere",
-    details: "A game about repairing the atmosphere",
+    short_desc: "A game about fixing natural disasters. You have multiple weapons: some will solve them, other will make things worse.",
+    details: "A game about fixing natural disasters. You have multiple weapons: some will solve them, other will make things worse. Find out which ones handle what situations and lower the air pollution bar by putting out fires and planting trees. Only when it reaches zero you'll rapair earth and save it. Be careful though, if the pollution gets too much high, the earth will ne destroyed and you'll lose. Will you be able to master this fast-paced game?",
     url: "https://v3.globalgamejam.org/2020/games/atmospair-2",
   },
   {
