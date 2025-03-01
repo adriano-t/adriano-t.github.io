@@ -111,9 +111,10 @@ const games = [
     title: "Crop Nights",
     date: "2020-06-10",
     collaboration: "",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    short_desc: "",
-    details: "A unique take on night-time farming with creative mechanics."
+    image: "./games/images/2020_crop_nights.png",
+    short_desc: "Those plants have something peculiar about them.",
+    details: "Those plants have something peculiar about them.",
+    url: "https://gx.games/games/lbqayi/crop-nights/"
   },
   {
     title: "The Alley",
