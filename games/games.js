@@ -72,9 +72,9 @@ const games = [
     title: "Mirror Layers Prologue",
     date: "2021-09-17",
     collaboration: "Mad, Erry, Lod",
-    image: "./games/images/no_image.png",
-    short_desc: "",
-    details: "The beginning of an epic journey through reflective worlds."
+    image: "./games/images/2021_mirror_layers_prologue.png",
+    short_desc: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
+    details: "This prologue will give you only a glimpse of what you'll find in Mirror Layers."
   },
   {
     title: "Blink",
