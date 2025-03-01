@@ -49,7 +49,8 @@ const games = [
     collaboration: "Bloody",
     image: "./games/images/2022_cavebox.webp",
     short_desc: "Text game about mysterious caves filled with challenges and secrets.",
-    details: "Text game about mysterious caves filled with challenges and secrets."
+    details: "Text game about mysterious caves filled with challenges and secrets.",
+    url: "https://tiz010.itch.io/cavebox",
   },
   {
     title: "Herikoputa",
@@ -58,7 +59,8 @@ const games = [
     jam: "Competizione GMI",
     image: "./games/images/2022_herikoputa.png",
     short_desc: "Launch yourself with your friends through a dangerous path, armed with torpedos",
-    details: "Launch yourself with your friends through a dangerous path, armed with torpedos"
+    details: "Launch yourself with your friends through a dangerous path, armed with torpedos",
+    url: "https://drive.google.com/file/d/1FgjlpxVTMG_aWAW11puFHEDBdnaalHdM/view",
   },
   {
     title: "Mirror Layers",
@@ -131,7 +133,8 @@ const games = [
     jam: "Competizione GMI",
     image: "./games/images/2020_the_alley.webp",
     short_desc: "You wake up in a structure, under observation. Stay away from the restricted zone.",
-    details: "The alley is a 3D card game made for the GMI competition."
+    details: "The alley is a 3D card game made for the GMI competition.",
+    url: "https://tiz010.itch.io/thealley",
   },
   {
     title: "Atmospair",
@@ -168,7 +171,8 @@ const games = [
     jam: "Global game jam 2018",
     image: "./games/images/2018_biotransphere.png",
     short_desc: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol",
-    details: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol, to save the decimated population and all other species from the brink of extinction... Use your Gun to transfer between objects, physical properties such as Temperature, Weight, and Light. Absorb with RMB Convey with LMB Interactions: Temperature: Fire, Cauldron Weight: Mobile Crates Light: Luminous Sphere, Lamps"
+    details: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol, to save the decimated population and all other species from the brink of extinction... Use your Gun to transfer between objects, physical properties such as Temperature, Weight, and Light. Absorb with RMB Convey with LMB Interactions: Temperature: Fire, Cauldron Weight: Mobile Crates Light: Luminous Sphere, Lamps",
+    url:"https://v3.globalgamejam.org/2018/games/biotransphere",
   },
   {
     title: "Mirror Layers (Asylum Jam)",
@@ -212,7 +216,8 @@ const games = [
     collaboration: "Mad, Virgil, Lod",
     image: "./games/images/2013_calm_time.png",
     short_desc: "The chirping of the sparrows and the breath of the wind is my sole company.",
-    details: "The chirping of the sparrows and the breath of the wind is my sole company."
+    details: "The chirping of the sparrows and the breath of the wind is my sole company.",
+    url: "https://gamejolt.com/games/calm-time/19354",
   },
   {
     title: "7 Days",
@@ -246,7 +251,6 @@ const games = [
     image: "./games/images/2012_solitair_worm.png",
     short_desc: "A game about a giant worm that eats everything in its path",
     details: "A game about a giant worm that eats everything in its path",
-    url: "",
   },
   {
     title: "Tetris 3D Online Tournament",
@@ -264,6 +268,5 @@ const games = [
     image: "./games/images/2011_transporter.png",
     short_desc: "My first released game. A simple physics-based puzzle platformer",
     details: "My first released game. A simple physics-based puzzle platformer",
-    url: undefined,
   }
 ];
