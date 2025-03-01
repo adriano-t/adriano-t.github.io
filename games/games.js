@@ -46,7 +46,7 @@ const games = [
     title: "CaveBox",
     date: "2022-11-13",
     collaboration: "Bloody",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2022_cavebox.webp",
     details: "Explore mysterious caves filled with challenges and secrets."
   },
   {
@@ -119,7 +119,7 @@ const games = [
     title: "The Alley",
     date: "2020-05-03",
     jam: "Competizione GMI",
-    image: "./games/images/2020_the_alley.png",
+    image: "./games/images/2020_the_alley.webp",
     short_desc: "You wake up in a structure, under observation. Stay away from the restricted zone.",
     details: "The alley is a 3D card game made for the GMI competition."
   },
