@@ -147,9 +147,10 @@ const games = [
     title: "Frog Feast",
     date: "2018-02-04",
     collaboration: "Mad",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    short_desc: "",
-    details: "Join a feast with frogs in this quirky and fun adventure."
+    image: "./games/images/2018_frog_feast.png",
+    short_desc: "Made in 1 hour for the 1 hour game jam",
+    details: "Couch battle game wher you have to push your friend",
+    url: "https://drive.google.com/file/d/1qZ4QvJ0IPGWZTESX85dp5kv6WEyYiGxj/view",
   },
   {
     title: "Biotransphere",
