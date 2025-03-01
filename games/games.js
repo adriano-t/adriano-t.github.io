@@ -119,9 +119,9 @@ const games = [
     title: "The Alley",
     date: "2020-05-03",
     jam: "Competizione GMI",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    short_desc: "",
-    details: "Navigate through a mysterious alley filled with surprises."
+    image: "./games/images/2020_the_alley.png",
+    short_desc: "You wake up in a structure, under observation. Stay away from the restricted zone.",
+    details: "The alley is a 3D card game made for the GMI competition."
   },
   {
     title: "Atmospair",
