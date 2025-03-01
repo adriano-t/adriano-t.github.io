@@ -54,7 +54,7 @@ const games = [
     date: "2022-05-01",
     collaboration: "Erry",
     jam: "Competizione GMI",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
+    image: "./games/images/2022_herikoputa.png",
     short_desc: "",
     details: "A fast-paced game developed during a competitive game jam."
   },
@@ -103,9 +103,10 @@ const games = [
     title: "Surroundead",
     date: "2020-10-03",
     collaboration: "Erry, Lod",
-    image: "https://static.bandainamcoent.eu/high/elden-ring/elden-ring/03-news/elden-ring-101-trailer-thumbnail.jpg",
-    short_desc: "",
-    details: "Immerse yourself in a world where challenges surround you."
+    image: "./games/images/2020_surroundead.png",
+    short_desc: "Amongus photo-realistic clone. Made in unity as a test for a multiplayer library.",
+    details: "Amongus clone but photo-realistic. Made in unity as a test for a multiplayer library.",
+    url: "https://drive.google.com/file/d/1ZoHndvuNSzjjpsdg7WWacyoD_2_Di9MW/view?usp=sharing"
   },
   {
     title: "Crop Nights",
@@ -189,7 +190,8 @@ const games = [
     collaboration: "Lod",
     image: "./games/images/2014_undead_pixels.jpg",
     short_desc: "Survive zombie hordes in this retro-inspired pixel art game for Android.",
-    details: "Survive zombie hordes in this retro-inspired pixel art game for Android."
+    details: "Survive zombie hordes in this retro-inspired pixel art game for Android.",
+    url: "https://play.google.com/store/apps/details?id=com.revolab.UndeadPixels",
   },
   {
     title: "Calm Time",
