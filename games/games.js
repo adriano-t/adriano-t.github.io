@@ -140,6 +140,7 @@ const games = [
     image: "./games/images/2020_atmospair.png",
     short_desc: "A game about repairing the atmosphere",
     details: "A game about repairing the atmosphere",
+    url: "https://v3.globalgamejam.org/2020/games/atmospair-2",
   },
   {
     title: "Everybody's Home",
