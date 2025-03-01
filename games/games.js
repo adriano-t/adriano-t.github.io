@@ -148,8 +148,8 @@ const games = [
     collaboration: "GMI (Mad, Doom, Cla, Ball, Jak, Lod, etc)",
     jam: "Global game jam 2019 - Tema 'Casa'",
     image: "./games/images/2019_everybodys_home.png",
-    short_desc: "Per me casa sono i robot che ti attaccano",
-    details: "Per me casa sono i robot che ti attaccano"
+    short_desc: "For me 'home' means robots that attack you",
+    details: "For me 'home' means robots that attack you"
   },
   {
     title: "Frog Feast",
