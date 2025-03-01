@@ -208,8 +208,8 @@ const games = [
     date: "2013-11-22",
     collaboration: "Mad, Virgil, Lod",
     image: "./games/images/2013_calm_time.png",
-    short_desc: "",
-    details: "A relaxing game experience designed to calm and inspire."
+    short_desc: "The chirping of the sparrows and the breath of the wind is my sole company.",
+    details: "The chirping of the sparrows and the breath of the wind is my sole company."
   },
   {
     title: "7 Days",
