@@ -3,57 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Games</title>
-  <meta name="description" content="Explore Tiz's game portfolio featuring unique projects, collaborations, and game jams. Discover engaging game experiences and download your favorites.">
-  <meta name="keywords" content="Tiz, Games, Game Portfolio, Indie Games, Game Development, Game Jams">
+  <title>My Games Portfolio</title>
+  <meta name="description" content="Esplora il mio portfolio di giochi. Progetti innovativi, collaborazioni e game jams, tutto in un unico sito.">
+  <meta name="keywords" content="Games, Game Portfolio, Indie Games, Game Development, Game Jams">
   <meta name="author" content="Tiz">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+  <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="My Games">
-  <meta property="og:description" content="Explore Tiz's game portfolio featuring projects, collaborations, and game jams.">
+  <meta property="og:title" content="My Games Portfolio">
+  <meta property="og:description" content="Esplora il portfolio dei miei giochi, con progetti innovativi e collaborazioni creative.">
   <meta property="og:image" content="https://example.com/og-image.jpg">
   <meta property="og:url" content="https://example.com">
   <meta property="og:type" content="website">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a202c',
+            secondary: '#2d3748',
+            accent: '#4FD1C5',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <!-- Script per i dati dei giochi -->
   <script src="./games/games.js"></script>
 </head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
+<body class="bg-gray-900 text-gray-100 font-sans antialiased relative">
 
-  <div class="container mx-auto p-6 text-center max-w-4xl">
-    <h1 class="text-4xl font-bold text-gray-900">My Games (<span id="games_count"></span>)</h1>
-    <p class="text-lg text-gray-600 mt-2">The full list of games I've worked on, many born from incredible collaborations with talented people</p>
-    <!-- Game cards container -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8" id="game-cards-container"></div>
-  </div>
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="py-16">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-4xl font-bold">My Games (<span id="games_count"></span>)</h2>
+        <p class="mt-4 text-gray-400">The full list of games I've worked on, many born from incredible collaborations with talented people</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="game-cards-container">
+        <!-- Le card dei giochi verranno inserite dinamicamente -->
+      </div>
+    </div>
+  </section>
 
-  <!-- Modal Structure for Game Details -->
-  <div id="game-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-      <h4 id="modal-title" class="text-xl font-bold"></h4>
-      <p id="modal-date" class="text-gray-700"></p>
-      <p id="modal-collaboration" class="text-gray-700"></p>
-      <p id="modal-jam" class="text-gray-700"></p>
-      <p id="modal-details" class="text-gray-700"></p>
-      <button id="modal-close" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Close</button>
-      <a id="modal-download" href="#" target="_blank" class="mt-4 px-4 py-2 bg-green-500 text-white rounded inline-block">Download Game</a>
+  <!-- Modal per i dettagli del gioco -->
+  <div id="game-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50">
+    <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full relative">
+      <button id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+      <p id="modal-date" class="text-gray-400 mb-2"></p>
+      <p id="modal-collaboration" class="text-gray-400 mb-2"></p>
+      <p id="modal-jam" class="text-gray-400 mb-2"></p>
+      <p id="modal-details" class="text-gray-300 mb-4"></p>
+      <div class="flex justify-end space-x-4">
+        <a id="modal-download" href="#" target="_blank" class="bg-accent hover:bg-teal-400 text-gray-900 font-bold py-2 px-4 rounded transition">Download</a>
+      </div>
     </div>
   </div>
 
-  <div class="bg-gray-800 text-white text-center py-6 mt-auto">
-    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <h3 class="text-lg font-bold">About Me</h3>
-        <p class="text-sm text-gray-400">I love creating games, most of which are horror</p>
-      </div>
-      <div class="cursor-pointer" onclick="window.location.href='https://x.com/tizrevolab'">
-        <h3 class="text-lg font-bold">Follow Me</h3>
-        <p class="text-sm text-gray-400">Stay updated on my latest projects and announcements.</p>
+  <!-- Footer -->
+  <footer class="bg-gray-800 py-6">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
+      <p class="text-gray-400">&copy; 2025 All rights reserved.</p>
+      <div class="flex space-x-4 mt-4 md:mt-0">
+        <a href="https://tiz010.itch.io" target="_blank" class="text-gray-400 hover:text-accent transition">Itch.io</a>
+        <a href="https://x.com/tizrevolab" target="_blank" class="text-gray-400 hover:text-accent transition">Twitter</a>
+        <a href="https://github.com/adriano-t" target="_blank" class="text-gray-400 hover:text-accent transition">GitHub</a>
       </div>
     </div>
-  </div>
+  </footer>
 
+  <!-- Script per gestire le card e il modal -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const container = document.getElementById('game-cards-container');
@@ -65,28 +96,29 @@
       const modalDetails = document.getElementById('modal-details');
       const modalClose = document.getElementById('modal-close');
       const modalDownload = document.getElementById('modal-download');
-      const games_count = document.getElementById('games_count');
-      games_count.innerHTML = games.length;
-      
+      const gamesCount = document.getElementById('games_count');
+      if(gamesCount) {
+        gamesCount.textContent = games.length;
+      }
+      // Popola il portfolio con le card dei giochi
       games.forEach((game) => {
         const card = document.createElement('div');
-        card.className = 'bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105';
+        card.className = 'bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105';
         card.innerHTML = `
-
           <img src="${game.image}" alt="${game.title}" class="w-full h-64 object-cover">
           <div class="p-4">
-            <h3 class="text-xl font-bold text-gray-900">${game.title}</h3>
-            <p class="text-gray-600 text-sm mt-1">${game.date}</p>
-            ${game.short_desc ? `<p class="text-gray-700 mt-2">${game.short_desc}</p>` : ''}
+            <h3 class="text-xl font-bold text-white">${game.title}</h3>
+            <p class="text-gray-400 text-sm mt-1">${game.date}</p>
+            ${game.short_desc ? `<p class="text-gray-300 mt-2">${game.short_desc}</p>` : ''}
           </div>
         `;
         
         card.addEventListener('click', function() {
           modalTitle.textContent = game.title;
-          modalDate.innerHTML = `<strong>Date:</strong> ${game.date}`;
-          modalCollab.innerHTML = game.collaboration ? `<strong>Collaboration:</strong> ${game.collaboration}` : '';
-          modalJam.innerHTML = game.jam ? `<strong>Jam:</strong> ${game.jam}` : '';
-          modalDetails.innerHTML = game.details ? `<strong>Details:</strong> ${game.details}` : '';
+          modalDate.innerHTML = `<strong>Data:</strong> ${game.date}`;
+          modalCollab.innerHTML = game.collaboration ? `<strong>Collaborazione:</strong> ${game.collaboration}` : '';
+          modalJam.innerHTML = game.jam ? `<strong>Game Jam:</strong> ${game.jam}` : '';
+          modalDetails.innerHTML = game.details ? `<strong>Dettagli:</strong> ${game.details}` : '';
           modalDownload.href = game.url || '#';
           if(game.url) {
             modalDownload.classList.remove('hidden');
@@ -101,6 +133,13 @@
       
       modalClose.addEventListener('click', function() {
         modal.classList.add('hidden');
+      });
+
+      // Chiude il modal cliccando fuori dal contenuto
+      window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          modal.classList.add('hidden');
+        }
       });
     });
   </script>

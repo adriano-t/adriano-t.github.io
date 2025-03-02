@@ -22,7 +22,8 @@ const games = [
     date: "2024-01-31",
     collaboration: "Karim",
     image: "./games/images/2024_farming_simulator_but_with_guns.png",
-    details: "A farming simulator with a surprising twist of action and combat.",
+    short_desc: "A farming simulator with a surprising twist",
+    details: "A farming simulator with a surprising twist",
     url: "https://globalgamejam.org/games/2024/farming-simulator-guns-9"
   },
   {
@@ -38,10 +39,10 @@ const games = [
     title: "Christmas Combo",
     date: "2022-12-29",
     collaboration: "Bloody",
-    image: "./games/images/2022_christmas_combo.png",
+    image: "./games/images/2022_christmas_combo.gif",
     short_desc: "Hit all the targets with a single shot, sliding on the ice.",
     details: "Hit all the targets with a single shot, sliding on the ice.",
-    url: "https://drive.google.com/file/d/1tOE9xA1tyBAL4H7gym1rklpDRdpS9Zwm/view?usp=sharing"
+    url: "https://drive.google.com/file/d/18Rs1QGI6kJ3QaKbvV8R1NSvhrDnQarLX/view?usp=sharing"
   },
   {
     title: "CaveBox",
@@ -240,6 +241,7 @@ const games = [
   {
     title: "Connect 4",
     date: "2012-08-03",
+    collaboration: "Lod",
     image: "./games/images/2012_connect4.png",
     short_desc: "A classic game of Connect 4. Online multiplayer",
     details: "A classic game of Connect 4. Online multiplayer",
@@ -255,7 +257,6 @@ const games = [
   {
     title: "Tetris 3D Online Tournament",
     date: "2011-03-11",
-    collaboration: "",
     image: "./games/images/2011_tetris.png",
     short_desc: "A simple 3D Tetris game with online leaderboards",
     details: "A simple 3D Tetris game with online leaderboards.",
@@ -264,9 +265,9 @@ const games = [
   {
     title: "Transporter",
     date: "2011-02-08",
-    collaboration: "",
     image: "./games/images/2011_transporter.png",
     short_desc: "My first released game. A simple physics-based puzzle platformer",
     details: "My first released game. A simple physics-based puzzle platformer",
+    url: "https://drive.google.com/file/d/1boLizy6ljq7i3Qz2KE-nsEgmIbPLPKMV/view?usp=sharing",
   }
 ];
