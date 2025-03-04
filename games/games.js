@@ -3,7 +3,7 @@ const games = [
     title: "Super Squishy Candy Console",
     date: "2024-12-01",
     collaboration: "Bloody",
-    image: "./games/images/2024_super_squishy.png",
+    image: "./games/images/2024_super_squishy.gif",
     short_desc: "It's christmas and you find this strange console under the tree.",
     details: "A game made for Goldensun, during the Secret santa jam 2024.",
     url: "https://drive.google.com/file/d/1pOqIAWmYEhRungu67GUmsYFrDekJLvQB/view?usp=sharing",
