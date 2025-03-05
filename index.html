@@ -126,6 +126,12 @@
             modalDownload.classList.add('hidden');
           }
           modal.classList.remove('hidden');
+
+          if(game.url_label) {
+            modalDownload.textContent = game.url_label;
+          } else {
+            modalDownload.textContent = 'Download';
+          }
         });
         
         container.appendChild(card);

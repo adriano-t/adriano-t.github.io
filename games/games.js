@@ -6,6 +6,7 @@ const games = [
     image: "./games/images/2024_super_squishy.gif",
     short_desc: "It's christmas and you find this strange console under the tree.",
     details: "A game made for Goldensun, during the Secret santa jam 2024.",
+    url_label: "Download",
     url: "https://drive.google.com/file/d/1pOqIAWmYEhRungu67GUmsYFrDekJLvQB/view?usp=sharing",
   },
   {
@@ -15,6 +16,7 @@ const games = [
     image: "./games/images/2024_chakana.gif",
     short_desc: "An ordinary date takes a dark turn",
     details: "You planned for a quiet evening. The table is set, the atmosphere is warm, and the night seems to be unfolding just as you'd hoped. But as the meal progresses, something feels off. In this atmospheric horror game, explore your home as strange events disrupt your date, leaving you to navigate through questions, confrontations, and your own dread. Each decision can bring you closer to unraveling the mystery or plunge you deeper into its grip. The time is running out, manage the eerie silence, and tread carefully to keep your secrets hidden—or risk exposing yourself. Face a twisting psychological horror that questions how far you'd go to protect yourself from your fate.",
+    url_label: "View Page",
     url: "https://tiz010.itch.io/chakana-chapter-1",
   },
   {
@@ -24,6 +26,7 @@ const games = [
     image: "./games/images/2024_farming_simulator_but_with_guns.png",
     short_desc: "A farming simulator with a surprising twist",
     details: "A farming simulator with a surprising twist",
+    url_label: "View Page",
     url: "https://globalgamejam.org/games/2024/farming-simulator-guns-9"
   },
   {
@@ -33,6 +36,7 @@ const games = [
     image: "./games/images/2023_pigments.gif",
     short_desc: "Uncover the secrets of an alien world.",
     details: "Explore eerie landscapes, awakening memories and forming an enigmatic connection with your surroundings. With no text, the controls and story seamlessly reveal themselves as you delve into this mysterious puzzle platformer",
+    url_label: "View Page",
     url: "https://tiz010.itch.io/pigments",
   },
   {
@@ -42,6 +46,7 @@ const games = [
     image: "./games/images/2022_christmas_combo.gif",
     short_desc: "Hit all the targets with a single shot, sliding on the ice.",
     details: "Hit all the targets with a single shot, sliding on the ice.",
+    url_label: "Download",
     url: "https://drive.google.com/file/d/18Rs1QGI6kJ3QaKbvV8R1NSvhrDnQarLX/view?usp=sharing"
   },
   {
@@ -51,6 +56,7 @@ const games = [
     image: "./games/images/2022_cavebox.webp",
     short_desc: "Text game about mysterious caves filled with challenges and secrets.",
     details: "Text game about mysterious caves filled with challenges and secrets.",
+    url_label: "View Page",
     url: "https://tiz010.itch.io/cavebox",
   },
   {
@@ -61,6 +67,7 @@ const games = [
     image: "./games/images/2022_herikoputa.png",
     short_desc: "Launch yourself with your friends through a dangerous path, armed with torpedos",
     details: "Launch yourself with your friends through a dangerous path, armed with torpedos",
+    url_label: "Download",
     url: "https://drive.google.com/file/d/1FgjlpxVTMG_aWAW11puFHEDBdnaalHdM/view",
   },
   {
@@ -70,6 +77,7 @@ const games = [
     image: "./games/images/2021_mirror_layers.jpg",
     short_desc: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
     details: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
+    url_label: "View Page",
     url: "https://store.steampowered.com/app/1490980/Mirror_Layers/",
   },
   {
@@ -79,6 +87,7 @@ const games = [
     image: "./games/images/2021_mirror_layers_prologue.webp",
     short_desc: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
     details: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
+    url_label: "View Page",
     url: "https://mymadnessworks.itch.io/mirrorlayers-escaperoom",
   },
   {
@@ -89,6 +98,7 @@ const games = [
     image: "./games/images/2021_blink.jpg",
     short_desc: "You are going to visit someone at the local graveyard, what could possibly go wrong?",
     details: "You are going to visit someone at the local graveyard, what could possibly go wrong?",
+    url_label: "View Page",
     url: "https://gamejolt.com/games/blink/550462",
   },
   {
@@ -98,6 +108,7 @@ const games = [
     image: "./games/images/2021_a_day.jpg",
     short_desc: "In A Day you'll be able to control 8 different characters in a 2D side-scrolling open map: give them life by chaining their actions, rewind the time and reach for the highest score possible! This day is yours to make!",
     details: "In A Day you'll be able to control 8 different characters in a 2D side-scrolling open map: give them life by chaining their actions, rewind the time and reach for the highest score possible! This day is yours to make!",
+    url_label: "View Page",
     url: "https://store.steampowered.com/app/1507990/A_Day__to_bring_them_happiness",
   },
   {
@@ -108,6 +119,7 @@ const games = [
     image: "./games/images/2021_a_day_to_bring.png",
     short_desc: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
     details: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
+    url_label: "View Page",
     url: "https://mymadnessworks.itch.io/a-day",
   },
   {
@@ -117,6 +129,7 @@ const games = [
     image: "./games/images/2020_surroundead.png",
     short_desc: "Amongus photo-realistic clone. Made in unity as a test for a multiplayer library.",
     details: "Amongus clone but photo-realistic. Made in unity as a test for a multiplayer library.",
+    url_label: "Download",
     url: "https://drive.google.com/file/d/1ZoHndvuNSzjjpsdg7WWacyoD_2_Di9MW/view?usp=sharing"
   },
   {
@@ -126,6 +139,7 @@ const games = [
     image: "./games/images/2020_crop_nights.png",
     short_desc: "Those plants have something peculiar about them.",
     details: "Those plants have something peculiar about them.",
+    url_label: "Play on Browser",
     url: "https://gx.games/games/lbqayi/crop-nights/"
   },
   {
@@ -135,6 +149,7 @@ const games = [
     image: "./games/images/2020_the_alley.webp",
     short_desc: "You wake up in a structure, under observation. Stay away from the restricted zone.",
     details: "The alley is a 3D card game made for the GMI competition.",
+    url_label: "View Page",
     url: "https://tiz010.itch.io/thealley",
   },
   {
@@ -145,6 +160,7 @@ const games = [
     image: "./games/images/2020_atmospair.png",
     short_desc: "A game about fixing natural disasters. You have multiple weapons: some will solve them, other will make things worse.",
     details: "A game about fixing natural disasters. You have multiple weapons: some will solve them, other will make things worse. Find out which ones handle what situations and lower the air pollution bar by putting out fires and planting trees. Only when it reaches zero you'll rapair earth and save it. Be careful though, if the pollution gets too much high, the earth will ne destroyed and you'll lose. Will you be able to master this fast-paced game?",
+    url_label: "View Page",
     url: "https://v3.globalgamejam.org/2020/games/atmospair-2",
   },
   {
@@ -163,6 +179,7 @@ const games = [
     image: "./games/images/2018_frog_feast.png",
     short_desc: "Made in 1 hour for the 1 hour game jam",
     details: "Couch battle game wher you have to push your friend",
+    url_label: "Download",
     url: "https://drive.google.com/file/d/1qZ4QvJ0IPGWZTESX85dp5kv6WEyYiGxj/view",
   },
   {
@@ -173,6 +190,7 @@ const games = [
     image: "./games/images/2018_biotransphere.png",
     short_desc: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol",
     details: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol, to save the decimated population and all other species from the brink of extinction... Use your Gun to transfer between objects, physical properties such as Temperature, Weight, and Light. Absorb with RMB Convey with LMB Interactions: Temperature: Fire, Cauldron Weight: Mobile Crates Light: Luminous Sphere, Lamps",
+    url_label: "View Page",
     url:"https://v3.globalgamejam.org/2018/games/biotransphere",
   },
   {
@@ -182,6 +200,7 @@ const games = [
     image: "./games/images/2016_mirror_layers.png",
     short_desc: "We ask you only to give us a part of you: Part of your identity.",
     details: "We ask you only to give us a part of you: Part of your identity.",
+    url_label: "View Page",
     url: "https://gamejolt.com/games/mirrorlayers/208588",
   },
   {
@@ -200,6 +219,7 @@ const games = [
     image: "./games/images/2014_tainted.png",
     short_desc: "This game is NOT MEANT to be played with TeamSpeak or other chat/vocal chat systems.",
     details: "This game is NOT MEANT to be played with TeamSpeak or other chat/vocal chat systems.",
+    url_label: "View Page",
     url: "https://gamejolt.com/games/tainted/33307",
   },
   {
@@ -209,6 +229,7 @@ const games = [
     image: "./games/images/2014_undead_pixels.jpg",
     short_desc: "Survive zombie hordes in this retro-inspired pixel art game for Android.",
     details: "Survive zombie hordes in this retro-inspired pixel art game for Android.",
+    url_label: "View Page",
     url: "https://play.google.com/store/apps/details?id=com.revolab.UndeadPixels",
   },
   {
@@ -227,6 +248,7 @@ const games = [
     image: "./games/images/2013_7days.png",
     short_desc: "Find out what is going on in the strange house where you just woke up",
     details: "Find out what is going on in the strange house where you just woke up",
+    url_label: "View Page",
     url: "https://gamejolt.com/games/7days/14592"
   },
   {
@@ -236,6 +258,7 @@ const games = [
     image: "./games/images/2012_airte.png",
     short_desc: "A soul named Airte. Once a metalhead, now seeking faith in the afterlife.",
     details: "A lost soul named Airte, once a devoted metalhead, had a revelation on his deathbed—he must put his faith in Jesus Christ. But in the afterlife, The Diaulo seeks to drag him back to his old ways, forcing him to listen to a haunting song that commands worship of 'Satan, infinite trinity.' Yet, Jesus 3 has granted Airte a divine gift: The Light Weapon. With his radiant white companion by his side and bare feet upon holy ground, Airte must purge the demonic forces emerging from the accursed walls. The goal? Absorb the light emitted by tormented souls. Collect 1,000, and Airte will finally find his redemption. Controls: WASD + Mouse",
+    url_label: "Download",
     url: "https://tizsoft.altervista.org/Airte/Airte.zip"
   },
   {
@@ -245,6 +268,7 @@ const games = [
     image: "./games/images/2012_connect4.png",
     short_desc: "A classic game of Connect 4. Online multiplayer",
     details: "A classic game of Connect 4. Online multiplayer",
+    url_label: "Download",
     url: "https://tizsoft.altervista.org/connect4/ConnectDG_1_2.zip",
   },
   {
@@ -253,6 +277,7 @@ const games = [
     image: "./games/images/2012_solitair_worm.png",
     short_desc: "A game about a giant worm that eats everything in its path",
     details: "A game about a giant worm that eats everything in its path",
+    url_label: "Download",
   },
   {
     title: "Tetris 3D Online Tournament",
@@ -260,6 +285,7 @@ const games = [
     image: "./games/images/2011_tetris.png",
     short_desc: "A simple 3D Tetris game with online leaderboards",
     details: "A simple 3D Tetris game with online leaderboards.",
+    url_label: "View Page",
     url: "http://www.tizsoft.altervista.org/tetris",
   },
   {
@@ -268,6 +294,7 @@ const games = [
     image: "./games/images/2011_transporter.png",
     short_desc: "My first released game. A simple physics-based puzzle platformer",
     details: "My first released game. A simple physics-based puzzle platformer",
+    url_label: "Download",
     url: "https://drive.google.com/file/d/1boLizy6ljq7i3Qz2KE-nsEgmIbPLPKMV/view?usp=sharing",
   }
 ];
