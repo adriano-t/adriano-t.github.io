@@ -73,7 +73,7 @@ const games = [
   {
     title: "Mirror Layers",
     date: "2021-10-30",
-    collaboration: "Mad, Erry, Lod",
+    collaboration: "Mymadness Works, Erry, Lod",
     image: "./games/images/2021_mirror_layers.jpg",
     short_desc: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
     details: "Mirror Layers is a first person social horror game. Cooperate with other players to solve challenging puzzles. Explore and collaborate to unravel the mystery behind Apartment 12 and its horrific and distorted mirror reality.",
@@ -83,7 +83,7 @@ const games = [
   {
     title: "Mirror Layers Prologue",
     date: "2021-09-17",
-    collaboration: "Mad, Erry, Lod",
+    collaboration: "Mymadness Works, Erry, Lod",
     image: "./games/images/2021_mirror_layers_prologue.webp",
     short_desc: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
     details: "This prologue will give you only a glimpse of what you'll find in Mirror Layers.",
@@ -104,7 +104,7 @@ const games = [
   {
     title: "A Day",
     date: "2021-02-04",
-    collaboration: "Hyper, Mad",
+    collaboration: "Hyper, Mymadness Works",
     image: "./games/images/2021_a_day.jpg",
     short_desc: "In A Day you'll be able to control 8 different characters in a 2D side-scrolling open map: give them life by chaining their actions, rewind the time and reach for the highest score possible! This day is yours to make!",
     details: "In A Day you'll be able to control 8 different characters in a 2D side-scrolling open map: give them life by chaining their actions, rewind the time and reach for the highest score possible! This day is yours to make!",
@@ -115,7 +115,7 @@ const games = [
     title: "A Day To bring them happiness",
     date: "2020-11-22",
     jam: "startup cities gamejam",
-    collaboration: "Hyper, Mad",
+    collaboration: "Hyper, Mymadness Works",
     image: "./games/images/2021_a_day_to_bring.png",
     short_desc: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
     details: "Made for the Global Startupcities Gamejam with the theme 'A Win-win situation'",
@@ -166,7 +166,7 @@ const games = [
   {
     title: "Everybody's Home",
     date: "2019-01-01",
-    collaboration: "GMI (Mad, Doom, Cla, Ball, Jak, Lod, etc)",
+    collaboration: "GMI (Doom, Cla, Ball, Jak, Lod, Mymadness Works, etc)",
     jam: "Global game jam 2019 - Tema 'Casa'",
     image: "./games/images/2019_everybodys_home.png",
     short_desc: "For me 'home' means robots that attack you",
@@ -175,7 +175,7 @@ const games = [
   {
     title: "Frog Feast",
     date: "2018-02-04",
-    collaboration: "Mad",
+    collaboration: "Mymadness Works",
     image: "./games/images/2018_frog_feast.png",
     short_desc: "Made in 1 hour for the 1 hour game jam",
     details: "Couch battle game wher you have to push your friend",
@@ -192,6 +192,17 @@ const games = [
     details: "After many failed attempts to save our Planet, the scientific community has started the BioTranSphere Protocol, to save the decimated population and all other species from the brink of extinction... Use your Gun to transfer between objects, physical properties such as Temperature, Weight, and Light. Absorb with RMB Convey with LMB Interactions: Temperature: Fire, Cauldron Weight: Mobile Crates Light: Luminous Sphere, Lamps",
     url_label: "View Page",
     url:"https://v3.globalgamejam.org/2018/games/biotransphere",
+  },
+  {
+    title: "Disclosure",
+    date: "2017-10-02",
+    collaboration: "Mymadness Works, Erry, Lod, Virgil",
+    image: "./games/images/2017_disclosure.png",
+    jam: "Dreamhack Jam",
+    short_desc: "Disclosure is a short game about mystery.",
+    details: "Disclosure is a short game about mystery. The game was made in a hurry for Dreamhack Jam and it's a small portion of a big idea we had in mind. There's some bug too, so please avoid walking outside the room region if possible! Use WASD or arrow keys to move, use leftclick to interact with stuff.",
+    url_label: "View Page",
+    url: "https://gamejolt.com/games/disclosure/287686",
   },
   {
     title: "Mirror Layers (Asylum Jam)",
@@ -214,7 +225,7 @@ const games = [
   {
     title: "Tainted",
     date: "2014-08-27",
-    collaboration: "Mad, Lod",
+    collaboration: "Mymadness Works, Lod",
     jam: "ludum dare 30",
     image: "./games/images/2014_tainted.png",
     short_desc: "This game is NOT MEANT to be played with TeamSpeak or other chat/vocal chat systems.",
@@ -235,7 +246,7 @@ const games = [
   {
     title: "Calm Time",
     date: "2013-11-22",
-    collaboration: "Mad, Virgil, Lod",
+    collaboration: "Mymadness Works, Virgil, Lod",
     image: "./games/images/2013_calm_time.png",
     short_desc: "The chirping of the sparrows and the breath of the wind is my sole company.",
     details: "The chirping of the sparrows and the breath of the wind is my sole company.",
