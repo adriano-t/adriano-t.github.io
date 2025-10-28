@@ -1,5 +1,15 @@
 const games = [
   {
+    "title": "Chakana",
+    "date": "coming soon",
+    "collaboration": "Bloody",
+    "image": "./games/images/2025_chakana.webm",
+    "short_desc": "Investigate the origin of the mysterious pocket pet that controls your fate.",
+    "details": "A Creature in Your Hands.\nYour life is tied to a digital creature housed in a device bearing the mark of the Andean cross. Interact with a fully functional pocket pet, feeding, cleaning and entertaining the creature to keep it alive.\nErase all the evidence\nHide the crime before the clock runs out. You must scour the environment until it is clean, removing every physical proof of the act and concealing the carnage. Every second counts, and a single mistake could be your end.Strategic Deception\nA dynamic multiple choice system tracks your statements and lies. Every inconsistency increases the suspicion level and can lead to an arrest. The characters remember your actions: If you lie or leave an oversight, they’ll notice, and focus their next questions to expose the lie.\nInvestigate\nExplore various locations and hunt for clues about what's happening. Talk to the citizens, get information and clues to uncover the origin of the misterious toy.",
+    "url_label": "Wishlist on Steam",
+    "url": "https://store.steampowered.com/app/4105240/Chakana/"
+  },
+  {
     "title": "Super Squishy Candy Console",
     "date": "2024-12-01",
     "collaboration": "Bloody",
