@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { exec } = require("child_process");
+const vm = require("vm");
 
 const gamesFilePath = path.resolve("./games/games.js");
 const imagesDir = path.resolve("./games/images");
@@ -8,14 +9,18 @@ const imagesDir = path.resolve("./games/images");
 // Legge games.js
 let fileContent = fs.readFileSync(gamesFilePath, "utf-8");
 
-const gamesArrayMatch = fileContent.match(/const games\s*=\s*(\[[\s\S]*?\]);/);
+// Supporta sia "const games =" che "export const games ="
+const gamesArrayMatch =
+  fileContent.match(/export\s+const\s+games\s*=\s*(\[[\s\S]*?\]);/) ||
+  fileContent.match(/const\s+games\s*=\s*(\[[\s\S]*?\]);/);
 if (!gamesArrayMatch) {
   console.error("❌ Impossibile trovare l'array 'games' nel file.");
   process.exit(1);
 }
 
 const gamesArrayText = gamesArrayMatch[1];
-const games = eval(gamesArrayText);
+// Parse the array literal in a sandboxed context
+const games = vm.runInNewContext(`(${gamesArrayText})`, {}, { timeout: 1000 });
 
 // Funzione per convertire qualsiasi immagine in WebP
 function convertToWebp(oldPath, newPath) {
@@ -57,9 +62,8 @@ async function convertImages() {
     }
   }
 
-  // Scrive di nuovo games.js aggiornato
-  const newGamesText =
-    "const games = " + JSON.stringify(games, null, 2) + ";\n\nmodule.exports = games;\n";
+  // Scrive di nuovo games.js aggiornato (classico, client-side)
+  const newGamesText = "const games = " + JSON.stringify(games, null, 2) + ";\n";
 
   fs.writeFileSync(gamesFilePath, newGamesText, "utf-8");
   console.log("\n✨ Conversione completata e file aggiornato!");

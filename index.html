@@ -3,19 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Games Portfolio</title>
-  <meta name="description" content="Esplora il mio portfolio di giochi. Progetti innovativi, collaborazioni e game jams, tutto in un unico sito.">
-  <meta name="keywords" content="Games, Game Portfolio, Indie Games, Game Development, Game Jams">
+  <title>Tiz - Games Portfolio</title>
+  <meta name="description" content="Explore a curated collection of indie games, collaborations and game jam entries by Tiz. Discover projects, platforms and details in a clean, accessible portfolio.">
+  <meta name="keywords" content="Games, Game Portfolio, Indie Games, Game Development, Game Jams, Horror Games, Puzzle Games">
   <meta name="author" content="Tiz">
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <!-- Open Graph / Facebook -->
-  <meta property="og:title" content="My Games Portfolio">
-  <meta property="og:description" content="Esplora il portfolio dei miei giochi, con progetti innovativi e collaborazioni creative.">
-  <meta property="og:image" content="https://example.com/og-image.jpg">
-  <meta property="og:url" content="https://example.com">
+  <link rel="canonical" href="https://adriano-t.github.io/">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Tiz - Games Portfolio">
+  <meta property="og:description" content="Indie games, collaborations and game jams. Explore the full portfolio.">
+  <meta property="og:image" content="https://adriano-t.github.io/games/images/2024_chakana.webp">
+  <meta property="og:url" content="https://adriano-t.github.io/">
   <meta property="og:type" content="website">
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tiz - Games Portfolio">
+  <meta name="twitter:description" content="Indie games, collaborations and game jams. Explore the full portfolio.">
+  <meta name="twitter:site" content="@tizrevolab">
+  <meta name="twitter:creator" content="@tizrevolab">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -23,9 +28,9 @@
       theme: {
         extend: {
           colors: {
-            primary: '#1a202c',
-            secondary: '#2d3748',
-            accent: '#4FD1C5',
+            primary: '#0f172a',
+            secondary: '#1e293b',
+            accent: '#22d3ee'
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
@@ -34,135 +39,384 @@
       },
     }
   </script>
-  <!-- Script per i dati dei giochi -->
-  <script src="./games/games.js"></script>
+  <!-- Games data -->
+  <script src="./games/games.js?v=4"></script>
+  <!-- Minimal base styles for focus visibility -->
+  <style>
+    .focus-outline:focus { outline: 3px solid #22d3ee; outline-offset: 2px }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+  </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans antialiased relative">
-
-  <!-- Portfolio Section -->
-  <section id="portfolio" class="py-16">
-    <div class="container mx-auto px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-4xl font-bold">My Games (<span id="games_count"></span>)</h2>
-        <p class="mt-4 text-gray-400">The full list of games I've worked on, many born from incredible collaborations with talented people</p>
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="game-cards-container">
-        <!-- Le card dei giochi verranno inserite dinamicamente -->
-      </div>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased">
+  <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
+    <div class="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
+      <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Tiz - Games Portfolio</h1>
+      <nav aria-label="Social links" class="hidden md:flex gap-4">
+        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-accent transition focus-outline">Itch.io</a>
+        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-accent transition focus-outline">Twitter</a>
+      </nav>
     </div>
-  </section>
+    <div class="mx-auto max-w-7xl px-6 pb-4">
+      <form id="filters-form" class="grid grid-cols-1 md:grid-cols-2 gap-3" role="search" aria-label="Search and filters">
+        <label class="block">
+          <span class="sr-only">Search</span>
+          <input id="search-input" type="search" inputmode="search" placeholder="Search by title or description" class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 placeholder-slate-400 text-slate-100 focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Search games by title or description">
+        </label>
+        <label class="block">
+          <span class="sr-only">Filter by year</span>
+          <select id="year-filter" class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Filter by year">
+            <option value="">All years</option>
+          </select>
+        </label>
+      </form>
+    </div>
+  </header>
 
-  <!-- Modal per i dettagli del gioco -->
-  <div id="game-modal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-70 flex items-center justify-center z-50">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg max-w-md w-full relative">
-      <button id="modal-close" class="absolute top-4 right-4 text-gray-400 hover:text-white transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <main id="main" class="mx-auto max-w-7xl px-6 py-10">
+    <section aria-labelledby="games-heading">
+      <div class="mb-6 flex items-end justify-between">
+        <div>
+          <h2 id="games-heading" class="text-3xl md:text-4xl font-bold">Games <span class="text-accent">(<span id="games_count">0</span>)</span></h2>
+          <p class="mt-2 text-slate-400 max-w-2xl">A full list of games I worked on. Many born from great collaborations and game jams.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="game-cards-container" aria-live="polite" aria-busy="false"></div>
+    </section>
+  </main>
+
+  <!-- Accessible Modal -->
+  <div id="game-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50" aria-hidden="true">
+    <div class="bg-slate-900 p-6 md:p-8 rounded-lg shadow-2xl max-w-lg w-full relative border border-slate-700"
+         role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+      <button id="modal-close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100 transition focus-outline" aria-label="Close dialog">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
-      <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
-      <p id="modal-date" class="text-gray-400 mb-2"></p>
-      <p id="modal-collaboration" class="text-gray-400 mb-2"></p>
-      <p id="modal-jam" class="text-gray-400 mb-2"></p>
-      <p id="modal-details" class="text-gray-300 mb-4"></p>
-      <div class="flex justify-end space-x-4">
-        <a id="modal-download" href="#" target="_blank" class="bg-accent hover:bg-teal-400 text-gray-900 font-bold py-2 px-4 rounded transition">Download</a>
+      <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
+      <p id="modal-meta" class="text-slate-400 text-sm whitespace-pre-line mb-4"></p>
+      <p id="modal-description" class="text-slate-200 whitespace-pre-line"></p>
+      <div class="mt-6 flex justify-end gap-3">
+        <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-accent text-slate-900 font-semibold py-2 px-4 rounded-md hover:brightness-110 focus-outline">Open</a>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="bg-gray-800 py-6">
-    <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center">
-      <p class="text-gray-400">&copy; 2025 All rights reserved.</p>
-      <div class="flex space-x-4 mt-4 md:mt-0">
-        <a href="https://tiz010.itch.io" target="_blank" class="text-gray-400 hover:text-accent transition">Itch.io</a>
-        <a href="https://x.com/tizrevolab" target="_blank" class="text-gray-400 hover:text-accent transition">Twitter</a>
+  <footer class="bg-slate-900 border-t border-slate-800 py-8">
+    <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-slate-400">&copy; <span id="year-now"></span> Tiz. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-accent transition focus-outline">Itch.io</a>
+        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-accent transition focus-outline">Twitter</a>
       </div>
     </div>
   </footer>
 
-  <!-- Script per gestire le card e il modal -->
+  <!-- App -->
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    (() => {
+      // Safe access to games data (global lexical binding)
+      let rawGames = [];
+      if (Array.isArray(window.games)) {
+        rawGames = window.games;
+      } else {
+        try {
+          if (Array.isArray(games)) rawGames = games;
+        } catch {}
+      }
+
+      // Helpers
+      const byDateDesc = (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime();
+      const byDateAsc = (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime();
+      const sanitize = (v) => (typeof v === 'string' ? v : '');
+      const platformFromUrl = (url) => {
+        if (!url) return '';
+        try {
+          const h = new URL(url).hostname;
+          if (h.includes('steampowered')) return 'Steam';
+          if (h.includes('itch.io')) return 'Itch.io';
+          if (h.includes('gamejolt')) return 'Game Jolt';
+          if (h.includes('play.google')) return 'Google Play';
+          if (h.includes('gx.games')) return 'GX.games';
+          if (h.includes('drive.google')) return 'Google Drive';
+          if (h.includes('globalgamejam')) return 'Global Game Jam';
+          return 'Website';
+        } catch { return 'Website' }
+      };
+
+      // Normalized dataset
+      const dataset = rawGames
+        .filter(g => g && g.title && g.date)
+        .map(g => ({
+          title: sanitize(g.title),
+          date: sanitize(g.date),
+          collaboration: sanitize(g.collaboration || ''),
+          jam: sanitize(g.jam || ''),
+          image: sanitize(g.image || ''),
+          short_desc: sanitize(g.short_desc || ''),
+          details: sanitize(g.details || ''),
+          url: sanitize(g.url || ''),
+          url_label: sanitize(g.url_label || ''),
+          platform: platformFromUrl(g.url || '')
+        }));
+
+      // Elements
       const container = document.getElementById('game-cards-container');
+      const gamesCount = document.getElementById('games_count');
+      const yearNow = document.getElementById('year-now');
+      if (yearNow) yearNow.textContent = new Date().getFullYear();
+      const searchInput = document.getElementById('search-input');
+      const yearFilter = document.getElementById('year-filter');
+      const collabFilter = null;
+      const sortToggle = null;
       const modal = document.getElementById('game-modal');
       const modalTitle = document.getElementById('modal-title');
-      const modalDate = document.getElementById('modal-date');
-      const modalCollab = document.getElementById('modal-collaboration');
-      const modalJam = document.getElementById('modal-jam');
-      const modalDetails = document.getElementById('modal-details');
+      const modalMeta = document.getElementById('modal-meta');
+      const modalDesc = document.getElementById('modal-description');
       const modalClose = document.getElementById('modal-close');
-      const modalDownload = document.getElementById('modal-download');
-      const gamesCount = document.getElementById('games_count');
-      if(gamesCount) {
-        gamesCount.textContent = games.length;
+      const modalLink = document.getElementById('modal-link');
+
+      // State
+      let sortNewest = true; // still default, but no UI toggle
+      let lastFocused = null;
+
+      // Build filters: years and collaborations
+      const years = Array.from(new Set(dataset.map(g => new Date(g.date).getFullYear()).filter(Boolean))).sort((a,b)=>b-a);
+      for (const y of years) {
+        const opt = document.createElement('option');
+        opt.value = String(y);
+        opt.textContent = String(y);
+        yearFilter.appendChild(opt);
       }
-      // Popola il portfolio con le card dei giochi
-      games.forEach((game) => {
-        const card = document.createElement('div');
-        card.className = 'bg-gray-800 rounded-lg shadow-lg overflow-hidden cursor-pointer transform transition hover:scale-105';
-        
-        // Determina se usare <img> o <video>
-        let mediaTag;
-        if (game.image.endsWith('.webm')) {
-          // Video animato
-          mediaTag = `
-            <video autoplay loop muted playsinline class="w-full h-64 object-cover">
-              <source src="${game.image}" type="video/webm">
-              Il tuo browser non supporta il formato WebM.
-            </video>
-          `;
+      // Removed collaborators filter population
+
+      // Media lazy loader
+      const io = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const src = el.getAttribute('data-src');
+            if (src) {
+              if (el.tagName === 'IMG') {
+                el.src = src;
+              } else if (el.tagName === 'VIDEO') {
+                const source = document.createElement('source');
+                source.src = src;
+                source.type = 'video/webm';
+                el.appendChild(source);
+                el.autoplay = true;
+                el.loop = true;
+                el.muted = true;
+                el.playsInline = true;
+                try { el.load(); } catch {}
+                try { el.play(); } catch {}
+              }
+              el.removeAttribute('data-src');
+              io.unobserve(el);
+            }
+          }
+        }
+      }, { rootMargin: '100px' });
+
+      // Render
+      const render = () => {
+        container.setAttribute('aria-busy', 'true');
+        const q = searchInput.value.trim().toLowerCase();
+        const yf = yearFilter.value;
+        const cf = '';
+
+        let filtered = dataset.slice();
+        if (q) {
+          filtered = filtered.filter(g =>
+            g.title.toLowerCase().includes(q) ||
+            g.short_desc.toLowerCase().includes(q) ||
+            g.details.toLowerCase().includes(q)
+          );
+        }
+        if (yf) filtered = filtered.filter(g => String(new Date(g.date).getFullYear()) === yf);
+        // Collaboration filter removed
+
+        filtered.sort(sortNewest ? byDateDesc : byDateAsc);
+
+        if (gamesCount) gamesCount.textContent = String(filtered.length);
+
+        // Batch DOM updates
+        container.innerHTML = '';
+        const frag = document.createDocumentFragment();
+        for (const g of filtered) {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'text-left bg-slate-900 border border-slate-800 rounded-lg overflow-hidden hover:border-accent transition focus-outline';
+          card.setAttribute('aria-label', `${g.title} (${g.date})`);
+
+          // Media wrapper
+          const mediaWrap = document.createElement('div');
+          mediaWrap.className = 'w-full h-48 bg-slate-800';
+
+          const isVideo = g.image.endsWith('.webm');
+          if (isVideo) {
+            const vid = document.createElement('video');
+            vid.className = 'w-full h-48 object-cover';
+            vid.setAttribute('preload', 'none');
+            vid.setAttribute('muted', '');
+            vid.setAttribute('playsinline', '');
+            vid.setAttribute('data-src', g.image);
+            io.observe(vid);
+            mediaWrap.appendChild(vid);
+          } else {
+            const img = document.createElement('img');
+            img.className = 'w-full h-48 object-cover';
+            img.alt = g.title;
+            img.loading = 'lazy';
+            img.setAttribute('data-src', g.image);
+            io.observe(img);
+            mediaWrap.appendChild(img);
+          }
+
+          const body = document.createElement('div');
+          body.className = 'p-4 space-y-2';
+
+          const title = document.createElement('h3');
+          title.className = 'text-lg font-semibold';
+          title.textContent = g.title;
+
+          const meta = document.createElement('div');
+          meta.className = 'flex items-center gap-2 text-slate-400 text-sm';
+          const dateEl = document.createElement('span');
+          dateEl.textContent = new Date(g.date).toISOString().slice(0,10);
+          meta.appendChild(dateEl);
+
+          // Removed jam chip on cards per request
+
+          if (g.platform) {
+            const p = document.createElement('span');
+            p.className = 'ml-auto inline-flex items-center rounded bg-slate-800 border border-slate-700 px-2 py-0.5 text-xs text-slate-300';
+            p.textContent = g.platform;
+            meta.appendChild(p);
+          }
+
+          const desc = document.createElement('p');
+          desc.className = 'text-slate-300 text-sm overflow-hidden';
+          desc.textContent = g.short_desc || g.details || '';
+
+          body.appendChild(title);
+          body.appendChild(meta);
+          if (desc.textContent) body.appendChild(desc);
+
+          card.appendChild(mediaWrap);
+          card.appendChild(body);
+
+          // Open modal
+          card.addEventListener('click', () => openModal(g, card));
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openModal(g, card);
+            }
+          });
+
+          frag.appendChild(card);
+        }
+        container.appendChild(frag);
+        container.setAttribute('aria-busy', 'false');
+      };
+
+      // Modal logic with focus trap
+      const focusableSelectors = 'a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])';
+      const trapFocus = (e) => {
+        const focusables = modal.querySelectorAll(focusableSelectors);
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.key === 'Tab') {
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault(); last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault(); first.focus();
+          }
+        } else if (e.key === 'Escape') {
+          closeModal();
+        }
+      };
+
+      const openModal = (g, triggerEl) => {
+        lastFocused = triggerEl || document.activeElement;
+        modalTitle.textContent = g.title;
+        const lines = [
+          `Data: ${new Date(g.date).toISOString().slice(0,10)}`,
+          g.collaboration ? `Collab: ${g.collaboration}` : '',
+          g.jam ? `Jam: ${g.jam}` : '',
+          g.platform ? `Store: ${g.platform}` : ''
+        ].filter(Boolean).join('\n');
+        modalMeta.textContent = lines;
+        modalDesc.textContent = g.details || g.short_desc || '';
+        if (g.url) {
+          modalLink.href = g.url;
+          modalLink.textContent = g.url_label || 'Open';
+          modalLink.classList.remove('hidden');
         } else {
-          // Immagine statica
-          mediaTag = `<img src="${game.image}" alt="${game.title}" class="w-full h-64 object-cover">`;
+          modalLink.href = '#';
+          modalLink.classList.add('hidden');
         }
+        modal.classList.remove('hidden');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        document.addEventListener('keydown', trapFocus);
+        modal.querySelector('#modal-close').focus();
+        // Close on backdrop click
+        modal.addEventListener('click', onBackdrop);
+      };
 
-        card.innerHTML = `
-          ${mediaTag}
-          <div class="p-4">
-            <h3 class="text-xl font-bold text-white">${game.title}</h3>
-            <p class="text-gray-400 text-sm mt-1">${game.date}</p>
-            ${game.short_desc ? `<p class="text-gray-300 mt-2">${game.short_desc}</p>` : ''}
-          </div>
-        `;
-        
-        card.addEventListener('click', function() {
-          modalTitle.textContent = game.title;
-          modalDate.innerHTML = `<strong>Data:</strong> ${game.date}`;
-          modalCollab.innerHTML = game.collaboration ? `<strong>Collaborazione:</strong> ${game.collaboration}` : '';
-          modalJam.innerHTML = game.jam ? `<strong>Game Jam:</strong> ${game.jam}` : '';
-          modalDetails.innerHTML = game.details ? `<strong>Dettagli:</strong> ${game.details}` : '';
-          modalDownload.href = game.url || '#';
-          if(game.url) {
-            modalDownload.classList.remove('hidden');
-          } else {
-            modalDownload.classList.add('hidden');
-          }
-          modal.classList.remove('hidden');
-
-          if(game.url_label) {
-            modalDownload.textContent = game.url_label;
-          } else {
-            modalDownload.textContent = 'Download';
-          }
-        });
-        
-        container.appendChild(card);
-      });
-      
-      modalClose.addEventListener('click', function() {
+      const closeModal = () => {
         modal.classList.add('hidden');
-      });
-
-      // Chiude il modal cliccando fuori dal contenuto
-      window.addEventListener('click', function(e) {
-        if (e.target === modal) {
-          modal.classList.add('hidden');
+        modal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        document.removeEventListener('keydown', trapFocus);
+        modal.removeEventListener('click', onBackdrop);
+        if (lastFocused && typeof lastFocused.focus === 'function') {
+          lastFocused.focus();
         }
-      });
-    });
+      };
+
+      const onBackdrop = (e) => {
+        if (e.target === modal) closeModal();
+      };
+
+      modalClose.addEventListener('click', closeModal);
+
+      // Controls
+      searchInput.addEventListener('input', render, { passive: true });
+      yearFilter.addEventListener('change', render);
+      // Removed collaborators filter and sort toggle listeners
+
+      // Initial sort and render
+      sortNewest = true;
+      render();
+
+      // Structured data (JSON-LD)
+      try {
+        const ld = {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "itemListElement": dataset.slice().sort(byDateDesc).map((g, i) => ({
+            "@type": "VideoGame",
+            "name": g.title,
+            "datePublished": g.date,
+            "description": g.short_desc || g.details || "",
+            "url": g.url || "https://adriano-t.github.io/",
+            "image": g.image ? new URL(g.image, location.href).toString() : undefined,
+            "position": i + 1,
+            "publisher": g.collaboration || "Independent",
+            "applicationCategory": "Game"
+          }))
+        };
+        const el = document.createElement('script');
+        el.type = 'application/ld+json';
+        el.textContent = JSON.stringify(ld);
+        document.head.appendChild(el);
+      } catch {}
+    })();
   </script>
 </body>
 </html>

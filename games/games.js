@@ -17,7 +17,7 @@ const games = [
     "short_desc": "It's christmas and you find this strange console under the tree.",
     "details": "A game made for Goldensun, during the Secret santa jam 2024.",
     "url_label": "Download",
-    "url": "https://drive.google.com/file/d/1pOqIAWmYEhRungu67GUmsYFrDekJLvQB/view?usp=sharing"
+    "url": "https://tiz010.itch.io/super-squishy-candy-console"
   },
   {
     "title": "Chakana (Chapter 1)",
@@ -57,7 +57,7 @@ const games = [
     "short_desc": "Hit all the targets with a single shot, sliding on the ice.",
     "details": "Hit all the targets with a single shot, sliding on the ice.",
     "url_label": "Download",
-    "url": "https://drive.google.com/file/d/18Rs1QGI6kJ3QaKbvV8R1NSvhrDnQarLX/view?usp=sharing"
+    "url": "https://tiz010.itch.io/christmas-combo"
   },
   {
     "title": "CaveBox",
@@ -319,5 +319,3 @@ const games = [
     "url": "https://drive.google.com/file/d/1boLizy6ljq7i3Qz2KE-nsEgmIbPLPKMV/view?usp=sharing"
   }
 ];
-
-module.exports = games;
