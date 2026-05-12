@@ -1,151 +1,1273 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tiz - Games Portfolio</title>
-  <meta name="description" content="Explore a curated collection of indie games, collaborations and game jam entries by Tiz. Discover projects, platforms and details in a clean, accessible portfolio.">
-  <meta name="keywords" content="Games, Game Portfolio, Indie Games, Game Development, Game Jams, Horror Games, Puzzle Games">
+  <title>Tiz</title>
+  <meta name="description"
+    content="Explore a curated collection of indie games, collaborations and game jam entries by Tiz. Discover projects, platforms and details in a clean, accessible portfolio.">
+  <meta name="keywords"
+    content="Games, Game Portfolio, Indie Games, Game Development, Game Jams, Horror Games, Puzzle Games">
   <meta name="author" content="Tiz">
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="canonical" href="https://adriano-t.github.io/">
-  <!-- Open Graph -->
-  <meta property="og:title" content="Tiz - Games Portfolio">
+  <meta property="og:title" content="Tiz">
   <meta property="og:description" content="Indie games, collaborations and game jams. Explore the full portfolio.">
-  <meta property="og:image" content="https://adriano-t.github.io/games/images/2024_chakana.webp">
   <meta property="og:url" content="https://adriano-t.github.io/">
   <meta property="og:type" content="website">
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Tiz - Games Portfolio">
-  <meta name="twitter:description" content="Indie games, collaborations and game jams. Explore the full portfolio.">
   <meta name="twitter:site" content="@tizrevolab">
-  <meta name="twitter:creator" content="@tizrevolab">
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#0f172a',
-            secondary: '#1e293b',
-            accent: '#22d3ee'
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          },
-        },
-      },
-    }
-  </script>
-  <!-- Games data -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap"
+    rel="stylesheet">
+
   <script src="./games/games.js?v=4"></script>
-  <!-- Minimal base styles for focus visibility -->
+
   <style>
-    .focus-outline:focus { outline: 3px solid #22d3ee; outline-offset: 2px }
-    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #0f0f1a;
+      --bg3: #14142a;
+      --panel: #1a1a2e;
+      --border: #3a3a5c;
+      --green: #39ff14;
+      --green-dim: #1a7a08;
+      --cyan: #00f5ff;
+      --cyan-dim: #007a80;
+      --yellow: #ffe600;
+      --red: #ff3b3b;
+      --purple: #c77dff;
+      --text: #d4e8d4;
+      --text-dim: #6a8a6a;
+      --px: 4px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      line-height: 1.8;
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect x='0' y='0' width='4' height='4' fill='%2339ff14'/%3E%3C/svg%3E") 2 2, auto;
+    }
+
+    /*
+     * FIX 1: CRT scanlines overlay
+     * PRIMA: repeating-linear-gradient calcolato dalla GPU ogni frame
+     * ORA:   SVG data URI pre-rasterizzato (texture statica) + layer GPU dedicato
+     * Il browser carica la texture una volta e la compone senza ricalcolare il gradient.
+     */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='4'><rect y='2' width='1' height='2' fill='black' fill-opacity='.18'/></svg>");
+      background-repeat: repeat;
+      pointer-events: none;
+      z-index: 9999;
+      /* Promuove a layer GPU dedicato — non viene più ridisegnato ad ogni frame */
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /*
+     * FIX 2: CRT vignette — stesso trattamento: layer GPU isolato
+     */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
+      pointer-events: none;
+      z-index: 9998;
+      will-change: transform;
+      transform: translateZ(0);
+    }
+
+    /* ── Pixel border utility ── */
+    .px-border {
+      border: 4px solid var(--border);
+      box-shadow:
+        0 0 0 4px var(--bg),
+        0 0 0 8px var(--border),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.03);
+    }
+
+    .px-border-green {
+      border: 4px solid var(--green-dim);
+      box-shadow:
+        0 0 0 4px var(--bg),
+        0 0 0 8px var(--green-dim),
+        0 0 20px rgba(57, 255, 20, 0.15);
+    }
+
+    .px-border-cyan {
+      border: 4px solid var(--cyan-dim);
+      box-shadow:
+        0 0 0 4px var(--bg),
+        0 0 0 8px var(--cyan-dim),
+        0 0 20px rgba(0, 245, 255, 0.12);
+    }
+
+    /* ── Animations ── */
+    @keyframes blink {
+
+      0%,
+      49% {
+        opacity: 1
+      }
+
+      50%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    @keyframes scandown {
+      0% {
+        transform: translateY(-100%)
+      }
+
+      100% {
+        transform: translateY(100vh)
+      }
+    }
+
+    @keyframes flicker {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      92% {
+        opacity: 1
+      }
+
+      93% {
+        opacity: 0.8
+      }
+
+      94% {
+        opacity: 1
+      }
+
+      97% {
+        opacity: 0.9
+      }
+    }
+
+    @keyframes pixelIn {
+      0% {
+        opacity: 0;
+        transform: translateY(8px)
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0)
+      }
+
+      100% {
+        transform: translateX(-50%)
+      }
+    }
+
+    /*
+     * FIX 3: glowPulse
+     * PRIMA: animava text-shadow → triggera repaint ad ogni frame
+     * ORA:   anima filter:drop-shadow → composited dalla GPU senza repaint del testo
+     */
+    @keyframes glowPulse {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 2px var(--green)) drop-shadow(0 0 4px var(--green-dim));
+      }
+
+      50% {
+        filter: drop-shadow(0 0 6px var(--green)) drop-shadow(0 0 14px var(--green));
+      }
+    }
+
+    .blink {
+      animation: blink 1s step-end infinite;
+    }
+
+    /*
+     * FIX 4: flicker su header (elemento sticky)
+     * will-change: opacity → il browser lo promuove a layer separato,
+     * evitando di invalidare l'intero layout sticky ad ogni flicker
+     */
+    .flicker {
+      animation: flicker 8s infinite;
+      will-change: opacity;
+    }
+
+    /* ── Scrolling ticker ── */
+    .ticker-wrap {
+      background: var(--green-dim);
+      border-top: 3px solid var(--green);
+      border-bottom: 3px solid var(--green);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 6px 0;
+    }
+
+    /*
+     * FIX 5: ticker — aggiunto will-change: transform
+     * La marquee animation è già su transform, ma senza will-change
+     * alcuni browser la gestiscono in software
+     */
+    .ticker-inner {
+      display: inline-block;
+      animation: marquee 28s linear infinite;
+      color: var(--green);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      will-change: transform;
+    }
+
+    .ticker-inner span {
+      margin: 0 2em;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--bg2);
+      border-bottom: 4px solid var(--green-dim);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      image-rendering: pixelated;
+      /* Isola il layer sticky — evita che flicker invalidi l'intera pagina */
+      transform: translateZ(0);
+    }
+
+    .header-top {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 24px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .site-title {
+      font-size: clamp(12px, 2vw, 18px);
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      animation: glowPulse 3s ease-in-out infinite;
+      white-space: nowrap;
+      will-change: filter;
+      /* Use flex for vertical alignment */
+      display: flex;
+      align-items: center;
+      line-height: 1;
+      gap: 10px;
+    }
+
+    .site-title::before {
+      content: '▶ ';
+      color: var(--yellow);
+      display: inline-block;
+      /* Optical adjustment for perfect vertical centering */
+      transform: translateY(-4px);
+    }
+
+    .cursor-blink {
+      display: inline-block;
+      width: 10px;
+      height: 1em;
+      background: var(--green);
+      animation: blink 1s step-end infinite;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 9px;
+      letter-spacing: 0.05em;
+      padding: 4px 8px;
+      border: 2px solid var(--cyan-dim);
+      transition: all 0.1s steps(1);
+    }
+
+    .nav-links a:hover {
+      background: var(--cyan-dim);
+      color: var(--bg);
+      box-shadow: 0 0 12px var(--cyan);
+      transform: translate(-2px, -2px);
+    }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 24px 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-wrap label {
+      display: block;
+      font-size: 8px;
+      color: var(--green-dim);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .field-wrap label::before {
+      content: '> ';
+      color: var(--yellow);
+    }
+
+    input[type="search"] {
+      width: 100%;
+      height: 44px;
+      background: var(--bg3);
+      color: var(--green);
+      border: 3px solid var(--border);
+      padding: 8px 12px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      image-rendering: pixelated;
+    }
+
+    input[type="search"]::placeholder {
+      color: var(--text-dim);
+    }
+
+    input[type="search"]:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--green-dim), 0 0 20px rgba(57, 255, 20, 0.2);
+    }
+
+    /* ── Custom pixel dropdown ── */
+    .px-select {
+      position: relative;
+      width: 100%;
+      user-select: none;
+    }
+
+    .px-select-trigger {
+      width: 100%;
+      height: 44px;
+      background: var(--bg3);
+      color: var(--green);
+      border: 3px solid var(--border);
+      padding: 8px 32px 8px 12px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      image-rendering: pixelated;
+      outline: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .px-select-trigger::after {
+      content: '▼';
+      font-size: 7px;
+      color: var(--yellow);
+      flex-shrink: 0;
+      transition: transform 0.1s steps(2);
+    }
+
+    .px-select.open .px-select-trigger::after {
+      content: '▲';
+    }
+
+    .px-select-trigger:focus,
+    .px-select.open .px-select-trigger {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--green-dim), 0 0 20px rgba(57, 255, 20, 0.2);
+    }
+
+    .px-select-list {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--bg3);
+      border: 3px solid var(--green-dim);
+      box-shadow: 4px 4px 0 var(--green-dim), 0 0 20px rgba(57, 255, 20, 0.15);
+      z-index: 200;
+      max-height: 240px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-dim) var(--bg3);
+    }
+
+    .px-select.open .px-select-list {
+      display: block;
+    }
+
+    .px-select-option {
+      padding: 8px 12px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--text-dim);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .px-select-option::before {
+      content: '  ';
+      white-space: pre;
+      color: var(--yellow);
+    }
+
+    .px-select-option:hover,
+    .px-select-option:focus {
+      background: var(--green-dim);
+      color: var(--green);
+      outline: none;
+    }
+
+    .px-select-option:hover::before,
+    .px-select-option:focus::before {
+      content: '▶ ';
+    }
+
+    .px-select-option.selected {
+      color: var(--yellow);
+    }
+
+    .px-select-option.selected::before {
+      content: '* ';
+      color: var(--yellow);
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--border);
+    }
+
+    .section-title {
+      font-size: clamp(14px, 2.5vw, 22px);
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+    }
+
+    .section-title::before {
+      content: '* ';
+    }
+
+    .count-badge {
+      display: inline-block;
+      background: var(--green-dim);
+      color: var(--green);
+      font-size: 9px;
+      padding: 4px 10px;
+      border: 2px solid var(--green);
+      letter-spacing: 0.05em;
+      margin-left: 12px;
+      box-shadow: 2px 2px 0 var(--green-dim);
+    }
+
+    .section-sub {
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      color: var(--text-dim);
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── GRID ── */
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    /* ── CARD ── */
+    /*
+     * FIX 6: game-card
+     * contain: layout style → isola il card dal layout globale, riduce gli
+     * invalidation durante scroll e hover. Non usiamo contain:paint per non
+     * troncare box-shadow e ::before/::after corner dots.
+     * will-change: transform → layer GPU per l'animazione hover (translate -4px,-4px)
+     */
+    .game-card {
+      background: var(--panel);
+      border: 4px solid var(--border);
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
+      box-shadow: 4px 4px 0 var(--border);
+      font-family: 'Press Start 2P', monospace;
+      color: var(--text);
+      width: 100%;
+      outline: none;
+      image-rendering: pixelated;
+      contain: layout style;
+      will-change: transform;
+    }
+
+    .game-card::before,
+    .game-card::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--yellow);
+      z-index: 2;
+    }
+
+    .game-card::before {
+      top: -4px;
+      left: -4px;
+    }
+
+    .game-card::after {
+      bottom: -4px;
+      right: -4px;
+    }
+
+    .game-card:hover,
+    .game-card:focus-visible {
+      transform: translate(-4px, -4px);
+      box-shadow: 8px 8px 0 var(--green-dim);
+      border-color: var(--green);
+    }
+
+    .game-card:hover::before,
+    .game-card:focus-visible::before {
+      background: var(--green);
+    }
+
+    .game-card:hover::after,
+    .game-card:focus-visible::after {
+      background: var(--green);
+    }
+
+    .card-media {
+      width: 100%;
+      height: 180px;
+      background: var(--bg3);
+      overflow: hidden;
+      position: relative;
+      border-bottom: 4px solid var(--border);
+    }
+
+    .card-media img,
+    .card-media video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      image-rendering: pixelated;
+      display: block;
+    }
+
+    .card-media-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: var(--border);
+      background: repeating-linear-gradient(45deg,
+          var(--bg3) 0px,
+          var(--bg3) 4px,
+          var(--bg2) 4px,
+          var(--bg2) 8px);
+    }
+
+    /*
+     * FIX 7: scanline overlay su ogni card
+     * PRIMA: repeating-linear-gradient per ogni card → N overdraw di gradient per frame
+     * ORA:   stessa SVG data URI statica usata in body::before
+     * Il browser riusa la texture già in cache GPU — costo quasi zero.
+     */
+    .card-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='4'><rect y='3' width='1' height='1' fill='black' fill-opacity='.25'/></svg>");
+      background-repeat: repeat;
+      pointer-events: none;
+    }
+
+    .card-platform-badge {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: var(--bg);
+      color: var(--cyan);
+      font-size: 7px;
+      padding: 3px 6px;
+      border: 2px solid var(--cyan-dim);
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 10px;
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 8px;
+      color: var(--text-dim);
+    }
+
+    .card-meta .dot {
+      width: 4px;
+      height: 4px;
+      background: var(--green-dim);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .card-desc {
+      font-family: 'VT323', monospace;
+      font-size: 16px;
+      color: var(--text);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green);
+      font-size: 8px;
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 2px dashed var(--border);
+    }
+
+    .card-action::before {
+      content: '▶';
+    }
+
+    /* ── MODAL ── */
+    /*
+     * FIX 8: modal overlay
+     * PRIMA: background rgba + background-image gradient → due compositing a ogni frame
+     * ORA:   solo rgba solido (il gradient non aggiunge nulla di visivo rilevante qui)
+     */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg2);
+      border: 4px solid var(--green-dim);
+      /* FIX 9: ridotti i box-shadow layers del modal (da 3 a 2 + blur semplificato) */
+      box-shadow:
+        0 0 0 8px var(--green-dim),
+        0 0 40px rgba(57, 255, 20, 0.3);
+      max-width: 560px;
+      width: 100%;
+      position: relative;
+      animation: pixelIn 0.15s steps(4) forwards;
+      image-rendering: pixelated;
+      max-height: 90vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--green-dim) var(--bg3);
+    }
+
+    .modal-titlebar {
+      background: var(--green-dim);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 4px solid var(--green);
+      position: sticky;
+      top: 0;
+    }
+
+    .modal-titlebar-text {
+      font-size: 9px;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .modal-titlebar-text::before {
+      content: '* ';
+    }
+
+    .modal-close {
+      background: var(--red);
+      color: var(--bg);
+      border: 2px solid var(--bg);
+      width: 20px;
+      height: 20px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-close:hover {
+      background: #ff8080;
+      box-shadow: 0 0 8px var(--red);
+    }
+
+    .modal-content {
+      padding: 20px;
+    }
+
+    .modal-game-title {
+      font-size: 13px;
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .modal-meta-list {
+      list-style: none;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .modal-meta-list li {
+      font-size: 8px;
+      color: var(--text-dim);
+      display: flex;
+      gap: 8px;
+    }
+
+    .modal-meta-list .key {
+      color: var(--cyan);
+      min-width: 52px;
+      flex-shrink: 0;
+    }
+
+    .modal-meta-list .val {
+      color: var(--text);
+    }
+
+    .modal-desc {
+      font-family: 'VT323', monospace;
+      font-size: 18px;
+      color: var(--text);
+      line-height: 1.6;
+      margin-bottom: 20px;
+      padding: 12px;
+      background: var(--bg3);
+      border-left: 4px solid var(--green-dim);
+      white-space: pre-line;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      border-top: 3px dashed var(--border);
+      padding-top: 16px;
+    }
+
+    .btn-pixel {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      padding: 10px 16px;
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      transition: transform 0.05s steps(1), box-shadow 0.05s steps(1);
+    }
+
+    .btn-pixel::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .btn-open {
+      background: var(--green);
+      color: var(--bg);
+      box-shadow: 4px 4px 0 var(--green-dim);
+    }
+
+    .btn-open::before {
+      content: '▶ ';
+    }
+
+    .btn-open:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--green-dim);
+    }
+
+    .btn-open:active {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--green-dim);
+    }
+
+    .btn-close-modal {
+      background: var(--panel);
+      color: var(--text-dim);
+      box-shadow: 4px 4px 0 var(--border);
+      border: 3px solid var(--border);
+    }
+
+    .btn-close-modal:hover {
+      transform: translate(-2px, -2px);
+      color: var(--text);
+      border-color: var(--text);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 4px solid var(--green-dim);
+      padding: 24px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-copy {
+      font-size: 8px;
+      color: var(--text-dim);
+    }
+
+    .footer-copy::before {
+      content: '© ';
+      color: var(--green-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 8px;
+      padding: 4px 8px;
+      border: 2px solid var(--cyan-dim);
+    }
+
+    .footer-links a:hover {
+      background: var(--cyan-dim);
+      color: var(--bg);
+    }
+
+    /* ── PIXEL SPRITE decorations ── */
+    .sprite-stars {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 24px;
+      color: var(--text-dim);
+      font-size: 9px;
+    }
+
+    .empty-state::before {
+      content: '?  ?  ?';
+      display: block;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: var(--border);
+    }
+
+    /* loading */
+    .loading-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px;
+      font-size: 9px;
+      color: var(--green);
+    }
+
+    @media (max-width: 600px) {
+      .filter-bar {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .game-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .site-title {
+        font-size: 11px;
+      }
+
+      /* Su mobile riduciamo ulteriormente il carico: niente will-change sulle card */
+      .game-card {
+        will-change: auto;
+      }
+    }
+
+    /* sr-only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* focus style */
+    :focus-visible {
+      outline: 3px solid var(--green);
+      outline-offset: 2px;
+    }
+
+    /* FIX 10: reduced motion — rimuove tutte le animazioni per chi lo ha abilitato */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased">
-  <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-40">
-    <div class="mx-auto max-w-7xl px-6 py-5 flex items-center justify-between">
-      <h1 class="text-2xl md:text-3xl font-bold tracking-tight">Tiz - Games Portfolio</h1>
-      <nav aria-label="Social links" class="hidden md:flex gap-4">
-        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-accent transition focus-outline">Itch.io</a>
-        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer" class="text-slate-300 hover:text-accent transition focus-outline">Twitter</a>
+
+<body>
+
+  <!-- Pixel star field canvas -->
+  <canvas class="sprite-stars" id="starfield" aria-hidden="true"></canvas>
+
+  <!-- Ticker -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-inner">
+      <span>* GAME JAMS *</span>
+      <span>INDIE GAMES</span>
+      <span>* TIZ *</span>
+      <span>ITCH.IO</span>
+      <span>* HORROR GAMES *</span>
+      <span>PROJECTS</span>
+      <span>* WIP *</span>
+      <span>COLLABORATIONS</span>
+      <span>* GAME JAMS *</span>
+      <span>ITCH.IO</span>
+      <span>* DEVELOPMENT *</span>
+      <span>PIXEL ART</span>
+      <span>* PRESS START *</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="flicker">
+    <div class="header-top">
+      <h1 class="site-title">
+        <span>GAMES<span style="color:var(--yellow)">_</span>I<span style="color:var(--yellow)">_</span>MADE</span>
+        <span class="cursor-blink" aria-hidden="true"></span>
+      </h1>
+      <nav aria-label="Social links">
+        <ul class="nav-links">
+          <li><a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer">ITCH.IO</a></li>
+          <li><a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer">TWITTER</a></li>
+        </ul>
       </nav>
     </div>
-    <div class="mx-auto max-w-7xl px-6 pb-4">
-      <form id="filters-form" class="grid grid-cols-1 md:grid-cols-2 gap-3" role="search" aria-label="Search and filters">
-        <label class="block">
-          <span class="sr-only">Search</span>
-          <input id="search-input" type="search" inputmode="search" placeholder="Search by title or description" class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 placeholder-slate-400 text-slate-100 focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Search games by title or description">
-        </label>
-        <label class="block">
-          <span class="sr-only">Filter by year</span>
-          <select id="year-filter" class="w-full bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-slate-100 focus:outline-none focus:ring-2 focus:ring-accent" aria-label="Filter by year">
-            <option value="">All years</option>
-          </select>
-        </label>
-      </form>
-    </div>
-  </header>
 
-  <main id="main" class="mx-auto max-w-7xl px-6 py-10">
-    <section aria-labelledby="games-heading">
-      <div class="mb-6 flex items-end justify-between">
-        <div>
-          <h2 id="games-heading" class="text-3xl md:text-4xl font-bold">Games <span class="text-accent">(<span id="games_count">0</span>)</span></h2>
-          <p class="mt-2 text-slate-400 max-w-2xl">A full list of games I worked on. Many born from great collaborations and game jams.</p>
+    <form id="filters-form" class="filter-bar" role="search" aria-label="Search and filters">
+      <div class="field-wrap">
+        <label for="search-input">Search</label>
+        <input id="search-input" type="search" inputmode="search" placeholder="SEARCH TITLE OR DESC..."
+          aria-label="Search games by title or description">
+      </div>
+      <div class="field-wrap">
+        <label id="year-filter-label">Year</label>
+        <div class="px-select" id="year-select" role="combobox" aria-haspopup="listbox" aria-expanded="false"
+          aria-labelledby="year-filter-label">
+          <div class="px-select-trigger" tabindex="0" role="button" aria-label="Filter by year: All years"
+            id="year-trigger">ALL YEARS</div>
+          <div class="px-select-list" role="listbox" aria-labelledby="year-filter-label" id="year-list">
+            <div class="px-select-option selected" role="option" aria-selected="true" data-value="" tabindex="-1">ALL
+              YEARS</div>
+          </div>
         </div>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="game-cards-container" aria-live="polite" aria-busy="false"></div>
+    </form>
+  </header>
+
+  <main>
+    <section aria-labelledby="games-heading">
+      <div class="section-header">
+        <div>
+          <h2 id="games-heading" class="section-title">
+            ARCHIVE
+            <span class="count-badge" id="games_count">0</span>
+          </h2>
+          <p class="section-sub">
+            &gt; A collection of games made by Tiz. Jams, collabs, and solo projects.
+          </p>
+        </div>
+      </div>
+
+      <div class="game-grid" id="game-cards-container" aria-live="polite" aria-busy="false">
+        <div class="loading-state">LOADING<span class="blink">_</span></div>
+      </div>
     </section>
   </main>
 
-  <!-- Accessible Modal -->
-  <div id="game-modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50" aria-hidden="true">
-    <div class="bg-slate-900 p-6 md:p-8 rounded-lg shadow-2xl max-w-lg w-full relative border border-slate-700"
-         role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
-      <button id="modal-close" class="absolute top-4 right-4 text-slate-400 hover:text-slate-100 transition focus-outline" aria-label="Close dialog">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-      <h3 id="modal-title" class="text-2xl font-bold mb-2"></h3>
-      <p id="modal-meta" class="text-slate-400 text-sm whitespace-pre-line mb-4"></p>
-      <p id="modal-description" class="text-slate-200 whitespace-pre-line"></p>
-      <div class="mt-6 flex justify-end gap-3">
-        <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center bg-accent text-slate-900 font-semibold py-2 px-4 rounded-md hover:brightness-110 focus-outline">Open</a>
+  <!-- Modal -->
+  <div id="game-modal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+      aria-describedby="modal-description">
+      <div class="modal-titlebar">
+        <span class="modal-titlebar-text">GAME INFO</span>
+        <button id="modal-close" class="modal-close" aria-label="Close dialog">X</button>
+      </div>
+      <div class="modal-content">
+        <h3 id="modal-title" class="modal-game-title"></h3>
+        <ul class="modal-meta-list" id="modal-meta-list"></ul>
+        <p id="modal-description" class="modal-desc"></p>
+        <div class="modal-actions">
+          <button class="btn-pixel btn-close-modal" id="modal-close-btn">CLOSE</button>
+          <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-pixel btn-open"
+            style="display:none">OPEN GAME</a>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-slate-900 border-t border-slate-800 py-8">
-    <div class="mx-auto max-w-7xl px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-slate-400">&copy; <span id="year-now"></span> Tiz. All rights reserved.</p>
-      <div class="flex gap-4">
-        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-accent transition focus-outline">Itch.io</a>
-        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-accent transition focus-outline">Twitter</a>
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-copy">
+        <span id="year-now"></span> TIZ - ALL RIGHTS RESERVED
+      </p>
+      <div class="footer-links" aria-label="Footer links">
+        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer">ITCH.IO</a>
+        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer">TWITTER</a>
       </div>
     </div>
   </footer>
 
-  <!-- App -->
   <script>
     (() => {
-      // Safe access to games data (global lexical binding)
-      let rawGames = [];
-      if (Array.isArray(window.games)) {
-        rawGames = window.games;
-      } else {
-        try {
-          if (Array.isArray(games)) rawGames = games;
-        } catch {}
+      /* ── Star field ── */
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
       }
 
-      // Helpers
-      const byDateDesc = (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime();
-      const byDateAsc = (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime();
-      const sanitize = (v) => (typeof v === 'string' ? v : '');
-      const platformFromUrl = (url) => {
+      function initStars(n) {
+        stars = [];
+        for (let i = 0; i < n; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() < 0.7 ? 1 : 2,
+            phase: Math.random() * Math.PI * 2
+          });
+        }
+      }
+
+      /*
+       * FIX 11: Star field RAF throttlato a 30fps
+       * PRIMA: 60fps + frame crescente senza limite
+       * ORA:   max 30fps con timestamp check + frame cappato a 2000
+       * Riduce il numero di compositing tra canvas, body::before e body::after.
+       */
+      let frame = 0;
+      let lastFrameTime = 0;
+      const TARGET_FPS = 30;
+      const FRAME_INTERVAL = 1000 / TARGET_FPS;
+
+      function drawStars(timestamp) {
+        requestAnimationFrame(drawStars);
+
+        const elapsed = timestamp - lastFrameTime;
+        if (elapsed < FRAME_INTERVAL) return;
+        lastFrameTime = timestamp - (elapsed % FRAME_INTERVAL);
+
+        /* Cap frame per evitare drift nei floating point con sin() */
+        frame = (frame + 1) % 2000;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const s of stars) {
+          const b = (Math.sin(s.phase + frame * 0.05) + 1) / 2;
+          ctx.fillStyle = `rgba(57,255,20,${0.08 + b * 0.12})`;
+          ctx.fillRect(Math.floor(s.x), Math.floor(s.y), s.size, s.size);
+        }
+      }
+
+      resizeCanvas();
+      initStars(80);
+      requestAnimationFrame(drawStars);
+
+      /* Debounce resize per evitare reinit frequenti su mobile */
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { resizeCanvas(); initStars(80); }, 150);
+      });
+
+      /* ── Data ── */
+      let rawGames = [];
+      if (Array.isArray(window.games)) rawGames = window.games;
+      else { try { if (Array.isArray(games)) rawGames = games; } catch { } }
+
+      const sanitize = v => typeof v === 'string' ? v : '';
+      const platformFromUrl = url => {
         if (!url) return '';
         try {
           const h = new URL(url).hostname;
-          if (h.includes('steampowered')) return 'Steam';
-          if (h.includes('itch.io')) return 'Itch.io';
-          if (h.includes('gamejolt')) return 'Game Jolt';
-          if (h.includes('play.google')) return 'Google Play';
-          if (h.includes('gx.games')) return 'GX.games';
-          if (h.includes('drive.google')) return 'Google Drive';
-          if (h.includes('globalgamejam')) return 'Global Game Jam';
-          return 'Website';
-        } catch { return 'Website' }
+          if (h.includes('steampowered')) return 'STEAM';
+          if (h.includes('itch.io')) return 'ITCH.IO';
+          if (h.includes('gamejolt')) return 'GAME JOLT';
+          if (h.includes('play.google')) return 'GOOGLE PLAY';
+          if (h.includes('gx.games')) return 'GX.GAMES';
+          if (h.includes('drive.google')) return 'G.DRIVE';
+          if (h.includes('globalgamejam')) return 'GGJ';
+          return 'WEBSITE';
+        } catch { return 'WEBSITE'; }
       };
 
-      // Normalized dataset
       const dataset = rawGames
         .filter(g => g && g.title && g.date)
         .map(g => ({
@@ -161,159 +1283,227 @@
           platform: platformFromUrl(g.url || '')
         }));
 
-      // Elements
+      /* ── Elements ── */
       const container = document.getElementById('game-cards-container');
       const gamesCount = document.getElementById('games_count');
       const yearNow = document.getElementById('year-now');
       if (yearNow) yearNow.textContent = new Date().getFullYear();
       const searchInput = document.getElementById('search-input');
-      const yearFilter = document.getElementById('year-filter');
-      const collabFilter = null;
-      const sortToggle = null;
+      const yearSelect = document.getElementById('year-select');
+      const yearTrigger = document.getElementById('year-trigger');
+      const yearList = document.getElementById('year-list');
+      let selectedYear = '';
       const modal = document.getElementById('game-modal');
       const modalTitle = document.getElementById('modal-title');
-      const modalMeta = document.getElementById('modal-meta');
+      const modalMeta = document.getElementById('modal-meta-list');
       const modalDesc = document.getElementById('modal-description');
       const modalClose = document.getElementById('modal-close');
+      const modalCloseBtn = document.getElementById('modal-close-btn');
       const modalLink = document.getElementById('modal-link');
 
-      // State
-      let sortNewest = true; // still default, but no UI toggle
-      let lastFocused = null;
-
-      // Build filters: years and collaborations
-      const years = Array.from(new Set(dataset.map(g => new Date(g.date).getFullYear()).filter(Boolean))).sort((a,b)=>b-a);
+      /* ── Year custom dropdown ── */
+      const years = Array.from(new Set(dataset.map(g => new Date(g.date).getFullYear()).filter(Boolean))).sort((a, b) => b - a);
       for (const y of years) {
-        const opt = document.createElement('option');
-        opt.value = String(y);
+        const opt = document.createElement('div');
+        opt.className = 'px-select-option';
+        opt.role = 'option';
+        opt.setAttribute('aria-selected', 'false');
+        opt.setAttribute('data-value', String(y));
+        opt.setAttribute('tabindex', '-1');
         opt.textContent = String(y);
-        yearFilter.appendChild(opt);
+        yearList.appendChild(opt);
       }
-      // Removed collaborators filter population
 
-      // Media lazy loader
-      const io = new IntersectionObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const src = el.getAttribute('data-src');
-            if (src) {
-              if (el.tagName === 'IMG') {
-                el.src = src;
-              } else if (el.tagName === 'VIDEO') {
-                const source = document.createElement('source');
-                source.src = src;
-                source.type = 'video/webm';
-                el.appendChild(source);
-                el.autoplay = true;
-                el.loop = true;
-                el.muted = true;
-                el.playsInline = true;
-                try { el.load(); } catch {}
-                try { el.play(); } catch {}
-              }
-              el.removeAttribute('data-src');
-              io.unobserve(el);
-            }
+      const openDropdown = () => {
+        yearSelect.classList.add('open');
+        yearSelect.setAttribute('aria-expanded', 'true');
+      };
+      const closeDropdown = () => {
+        yearSelect.classList.remove('open');
+        yearSelect.setAttribute('aria-expanded', 'false');
+      };
+      const selectYear = (val, label) => {
+        selectedYear = val;
+        yearTrigger.textContent = label;
+        yearTrigger.setAttribute('aria-label', `Filter by year: ${label}`);
+        yearList.querySelectorAll('.px-select-option').forEach(o => {
+          const isSelected = o.getAttribute('data-value') === val;
+          o.classList.toggle('selected', isSelected);
+          o.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        });
+        closeDropdown();
+        render();
+      };
+
+      yearTrigger.addEventListener('click', () => {
+        yearSelect.classList.contains('open') ? closeDropdown() : openDropdown();
+      });
+      yearTrigger.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+          e.preventDefault(); openDropdown();
+          const first = yearList.querySelector('.px-select-option');
+          if (first) first.focus();
+        } else if (e.key === 'Escape') { closeDropdown(); }
+      });
+
+      yearList.addEventListener('click', e => {
+        const opt = e.target.closest('.px-select-option');
+        if (opt) selectYear(opt.getAttribute('data-value'), opt.textContent.trim());
+      });
+      yearList.addEventListener('keydown', e => {
+        const opts = [...yearList.querySelectorAll('.px-select-option')];
+        const idx = opts.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown') { e.preventDefault(); opts[Math.min(idx + 1, opts.length - 1)]?.focus(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); opts[Math.max(idx - 1, 0)]?.focus(); }
+        else if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          const opt = document.activeElement.closest('.px-select-option');
+          if (opt) selectYear(opt.getAttribute('data-value'), opt.textContent.trim());
+        } else if (e.key === 'Escape') { closeDropdown(); yearTrigger.focus(); }
+        else if (e.key === 'Tab') { closeDropdown(); }
+      });
+
+      document.addEventListener('click', e => {
+        if (!yearSelect.contains(e.target)) closeDropdown();
+      });
+
+      /* ── Lazy load ── */
+      const io = new IntersectionObserver(entries => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const el = e.target;
+          const src = el.getAttribute('data-src');
+          if (!src) continue;
+          if (el.tagName === 'IMG') {
+            el.src = src;
+          } else if (el.tagName === 'VIDEO') {
+            const s = document.createElement('source');
+            s.src = src; s.type = 'video/webm';
+            el.appendChild(s);
+            el.autoplay = true; el.loop = true; el.muted = true; el.playsInline = true;
+            try { el.load(); el.play(); } catch { }
           }
+          el.removeAttribute('data-src');
+          io.unobserve(el);
         }
-      }, { rootMargin: '100px' });
+      }, { rootMargin: '120px' });
 
-      // Render
+      /* ── Render ── */
       const render = () => {
         container.setAttribute('aria-busy', 'true');
         const q = searchInput.value.trim().toLowerCase();
-        const yf = yearFilter.value;
-        const cf = '';
+        const yf = selectedYear;
 
         let filtered = dataset.slice();
-        if (q) {
-          filtered = filtered.filter(g =>
-            g.title.toLowerCase().includes(q) ||
-            g.short_desc.toLowerCase().includes(q) ||
-            g.details.toLowerCase().includes(q)
-          );
-        }
+        if (q) filtered = filtered.filter(g =>
+          g.title.toLowerCase().includes(q) ||
+          g.short_desc.toLowerCase().includes(q) ||
+          g.details.toLowerCase().includes(q)
+        );
         if (yf) filtered = filtered.filter(g => String(new Date(g.date).getFullYear()) === yf);
-        // Collaboration filter removed
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-        filtered.sort(sortNewest ? byDateDesc : byDateAsc);
+        if (gamesCount) gamesCount.textContent = filtered.length;
 
-        if (gamesCount) gamesCount.textContent = String(filtered.length);
+        const oldVideos = container.querySelectorAll('video');
+        for (const vid of oldVideos) {
+          vid.pause();
+          vid.removeAttribute('src');
+          vid.innerHTML = '';
+          vid.load();
+        }
+        io.disconnect();
 
-        // Batch DOM updates
         container.innerHTML = '';
+        if (!filtered.length) {
+          const em = document.createElement('div');
+          em.className = 'empty-state';
+          em.innerHTML = 'NO GAMES FOUND<br><br>TRY A DIFFERENT SEARCH';
+          container.appendChild(em);
+          container.setAttribute('aria-busy', 'false');
+          return;
+        }
+
         const frag = document.createDocumentFragment();
         for (const g of filtered) {
           const card = document.createElement('button');
           card.type = 'button';
-          card.className = 'text-left bg-slate-900 border border-slate-800 rounded-lg overflow-hidden hover:border-accent transition focus-outline';
-          card.setAttribute('aria-label', `${g.title} (${g.date})`);
+          card.className = 'game-card';
+          card.setAttribute('aria-label', `${g.title} - ${new Date(g.date).getFullYear()}`);
 
-          // Media wrapper
+          /* media */
           const mediaWrap = document.createElement('div');
-          mediaWrap.className = 'w-full h-48 bg-slate-800';
+          mediaWrap.className = 'card-media';
 
           const isVideo = g.image.endsWith('.webm');
-          if (isVideo) {
-            const vid = document.createElement('video');
-            vid.className = 'w-full h-48 object-cover';
-            vid.setAttribute('preload', 'none');
-            vid.setAttribute('muted', '');
-            vid.setAttribute('playsinline', '');
-            vid.setAttribute('data-src', g.image);
-            io.observe(vid);
-            mediaWrap.appendChild(vid);
+          if (g.image) {
+            if (isVideo) {
+              const vid = document.createElement('video');
+              vid.setAttribute('preload', 'none');
+              vid.setAttribute('muted', '');
+              vid.setAttribute('playsinline', '');
+              vid.setAttribute('data-src', g.image);
+              io.observe(vid);
+              mediaWrap.appendChild(vid);
+            } else {
+              const img = document.createElement('img');
+              img.alt = g.title;
+              img.loading = 'lazy';
+              img.decoding = 'async';
+              img.setAttribute('data-src', g.image);
+              io.observe(img);
+              mediaWrap.appendChild(img);
+            }
           } else {
-            const img = document.createElement('img');
-            img.className = 'w-full h-48 object-cover';
-            img.alt = g.title;
-            img.loading = 'lazy';
-            img.setAttribute('data-src', g.image);
-            io.observe(img);
-            mediaWrap.appendChild(img);
+            const ph = document.createElement('div');
+            ph.className = 'card-media-placeholder';
+            ph.textContent = '?';
+            mediaWrap.appendChild(ph);
           }
-
-          const body = document.createElement('div');
-          body.className = 'p-4 space-y-2';
-
-          const title = document.createElement('h3');
-          title.className = 'text-lg font-semibold';
-          title.textContent = g.title;
-
-          const meta = document.createElement('div');
-          meta.className = 'flex items-center gap-2 text-slate-400 text-sm';
-          const dateEl = document.createElement('span');
-          dateEl.textContent = new Date(g.date).toISOString().slice(0,10);
-          meta.appendChild(dateEl);
-
-          // Removed jam chip on cards per request
 
           if (g.platform) {
-            const p = document.createElement('span');
-            p.className = 'ml-auto inline-flex items-center rounded bg-slate-800 border border-slate-700 px-2 py-0.5 text-xs text-slate-300';
-            p.textContent = g.platform;
-            meta.appendChild(p);
+            const badge = document.createElement('span');
+            badge.className = 'card-platform-badge';
+            badge.textContent = g.platform;
+            mediaWrap.appendChild(badge);
           }
 
-          const desc = document.createElement('p');
-          desc.className = 'text-slate-300 text-sm overflow-hidden';
-          desc.textContent = g.short_desc || g.details || '';
+          /* body */
+          const body = document.createElement('div');
+          body.className = 'card-body';
 
-          body.appendChild(title);
-          body.appendChild(meta);
-          if (desc.textContent) body.appendChild(desc);
+          const titleEl = document.createElement('h3');
+          titleEl.className = 'card-title';
+          titleEl.textContent = g.title;
+
+          const metaEl = document.createElement('div');
+          metaEl.className = 'card-meta';
+          const dot = document.createElement('span');
+          dot.className = 'dot';
+          const dateEl = document.createElement('span');
+          dateEl.textContent = new Date(g.date).toISOString().slice(0, 10);
+          metaEl.appendChild(dot);
+          metaEl.appendChild(dateEl);
+
+          const descEl = document.createElement('p');
+          descEl.className = 'card-desc';
+          descEl.textContent = g.short_desc || g.details || '';
+
+          const action = document.createElement('span');
+          action.className = 'card-action';
+          action.textContent = 'VIEW DETAILS';
+
+          body.appendChild(titleEl);
+          body.appendChild(metaEl);
+          if (descEl.textContent) body.appendChild(descEl);
+          body.appendChild(action);
 
           card.appendChild(mediaWrap);
           card.appendChild(body);
 
-          // Open modal
           card.addEventListener('click', () => openModal(g, card));
-          card.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              openModal(g, card);
-            }
+          card.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(g, card); }
           });
 
           frag.appendChild(card);
@@ -322,101 +1512,104 @@
         container.setAttribute('aria-busy', 'false');
       };
 
-      // Modal logic with focus trap
+      /* ── Modal ── */
+      let lastFocused = null;
       const focusableSelectors = 'a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])';
-      const trapFocus = (e) => {
-        const focusables = modal.querySelectorAll(focusableSelectors);
-        if (!focusables.length) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
+
+      const trapFocus = e => {
+        const els = modal.querySelectorAll(focusableSelectors);
+        if (!els.length) return;
+        const first = els[0], last = els[els.length - 1];
         if (e.key === 'Tab') {
-          if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault(); last.focus();
-          } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault(); first.focus();
-          }
-        } else if (e.key === 'Escape') {
-          closeModal();
-        }
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        } else if (e.key === 'Escape') { closeModal(); }
       };
 
       const openModal = (g, triggerEl) => {
         lastFocused = triggerEl || document.activeElement;
         modalTitle.textContent = g.title;
-        const lines = [
-          `Data: ${new Date(g.date).toISOString().slice(0,10)}`,
-          g.collaboration ? `Collab: ${g.collaboration}` : '',
-          g.jam ? `Jam: ${g.jam}` : '',
-          g.platform ? `Store: ${g.platform}` : ''
-        ].filter(Boolean).join('\n');
-        modalMeta.textContent = lines;
+
+        modalMeta.innerHTML = '';
+        const meta = [
+          { key: 'DATE', val: new Date(g.date).toISOString().slice(0, 10) },
+          g.collaboration ? { key: 'COLLAB', val: g.collaboration } : null,
+          g.jam ? { key: 'JAM', val: g.jam } : null,
+          g.platform ? { key: 'STORE', val: g.platform } : null,
+        ].filter(Boolean);
+
+        for (const m of meta) {
+          const li = document.createElement('li');
+          li.innerHTML = `<span class="key">${m.key}</span><span class="val">${m.val}</span>`;
+          modalMeta.appendChild(li);
+        }
+
         modalDesc.textContent = g.details || g.short_desc || '';
+
         if (g.url) {
           modalLink.href = g.url;
-          modalLink.textContent = g.url_label || 'Open';
-          modalLink.classList.remove('hidden');
+          modalLink.textContent = (g.url_label || 'OPEN GAME').toUpperCase();
+          modalLink.style.display = 'inline-flex';
         } else {
-          modalLink.href = '#';
-          modalLink.classList.add('hidden');
+          modalLink.style.display = 'none';
         }
-        modal.classList.remove('hidden');
+
+        modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
         document.addEventListener('keydown', trapFocus);
-        modal.querySelector('#modal-close').focus();
-        // Close on backdrop click
         modal.addEventListener('click', onBackdrop);
+        modalClose.focus();
       };
 
       const closeModal = () => {
-        modal.classList.add('hidden');
+        modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
         document.removeEventListener('keydown', trapFocus);
         modal.removeEventListener('click', onBackdrop);
-        if (lastFocused && typeof lastFocused.focus === 'function') {
-          lastFocused.focus();
-        }
+        if (lastFocused) lastFocused.focus();
       };
 
-      const onBackdrop = (e) => {
-        if (e.target === modal) closeModal();
-      };
+      const onBackdrop = e => { if (e.target === modal) closeModal(); };
 
       modalClose.addEventListener('click', closeModal);
+      modalCloseBtn.addEventListener('click', closeModal);
 
-      // Controls
-      searchInput.addEventListener('input', render, { passive: true });
-      yearFilter.addEventListener('change', render);
-      // Removed collaborators filter and sort toggle listeners
+      /* ── Controls ── */
+      let searchTimeout;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(render, 150);
+      }, { passive: true });
 
-      // Initial sort and render
-      sortNewest = true;
+      /* ── Init ── */
       render();
 
-      // Structured data (JSON-LD)
+      /* ── JSON-LD ── */
       try {
+        const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
         const ld = {
           "@context": "https://schema.org",
           "@type": "ItemList",
-          "itemListElement": dataset.slice().sort(byDateDesc).map((g, i) => ({
+          itemListElement: dataset.slice().sort(byDateDesc).map((g, i) => ({
             "@type": "VideoGame",
-            "name": g.title,
-            "datePublished": g.date,
-            "description": g.short_desc || g.details || "",
-            "url": g.url || "https://adriano-t.github.io/",
-            "image": g.image ? new URL(g.image, location.href).toString() : undefined,
-            "position": i + 1,
-            "publisher": g.collaboration || "Independent",
-            "applicationCategory": "Game"
+            name: g.title,
+            datePublished: g.date,
+            description: g.short_desc || g.details || "",
+            url: g.url || "https://adriano-t.github.io/",
+            position: i + 1,
+            publisher: g.collaboration || "Independent",
+            applicationCategory: "Game"
           }))
         };
         const el = document.createElement('script');
         el.type = 'application/ld+json';
         el.textContent = JSON.stringify(ld);
         document.head.appendChild(el);
-      } catch {}
+      } catch { }
     })();
   </script>
 </body>
+
 </html>
