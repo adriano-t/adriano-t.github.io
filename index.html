@@ -4,1611 +4,965 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tiz</title>
+  <title>Tiz - Personal website</title>
   <meta name="description"
     content="Explore a curated collection of indie games, collaborations and game jam entries by Tiz. Discover projects, platforms and details in a clean, accessible portfolio.">
   <meta name="keywords"
     content="Games, Game Portfolio, Indie Games, Game Development, Game Jams, Horror Games, Puzzle Games">
   <meta name="author" content="Tiz">
+  <meta name="color-scheme" content="light dark">
   <link rel="icon" href="./favicon.ico" type="image/x-icon">
   <link rel="canonical" href="https://adriano-t.github.io/">
-  <meta property="og:title" content="Tiz">
+  <meta property="og:title" content="Tiz - games i made">
   <meta property="og:description" content="Indie games, collaborations and game jams. Explore the full portfolio.">
   <meta property="og:url" content="https://adriano-t.github.io/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@tizrevolab">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323:wght@400&display=swap"
-    rel="stylesheet">
-
-  <script src="./games/games.js?v=4"></script>
+  <script defer src="./games/games.js?v=4"></script>
 
   <style>
     :root {
-      --bg: #0a0a0f;
-      --bg2: #0f0f1a;
-      --bg3: #14142a;
-      --panel: #1a1a2e;
-      --border: #3a3a5c;
-      --green: #39ff14;
-      --green-dim: #1a7a08;
-      --cyan: #00f5ff;
-      --cyan-dim: #007a80;
-      --yellow: #ffe600;
-      --red: #ff3b3b;
-      --purple: #c77dff;
-      --text: #d4e8d4;
-      --text-dim: #6a8a6a;
-      --px: 4px;
+      --bg: #f4f4f0;
+      --ink: #111;
+      --dim: #555;
+      --rule: #111;
+      --link: #0000d0;
+      --visited: #551a8b;
+      --hl: #ffff66;
+      --hl-ink: #000;
+      --serif: "Times New Roman", Times, serif;
+      --mono: ui-monospace, "Courier New", Courier, monospace;
     }
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0c0c0c;
+        --ink: #e6e6e6;
+        --dim: #9a9a9f;
+        --rule: #e6e6e6;
+        --link: #8fb4ff;
+        --visited: #c49bff;
+        --hl: #ffff66;
+        --hl-ink: #000;
+      }
     }
 
-    html {
-      scroll-behavior: smooth;
+    /* Pixel-art sprites: tiny SVG masks drawn on a grid, colored by the page's own colors */
+    :root {
+      --u: 4px;
+      --px-plus: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%279%27%20height%3D%279%27%20viewBox%3D%270%200%209%209%27%20shape-rendering%3D%27crispEdges%27%3E%3Cpath%20d%3D%27M0%200h9v1h-9zM0%201h1v1h-1zM8%201h1v1h-1zM0%202h1v1h-1zM4%202h1v1h-1zM8%202h1v1h-1zM0%203h1v1h-1zM4%203h1v1h-1zM8%203h1v1h-1zM0%204h1v1h-1zM2%204h5v1h-5zM8%204h1v1h-1zM0%205h1v1h-1zM4%205h1v1h-1zM8%205h1v1h-1zM0%206h1v1h-1zM4%206h1v1h-1zM8%206h1v1h-1zM0%207h1v1h-1zM8%207h1v1h-1zM0%208h9v1h-9z%27%2F%3E%3C%2Fsvg%3E");
+      --px-minus: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%279%27%20height%3D%279%27%20viewBox%3D%270%200%209%209%27%20shape-rendering%3D%27crispEdges%27%3E%3Cpath%20d%3D%27M0%200h9v1h-9zM0%201h1v1h-1zM8%201h1v1h-1zM0%202h1v1h-1zM8%202h1v1h-1zM0%203h1v1h-1zM8%203h1v1h-1zM0%204h1v1h-1zM2%204h5v1h-5zM8%204h1v1h-1zM0%205h1v1h-1zM8%205h1v1h-1zM0%206h1v1h-1zM8%206h1v1h-1zM0%207h1v1h-1zM8%207h1v1h-1zM0%208h9v1h-9z%27%2F%3E%3C%2Fsvg%3E");
+      --px-chevron: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%277%27%20height%3D%274%27%20viewBox%3D%270%200%207%204%27%20shape-rendering%3D%27crispEdges%27%3E%3Cpath%20d%3D%27M0%200h7v1h-7zM1%201h5v1h-5zM2%202h3v1h-3zM3%203h1v1h-1z%27%2F%3E%3C%2Fsvg%3E");
+      --px-search: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%277%27%20height%3D%277%27%20viewBox%3D%270%200%207%207%27%20shape-rendering%3D%27crispEdges%27%3E%3Cpath%20d%3D%27M1%200h3v1h-3zM0%201h1v1h-1zM4%201h1v1h-1zM0%202h1v1h-1zM4%202h1v1h-1zM0%203h1v1h-1zM4%203h1v1h-1zM1%204h4v1h-4zM5%205h1v1h-1zM6%206h1v1h-1z%27%2F%3E%3C%2Fsvg%3E");
+      --px-heart: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%277%27%20height%3D%276%27%20viewBox%3D%270%200%207%206%27%20shape-rendering%3D%27crispEdges%27%3E%3Cpath%20d%3D%27M1%200h2v1h-2zM4%200h2v1h-2zM0%201h7v1h-7zM0%202h7v1h-7zM1%203h5v1h-5zM2%204h3v1h-3zM3%205h1v1h-1z%27%2F%3E%3C%2Fsvg%3E");
+      --koi-avatar: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAcCAYAAACdz7SqAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAAGYktHRAD/AP8A/6C9p5MAAADSSURBVEjHxVbtCsAgCNTY+7+y+1WEO6eGlTAYrbw750dEMZPgvpC1SmeVoKUqiYieAh+aFFcozap3I8PZA+CcTGsh1Q0cXrEOiET058PEYyjG+vwdKYURiiaSmxyZSJ2s00H8JOiIxOmOJB20suNE/r2pNEuEjXfoO5rmXsmYAMjfjYYvbYF9xpDvoZQ3gcMo7S6Z34b/aco7gdGIQnv+sjdDlmellkM9sjRAGtAC0g51LVsDnMA+GKGVkaVBLcAS85ItnIyZ22AZ+yuX7UoLZ/ILQw0yKl/I1P4AAAAldEVYdGRhdGU6Y3JlYXRlADIwMjYtMTEtMDhUMDk6MzY6MjgrMDA6MDDdWE2XAAAAJXRFWHRkYXRlOm1vZGlmeQAyMDI2LTExLTA4VDA5OjM2OjI4KzAwOjAwrAX1KwAAACh0RVh0ZGF0ZTp0aW1lc3RhbXAAMjAyNi0xMS0wOFQwOTozNjoyOCswMDowMPsQ1PQAAAAASUVORK5CYII=");
     }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
+      margin: 0;
       background: var(--bg);
-      color: var(--text);
-      font-family: 'Press Start 2P', monospace;
-      font-size: 10px;
-      line-height: 1.8;
-      min-height: 100vh;
-      overflow-x: hidden;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect x='0' y='0' width='4' height='4' fill='%2339ff14'/%3E%3C/svg%3E") 2 2, auto;
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 19px;
+      line-height: 1.45;
     }
 
-    /*
-     * FIX 1: CRT scanlines overlay
-     * PRIMA: repeating-linear-gradient calcolato dalla GPU ogni frame
-     * ORA:   SVG data URI pre-rasterizzato (texture statica) + layer GPU dedicato
-     * Il browser carica la texture una volta e la compone senza ricalcolare il gradient.
-     */
-    body::before {
-      content: '';
+    /* Dither background: low-res canvas scaled up with hard pixels, fixed behind everything */
+    #bg {
       position: fixed;
       inset: 0;
-      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='4'><rect y='2' width='1' height='2' fill='black' fill-opacity='.18'/></svg>");
-      background-repeat: repeat;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      display: block;
       pointer-events: none;
-      z-index: 9999;
-      /* Promuove a layer GPU dedicato — non viene più ridisegnato ad ogni frame */
-      will-change: transform;
-      transform: translateZ(0);
-    }
-
-    /*
-     * FIX 2: CRT vignette — stesso trattamento: layer GPU isolato
-     */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.5) 100%);
-      pointer-events: none;
-      z-index: 9998;
-      will-change: transform;
-      transform: translateZ(0);
-    }
-
-    /* ── Pixel border utility ── */
-    .px-border {
-      border: 4px solid var(--border);
-      box-shadow:
-        0 0 0 4px var(--bg),
-        0 0 0 8px var(--border),
-        inset 0 0 0 2px rgba(255, 255, 255, 0.03);
-    }
-
-    .px-border-green {
-      border: 4px solid var(--green-dim);
-      box-shadow:
-        0 0 0 4px var(--bg),
-        0 0 0 8px var(--green-dim),
-        0 0 20px rgba(57, 255, 20, 0.15);
-    }
-
-    .px-border-cyan {
-      border: 4px solid var(--cyan-dim);
-      box-shadow:
-        0 0 0 4px var(--bg),
-        0 0 0 8px var(--cyan-dim),
-        0 0 20px rgba(0, 245, 255, 0.12);
-    }
-
-    /* ── Animations ── */
-    @keyframes blink {
-
-      0%,
-      49% {
-        opacity: 1
-      }
-
-      50%,
-      100% {
-        opacity: 0
-      }
-    }
-
-    @keyframes scandown {
-      0% {
-        transform: translateY(-100%)
-      }
-
-      100% {
-        transform: translateY(100vh)
-      }
-    }
-
-    @keyframes flicker {
-
-      0%,
-      100% {
-        opacity: 1
-      }
-
-      92% {
-        opacity: 1
-      }
-
-      93% {
-        opacity: 0.8
-      }
-
-      94% {
-        opacity: 1
-      }
-
-      97% {
-        opacity: 0.9
-      }
-    }
-
-    @keyframes pixelIn {
-      0% {
-        opacity: 0;
-        transform: translateY(8px)
-      }
-
-      100% {
-        opacity: 1;
-        transform: translateY(0)
-      }
-    }
-
-    @keyframes marquee {
-      0% {
-        transform: translateX(0)
-      }
-
-      100% {
-        transform: translateX(-50%)
-      }
-    }
-
-    /*
-     * FIX 3: glowPulse
-     * PRIMA: animava text-shadow → triggera repaint ad ogni frame
-     * ORA:   anima filter:drop-shadow → composited dalla GPU senza repaint del testo
-     */
-    @keyframes glowPulse {
-
-      0%,
-      100% {
-        filter: drop-shadow(0 0 2px var(--green)) drop-shadow(0 0 4px var(--green-dim));
-      }
-
-      50% {
-        filter: drop-shadow(0 0 6px var(--green)) drop-shadow(0 0 14px var(--green));
-      }
-    }
-
-    .blink {
-      animation: blink 1s step-end infinite;
-    }
-
-    /*
-     * FIX 4: flicker su header (elemento sticky)
-     * will-change: opacity → il browser lo promuove a layer separato,
-     * evitando di invalidare l'intero layout sticky ad ogni flicker
-     */
-    .flicker {
-      animation: flicker 8s infinite;
-      will-change: opacity;
-    }
-
-    /* ── Scrolling ticker ── */
-    .ticker-wrap {
-      background: var(--green-dim);
-      border-top: 3px solid var(--green);
-      border-bottom: 3px solid var(--green);
-      overflow: hidden;
-      white-space: nowrap;
-      padding: 6px 0;
-    }
-
-    /*
-     * FIX 5: ticker — aggiunto will-change: transform
-     * La marquee animation è già su transform, ma senza will-change
-     * alcuni browser la gestiscono in software
-     */
-    .ticker-inner {
-      display: inline-block;
-      animation: marquee 28s linear infinite;
-      color: var(--green);
-      font-size: 9px;
-      letter-spacing: 0.1em;
-      will-change: transform;
-    }
-
-    .ticker-inner span {
-      margin: 0 2em;
-    }
-
-    /* ── HEADER ── */
-    header {
-      background: var(--bg2);
-      border-bottom: 4px solid var(--green-dim);
-      position: sticky;
-      top: 0;
-      z-index: 100;
       image-rendering: pixelated;
-      /* Isola il layer sticky — evita che flicker invalidi l'intera pagina */
-      transform: translateZ(0);
     }
 
-    .header-top {
-      max-width: 1200px;
+    .no-webgl #bg { display: none; }
+
+    /* CSS fallback: subtle, uniform dots when WebGL is unavailable.
+       No side masks/vertical bands; the 3D background handles side fading itself. */
+    .no-webgl body::before {
+      content: "";
+      position: fixed;
+      z-index: 0;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, var(--dim) 0 0.7px, transparent 0.85px);
+      background-size: 8px 8px;
+      opacity: 0.12;
+    }
+
+    ::selection { background: var(--hl); color: var(--hl-ink); }
+
+    a { color: var(--link); }
+    a:visited { color: var(--visited); }
+    a:hover { background: var(--hl); color: var(--hl-ink); }
+
+    :focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+
+    /* No boxed-in column: the dither fades into the content instead of
+       ending at two hard vertical rules. */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 54rem;
+      min-height: 100vh;
       margin: 0 auto;
-      padding: 20px 24px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
+      padding: 2rem 1.25rem 3rem;
+      background: transparent;
     }
 
-    .site-title {
-      font-size: clamp(12px, 2vw, 18px);
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      animation: glowPulse 3s ease-in-out infinite;
-      white-space: nowrap;
-      will-change: filter;
-      /* Use flex for vertical alignment */
-      display: flex;
-      align-items: center;
+    /* ── Head ── */
+    /* dithered strip: 4 rows from solid to sparse, drawn as a mask so it follows the theme colors */
+    header::after, footer::before {
+      content: "";
+      display: block;
+      height: 8px;
+      background: var(--dim);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8'%3E%3Cpath d='M0 0h16v2H0zM0 2h2v2H0zM4 2h2v2H4zM8 2h2v2H8zM12 2h2v2h-2zM2 4h2v2H2zM10 4h2v2h-2zM6 6h2v2H6z'/%3E%3C/svg%3E") repeat-x 0 0 / 16px 8px;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='8'%3E%3Cpath d='M0 0h16v2H0zM0 2h2v2H0zM4 2h2v2H4zM8 2h2v2H8zM12 2h2v2h-2zM2 4h2v2H2zM10 4h2v2h-2zM6 6h2v2H6z'/%3E%3C/svg%3E") repeat-x 0 0 / 16px 8px;
+    }
+
+    header::after { margin-top: 1.1rem; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.4rem, 9vw, 4.2rem);
       line-height: 1;
-      gap: 10px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
     }
 
-    .site-title::before {
-      content: '▶ ';
-      color: var(--yellow);
-      display: inline-block;
-      /* Optical adjustment for perfect vertical centering */
-      transform: translateY(-4px);
-    }
+    header p { margin: 0.6rem 0 0; font-style: italic; }
 
-    .cursor-blink {
-      display: inline-block;
-      width: 10px;
-      height: 1em;
-      background: var(--green);
-      animation: blink 1s step-end infinite;
-      flex-shrink: 0;
-    }
+    header nav { margin-top: 0.5rem; font-family: var(--mono); font-size: 0.85rem; }
 
-    .nav-links {
+    /* ── Filters ── */
+    form {
       display: flex;
-      gap: 16px;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.5rem 1.25rem;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+    }
+
+    form label { display: inline-flex; align-items: baseline; gap: 0.5rem; }
+
+    input, select {
+      font: inherit;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 0;
+      padding: 0.25rem 0.5rem;
+    }
+
+    input { width: 14rem; max-width: 100%; }
+
+    .sel, .srch { position: relative; display: inline-block; }
+
+    .sel select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 1.9rem;
+      cursor: pointer;
+    }
+
+    .sel::after, .srch::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      background: var(--ink);
+      pointer-events: none;
+    }
+
+    .sel::after {
+      right: 0.55rem;
+      width: 14px;
+      height: 8px;
+      margin-top: -4px;
+      -webkit-mask: var(--px-chevron) no-repeat center / 14px 8px;
+      mask: var(--px-chevron) no-repeat center / 14px 8px;
+    }
+
+    .srch::before {
+      left: 0.55rem;
+      width: 14px;
+      height: 14px;
+      margin-top: -7px;
+      -webkit-mask: var(--px-search) no-repeat center / 14px 14px;
+      mask: var(--px-search) no-repeat center / 14px 14px;
+    }
+
+    .srch input { padding-left: 2rem; }
+
+    #count { margin-left: auto; color: var(--dim); }
+
+    /* ── Archive ── */
+    .year {
+      display: grid;
+      grid-template-columns: 4.5rem 1fr;
+      gap: 0 1rem;
+      border-bottom: 1px solid var(--rule);
+      padding: 1.1rem 0;
+    }
+
+    .year h2 {
+      margin: 0;
+      align-self: start;
+      position: sticky;
+      top: 0.75rem;
+      justify-self: start;
+      padding: 0 0.4rem;
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    details { border-top: 1px dotted var(--dim); }
+    details:first-of-type { border-top: 0; }
+
+    summary {
+      display: grid;
+      grid-template-columns: 10rem 1fr;
+      gap: 0.25rem 1rem;
+      padding: 0.65rem 0;
+      cursor: pointer;
       list-style: none;
     }
 
-    .nav-links a {
-      color: var(--cyan);
-      text-decoration: none;
-      font-size: 9px;
-      letter-spacing: 0.05em;
-      padding: 4px 8px;
-      border: 2px solid var(--cyan-dim);
-      transition: all 0.1s steps(1);
-    }
+    summary::-webkit-details-marker { display: none; }
 
-    .nav-links a:hover {
-      background: var(--cyan-dim);
-      color: var(--bg);
-      box-shadow: 0 0 12px var(--cyan);
-      transform: translate(-2px, -2px);
-    }
-
-    /* ── FILTER BAR ── */
-    .filter-bar {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 24px 16px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .field-wrap {
-      position: relative;
-    }
-
-    .field-wrap label {
-      display: block;
-      font-size: 8px;
-      color: var(--green-dim);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .field-wrap label::before {
-      content: '> ';
-      color: var(--yellow);
-    }
-
-    input[type="search"] {
-      width: 100%;
-      height: 44px;
-      background: var(--bg3);
-      color: var(--green);
-      border: 3px solid var(--border);
-      padding: 8px 12px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 9px;
-      outline: none;
-      appearance: none;
-      -webkit-appearance: none;
-      image-rendering: pixelated;
-    }
-
-    input[type="search"]::placeholder {
-      color: var(--text-dim);
-    }
-
-    input[type="search"]:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--green-dim), 0 0 20px rgba(57, 255, 20, 0.2);
-    }
-
-    /* ── Custom pixel dropdown ── */
-    .px-select {
-      position: relative;
-      width: 100%;
-      user-select: none;
-    }
-
-    .px-select-trigger {
-      width: 100%;
-      height: 44px;
-      background: var(--bg3);
-      color: var(--green);
-      border: 3px solid var(--border);
-      padding: 8px 32px 8px 12px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 9px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      image-rendering: pixelated;
-      outline: none;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .px-select-trigger::after {
-      content: '▼';
-      font-size: 12px;
-      color: var(--yellow);
-      flex-shrink: 0;
-      transition: transform 0.1s steps(2);
-    }
-
-    .px-select.open .px-select-trigger::after {
-      content: '▲';
-    }
-
-    .px-select-trigger:focus,
-    .px-select.open .px-select-trigger {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px var(--bg), 0 0 0 6px var(--green-dim), 0 0 20px rgba(57, 255, 20, 0.2);
-    }
-
-    .px-select-list {
-      display: none;
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      background: var(--bg3);
-      border: 3px solid var(--green-dim);
-      box-shadow: 4px 4px 0 var(--green-dim), 0 0 20px rgba(57, 255, 20, 0.15);
-      z-index: 200;
-      max-height: 240px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--green-dim) var(--bg3);
-    }
-
-    .px-select.open .px-select-list {
-      display: block;
-    }
-
-    .px-select-option {
-      padding: 8px 12px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 9px;
-      color: var(--text-dim);
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .px-select-option::before {
-      content: '  ';
-      white-space: pre;
-      color: var(--yellow);
-    }
-
-    .px-select-option:hover,
-    .px-select-option:focus {
-      background: var(--green-dim);
-      color: var(--green);
-      outline: none;
-    }
-
-    .px-select-option:hover::before,
-    .px-select-option:focus::before {
-      content: '▶ ';
-    }
-
-    .px-select-option.selected {
-      color: var(--yellow);
-    }
-
-    .px-select-option.selected::before {
-      content: '* ';
-      color: var(--yellow);
-    }
-
-    /* ── MAIN ── */
-    main {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 32px 24px 64px;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 3px solid var(--border);
-    }
-
-    .section-title {
-      font-size: clamp(14px, 2.5vw, 22px);
-      color: var(--yellow);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: flex;
-      align-items: center;
-    }
-
-    .section-title::before {
-      content: '* ';
-    }
-
-    .count-badge {
-      display: inline-block;
-      background: var(--green-dim);
-      color: var(--green);
-      font-size: 9px;
-      padding: 4px 10px;
-      border: 2px solid var(--green);
-      letter-spacing: 0.05em;
-      margin-left: 12px;
-      box-shadow: 2px 2px 0 var(--green-dim);
-    }
-
-    .section-sub {
-      font-family: 'VT323', monospace;
-      font-size: 18px;
-      color: var(--text-dim);
-      margin-top: 8px;
-      letter-spacing: 0.05em;
-    }
-
-    /* ── GRID ── */
-    .game-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 24px;
-    }
-
-    /* ── CARD ── */
-    /*
-     * FIX 6: game-card
-     * contain: layout style → isola il card dal layout globale, riduce gli
-     * invalidation durante scroll e hover. Non usiamo contain:paint per non
-     * troncare box-shadow e ::before/::after corner dots.
-     * will-change: transform → layer GPU per l'animazione hover (translate -4px,-4px)
-     */
-    .game-card {
-      background: var(--panel);
-      border: 4px solid var(--border);
-      cursor: pointer;
-      text-align: left;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      transition: transform 0.1s steps(2), box-shadow 0.1s steps(2);
-      box-shadow: 4px 4px 0 var(--border);
-      font-family: 'Press Start 2P', monospace;
-      color: var(--text);
-      width: 100%;
-      outline: none;
-      image-rendering: pixelated;
-      contain: layout style;
-      will-change: transform;
-    }
-
-    .game-card::before,
-    .game-card::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: var(--yellow);
-      z-index: 2;
-    }
-
-    .game-card::before {
-      top: -4px;
-      left: -4px;
-    }
-
-    .game-card::after {
-      bottom: -4px;
-      right: -4px;
-    }
-
-    .game-card:hover,
-    .game-card:focus-visible {
-      transform: translate(-4px, -4px);
-      box-shadow: 8px 8px 0 var(--green-dim);
-      border-color: var(--green);
-    }
-
-    .game-card:hover::before,
-    .game-card:focus-visible::before {
-      background: var(--green);
-    }
-
-    .game-card:hover::after,
-    .game-card:focus-visible::after {
-      background: var(--green);
-    }
-
-    .card-media {
-      width: 100%;
-      height: 180px;
-      background: var(--bg3);
+    .thumb {
+      grid-row: span 2;
+      aspect-ratio: 4 / 3;
+      border: 1px solid var(--rule);
+      box-shadow: 3px 3px 0 var(--dim);
+      background: color-mix(in srgb, var(--dim) 30%, var(--bg));
       overflow: hidden;
-      position: relative;
-      border-bottom: 4px solid var(--border);
     }
 
-    .card-media img,
-    .card-media video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      image-rendering: pixelated;
-      display: block;
+    .thumb img, .thumb video { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    summary:hover .thumb, summary:focus-visible .thumb, details[open] .thumb { border-color: var(--link); box-shadow: 3px 3px 0 var(--link); }
+
+    .head { align-self: start; }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--link);
+      text-decoration: underline;
+      text-wrap: balance;
     }
 
-    .card-media-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 36px;
-      color: var(--border);
-      background: repeating-linear-gradient(45deg,
-          var(--bg3) 0px,
-          var(--bg3) 4px,
-          var(--bg2) 4px,
-          var(--bg2) 8px);
-    }
-
-    /*
-     * FIX 7: scanline overlay su ogni card
-     * PRIMA: repeating-linear-gradient per ogni card → N overdraw di gradient per frame
-     * ORA:   stessa SVG data URI statica usata in body::before
-     * Il browser riusa la texture già in cache GPU — costo quasi zero.
-     */
-    .card-media::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1' height='4'><rect y='3' width='1' height='1' fill='black' fill-opacity='.25'/></svg>");
-      background-repeat: repeat;
-      pointer-events: none;
-    }
-
-    .card-platform-badge {
-      position: absolute;
-      bottom: 8px;
-      left: 8px;
-      background: var(--bg);
-      color: var(--cyan);
-      font-size: 7px;
-      padding: 3px 6px;
-      border: 2px solid var(--cyan-dim);
-      z-index: 1;
-    }
-
-    .card-body {
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .card-title {
-      font-size: 10px;
-      color: var(--yellow);
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-      line-height: 1.6;
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 8px;
-      color: var(--text-dim);
-    }
-
-    .card-meta .dot {
-      width: 4px;
-      height: 4px;
-      background: var(--green-dim);
+    .title::before {
+      content: "";
       display: inline-block;
-      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-right: 0.5rem;
+      vertical-align: -2px;
+      background: currentColor;
+      -webkit-mask: var(--px-plus) no-repeat center / 18px 18px;
+      mask: var(--px-plus) no-repeat center / 18px 18px;
     }
 
-    .card-desc {
-      font-family: 'VT323', monospace;
-      font-size: 16px;
-      color: var(--text);
-      line-height: 1.5;
+    details[open] .title::before {
+      -webkit-mask-image: var(--px-minus);
+      mask-image: var(--px-minus);
+    }
+    summary:hover .title { background: var(--hl); color: var(--hl-ink); }
+
+    .meta { font-family: var(--mono); font-size: 0.8rem; color: var(--dim); margin-top: 0.15rem; }
+
+    .desc {
+      grid-column: 2;
+      align-self: start;
+      margin: 0;
+      text-wrap: pretty;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
-    .card-action {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--green);
-      font-size: 8px;
-      margin-top: auto;
-      padding-top: 8px;
-      border-top: 2px dashed var(--border);
-    }
+    details[open] .desc { display: none; }
 
-    .card-action::before {
-      content: '▶';
-    }
+    .more { padding: 0 0 1rem calc(10rem + 1rem); }
 
-    /* ── MODAL ── */
-    /*
-     * FIX 8: modal overlay
-     * PRIMA: background rgba + background-image gradient → due compositing a ogni frame
-     * ORA:   solo rgba solido (il gradient non aggiunge nulla di visivo rilevante qui)
-     */
-    .modal-overlay {
+    .head dl {
       display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 200;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      grid-template-columns: max-content 1fr;
+      gap: 0.1rem 1rem;
+      margin: 0.6rem 0 0;
+      font-family: var(--mono);
+      font-size: 0.8rem;
     }
 
-    .modal-overlay.open {
-      display: flex;
-    }
+    details[open] .head dl { display: grid; }
 
-    .modal-box {
-      background: var(--bg2);
-      border: 4px solid var(--green-dim);
-      /* FIX 9: ridotti i box-shadow layers del modal (da 3 a 2 + blur semplificato) */
-      box-shadow:
-        0 0 0 8px var(--green-dim),
-        0 0 40px rgba(57, 255, 20, 0.3);
-      max-width: 560px;
-      width: 100%;
-      position: relative;
-      animation: pixelIn 0.15s steps(4) forwards;
-      image-rendering: pixelated;
-      max-height: 90vh;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--green-dim) var(--bg3);
-    }
+    .head dt { color: var(--dim); }
+    .head dd { margin: 0; }
 
-    .modal-titlebar {
-      background: var(--green-dim);
-      padding: 10px 16px;
+    .more p { margin: 0 0 0.75rem; white-space: pre-line; max-width: 62ch; }
+
+    /* Koi avatar: original 29x28 pixels, shown at native resolution for sharp edges. */
+    h1 {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      border-bottom: 4px solid var(--green);
-      position: sticky;
-      top: 0;
+      gap: 0.65rem;
     }
 
-    .modal-titlebar-text {
-      font-size: 9px;
-      color: var(--green);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .modal-titlebar-text::before {
-      content: '* ';
-    }
-
-    .modal-close {
-      background: var(--red);
-      color: var(--bg);
-      border: 2px solid var(--bg);
-      width: 20px;
-      height: 20px;
-      font-family: 'Press Start 2P', monospace;
-      font-size: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .modal-close:hover {
-      background: #ff8080;
-      box-shadow: 0 0 8px var(--red);
-    }
-
-    .modal-content {
-      padding: 20px;
-    }
-
-    .modal-game-title {
-      font-size: 13px;
-      color: var(--yellow);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 16px;
-      line-height: 1.7;
-    }
-
-    .modal-meta-list {
-      list-style: none;
-      margin-bottom: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .modal-meta-list li {
-      font-size: 8px;
-      color: var(--text-dim);
-      display: flex;
-      gap: 8px;
-    }
-
-    .modal-meta-list .key {
-      color: var(--cyan);
-      min-width: 52px;
-      flex-shrink: 0;
-    }
-
-    .modal-meta-list .val {
-      color: var(--text);
-    }
-
-    .modal-desc {
-      font-family: 'VT323', monospace;
-      font-size: 18px;
-      color: var(--text);
-      line-height: 1.6;
-      margin-bottom: 20px;
-      padding: 12px;
-      background: var(--bg3);
-      border-left: 4px solid var(--green-dim);
-      white-space: pre-line;
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      border-top: 3px dashed var(--border);
-      padding-top: 16px;
-    }
-
-    .btn-pixel {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 9px;
-      padding: 10px 16px;
-      cursor: pointer;
-      border: none;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-      transition: transform 0.05s steps(1), box-shadow 0.05s steps(1);
-    }
-
-    .btn-pixel::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      right: -4px;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .btn-open {
-      background: var(--green);
-      color: var(--bg);
-      box-shadow: 4px 4px 0 var(--green-dim);
-    }
-
-    .btn-open::before {
-      content: '▶ ';
-    }
-
-    .btn-open:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 var(--green-dim);
-    }
-
-    .btn-open:active {
-      transform: translate(2px, 2px);
-      box-shadow: 2px 2px 0 var(--green-dim);
-    }
-
-    .btn-close-modal {
-      background: var(--panel);
-      color: var(--text-dim);
-      box-shadow: 4px 4px 0 var(--border);
-      border: 3px solid var(--border);
-    }
-
-    .btn-close-modal:hover {
-      transform: translate(-2px, -2px);
-      color: var(--text);
-      border-color: var(--text);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--bg2);
-      border-top: 4px solid var(--green-dim);
-      padding: 24px;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    .footer-copy {
-      font-size: 8px;
-      color: var(--text-dim);
-    }
-
-    .footer-copy::before {
-      content: '© ';
-      color: var(--green-dim);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 12px;
-    }
-
-    .footer-links a {
-      color: var(--cyan);
-      text-decoration: none;
-      font-size: 8px;
-      padding: 4px 8px;
-      border: 2px solid var(--cyan-dim);
-    }
-
-    .footer-links a:hover {
-      background: var(--cyan-dim);
-      color: var(--bg);
-    }
-
-    /* ── PIXEL SPRITE decorations ── */
-    .sprite-stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    /* empty state */
-    .empty-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 64px 24px;
-      color: var(--text-dim);
-      font-size: 9px;
-    }
-
-    .empty-state::before {
-      content: '?  ?  ?';
+    .critter {
       display: block;
-      font-size: 32px;
-      margin-bottom: 20px;
-      color: var(--border);
+      width: 64px;
+      height: 64px;
+      flex: none;
+      background: var(--koi-avatar) no-repeat center / 48px 48px;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
     }
 
-    /* loading */
-    .loading-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 64px;
-      font-size: 9px;
-      color: var(--green);
+    /* This PNG is black on transparent; invert only the title icon in dark mode. */
+    @media (prefers-color-scheme: dark) {
+      .critter { filter: invert(1); }
+    }
+
+    .heart {
+      display: inline-block;
+      width: 14px;
+      height: 12px;
+      margin-left: 0.4rem;
+      vertical-align: -1px;
+      background: var(--dim);
+      -webkit-mask: var(--px-heart) no-repeat center / 14px 12px;
+      mask: var(--px-heart) no-repeat center / 14px 12px;
+    }
+
+    .empty { padding: 1.5rem 0; font-style: italic; }
+
+    footer::before { margin-bottom: 0.9rem; transform: scaleY(-1); }
+
+    footer {
+      margin-top: 1.25rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--dim);
     }
 
     @media (max-width: 600px) {
-      .filter-bar {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .game-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
-
-      .site-title {
-        font-size: 11px;
-      }
-
-      /* Su mobile riduciamo ulteriormente il carico: niente will-change sulle card */
-      .game-card {
-        will-change: auto;
-      }
+      body { font-size: 18px; }
+      .page { padding-top: 1.25rem; }
+      .year { grid-template-columns: 1fr; }
+      .year h2 { position: static; margin-bottom: 0.5rem; }
+      summary { grid-template-columns: 7rem 1fr; gap: 0.25rem 0.75rem; }
+      .desc { grid-column: 1 / -1; }
+      .more { padding-left: 0; }
+      #count { margin-left: 0; }
     }
 
-    /* sr-only */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* focus style */
-    :focus-visible {
-      outline: 3px solid var(--green);
-      outline-offset: 2px;
-    }
-
-    /* FIX 10: reduced motion — rimuove tutte le animazioni per chi lo ha abilitato */
     @media (prefers-reduced-motion: reduce) {
-
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
+      html { scroll-behavior: auto; }
     }
   </style>
 </head>
 
 <body>
+  <canvas id="bg" aria-hidden="true"></canvas>
 
-  <!-- Pixel star field canvas -->
-  <canvas class="sprite-stars" id="starfield" aria-hidden="true"></canvas>
-
-  <!-- Ticker -->
-  <div class="ticker-wrap" aria-hidden="true">
-    <div class="ticker-inner">
-      <span>* GAME JAMS *</span>
-      <span>INDIE GAMES</span>
-      <span>* TIZ *</span>
-      <span>ITCH.IO</span>
-      <span>* HORROR GAMES *</span>
-      <span>PROJECTS</span>
-      <span>* WIP *</span>
-      <span>COLLABORATIONS</span>
-      <span>* GAME JAMS *</span>
-      <span>ITCH.IO</span>
-      <span>* DEVELOPMENT *</span>
-      <span>PIXEL ART</span>
-      <span>* PRESS START *</span>
-    </div>
-  </div>
-
-  <!-- Header -->
-  <header class="flicker">
-    <div class="header-top">
-      <h1 class="site-title">
-        <span>GAMES<span style="color:var(--yellow)">_</span>I<span style="color:var(--yellow)">_</span>MADE</span>
-        <span class="cursor-blink" aria-hidden="true"></span>
-      </h1>
-      <nav aria-label="Social links">
-        <ul class="nav-links">
-          <li><a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer">ITCH.IO</a></li>
-          <li><a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer">TWITTER</a></li>
-        </ul>
+  <div class="page">
+    <header>
+      <h1><span class="critter" aria-hidden="true"></span>Tiz</h1>
+      <p>Games i made. Jams, collabs and solo stuff.</p>
+      <nav aria-label="Profiles">
+        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer">itch.io</a> /
+        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer">twitter</a>
       </nav>
-    </div>
+    </header>
 
-    <form id="filters-form" class="filter-bar" role="search" aria-label="Search and filters">
-      <div class="field-wrap">
-        <label for="search-input">Search</label>
-        <input id="search-input" type="search" inputmode="search" placeholder="SEARCH TITLE OR DESC..."
-          aria-label="Search games by title or description">
-      </div>
-      <div class="field-wrap">
-        <label id="year-filter-label">Year</label>
-        <div class="px-select" id="year-select" role="combobox" aria-haspopup="listbox" aria-expanded="false"
-          aria-labelledby="year-filter-label">
-          <div class="px-select-trigger" tabindex="0" role="button" aria-label="Filter by year: All years"
-            id="year-trigger">ALL YEARS</div>
-          <div class="px-select-list" role="listbox" aria-labelledby="year-filter-label" id="year-list">
-            <div class="px-select-option selected" role="option" aria-selected="true" data-value="" tabindex="-1">ALL
-              YEARS</div>
-          </div>
-        </div>
-      </div>
+    <form id="filters-form" role="search" aria-label="Search and filters">
+      <label>search
+        <span class="srch"><input id="search-input" type="search" aria-label="Search games by title or description"></span>
+      </label>
+      <label>year
+        <span class="sel"><select id="year-select" aria-label="Filter by year">
+          <option value="">all</option>
+        </select></span>
+      </label>
+      <span id="count" aria-live="polite"></span>
     </form>
-  </header>
 
-  <main>
-    <section aria-labelledby="games-heading">
-      <div class="section-header">
-        <div>
-          <h2 id="games-heading" class="section-title">
-            ARCHIVE
-            <span class="count-badge" id="games_count">0</span>
-          </h2>
-          <p class="section-sub">
-            &gt; A collection of games made by me. Jams, collabs, and solo projects.
-          </p>
-        </div>
-      </div>
+    <main id="game-list" aria-busy="false"></main>
 
-      <div class="game-grid" id="game-cards-container" aria-live="polite" aria-busy="false">
-        <div class="loading-state">LOADING<span class="blink">_</span></div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Modal -->
-  <div id="game-modal" class="modal-overlay" aria-hidden="true">
-    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title"
-      aria-describedby="modal-description">
-      <div class="modal-titlebar">
-        <span class="modal-titlebar-text">GAME INFO</span>
-        <button id="modal-close" class="modal-close" aria-label="Close dialog">X</button>
-      </div>
-      <div class="modal-content">
-        <h3 id="modal-title" class="modal-game-title"></h3>
-        <ul class="modal-meta-list" id="modal-meta-list"></ul>
-        <p id="modal-description" class="modal-desc"></p>
-        <div class="modal-actions">
-          <button class="btn-pixel btn-close-modal" id="modal-close-btn">CLOSE</button>
-          <a id="modal-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-pixel btn-open"
-            style="display:none">OPEN GAME</a>
-        </div>
-      </div>
-    </div>
+    <footer>&copy; <span id="year-now"></span> tiz<span class="heart" aria-hidden="true"></span></footer>
   </div>
-
-  <footer>
-    <div class="footer-inner">
-      <p class="footer-copy">
-        <span id="year-now"></span> TIZ - ALL RIGHTS RESERVED
-      </p>
-      <div class="footer-links" aria-label="Footer links">
-        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer">ITCH.IO</a>
-        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer">TWITTER</a>
-      </div>
-    </div>
-  </footer>
 
   <script>
-    (() => {
-      /* ── Star field ── */
-      const canvas = document.getElementById('starfield');
-      const ctx = canvas.getContext('2d');
-      let stars = [];
-
-      function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-
-      function initStars(n) {
-        stars = [];
-        for (let i = 0; i < n; i++) {
-          stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            size: Math.random() < 0.7 ? 1 : 2,
-            phase: Math.random() * Math.PI * 2
-          });
-        }
-      }
-
-      /*
-       * FIX 11: Star field RAF throttlato a 30fps
-       * PRIMA: 60fps + frame crescente senza limite
-       * ORA:   max 30fps con timestamp check + frame cappato a 2000
-       * Riduce il numero di compositing tra canvas, body::before e body::after.
-       */
-      let frame = 0;
-      let lastFrameTime = 0;
-      const TARGET_FPS = 30;
-      const FRAME_INTERVAL = 1000 / TARGET_FPS;
-
-      function drawStars(timestamp) {
-        requestAnimationFrame(drawStars);
-
-        const elapsed = timestamp - lastFrameTime;
-        if (elapsed < FRAME_INTERVAL) return;
-        lastFrameTime = timestamp - (elapsed % FRAME_INTERVAL);
-
-        /* Cap frame per evitare drift nei floating point con sin() */
-        frame = (frame + 1) % 2000;
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const s of stars) {
-          const b = (Math.sin(s.phase + frame * 0.05) + 1) / 2;
-          ctx.fillStyle = `rgba(57,255,20,${0.08 + b * 0.12})`;
-          ctx.fillRect(Math.floor(s.x), Math.floor(s.y), s.size, s.size);
-        }
-      }
-
-      resizeCanvas();
-      initStars(80);
-      requestAnimationFrame(drawStars);
-
-      /* Debounce resize per evitare reinit frequenti su mobile */
-      let resizeTimer;
-      window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { resizeCanvas(); initStars(80); }, 150);
-      });
-
+    // The deferred games.js runs before DOMContentLoaded, so its data is ready here.
+    document.addEventListener('DOMContentLoaded', () => {
       /* ── Data ── */
       let rawGames = [];
       if (Array.isArray(window.games)) rawGames = window.games;
       else { try { if (Array.isArray(games)) rawGames = games; } catch { } }
 
-      const sanitize = v => typeof v === 'string' ? v : '';
+      const str = v => typeof v === 'string' ? v : '';
       const platformFromUrl = url => {
         if (!url) return '';
         try {
           const h = new URL(url).hostname;
-          if (h.includes('steampowered')) return 'STEAM';
-          if (h.includes('itch.io')) return 'ITCH.IO';
-          if (h.includes('gamejolt')) return 'GAME JOLT';
-          if (h.includes('play.google')) return 'GOOGLE PLAY';
-          if (h.includes('gx.games')) return 'GX.GAMES';
-          if (h.includes('drive.google')) return 'G.DRIVE';
-          if (h.includes('globalgamejam')) return 'GGJ';
-          return 'WEBSITE';
-        } catch { return 'WEBSITE'; }
+          if (h.includes('steampowered')) return 'Steam';
+          if (h.includes('itch.io')) return 'itch.io';
+          if (h.includes('gamejolt')) return 'Game Jolt';
+          if (h.includes('play.google')) return 'Google Play';
+          if (h.includes('gx.games')) return 'GX.games';
+          if (h.includes('drive.google')) return 'Google Drive';
+          if (h.includes('globalgamejam')) return 'Global Game Jam';
+          return 'Website';
+        } catch { return 'Website'; }
       };
 
       const dataset = rawGames
-        .filter(g => g && g.title && g.date)
+        .filter(g => g && g.title && g.date && Number.isFinite(Date.parse(g.date)))
         .map(g => ({
-          title: sanitize(g.title),
-          date: sanitize(g.date),
-          collaboration: sanitize(g.collaboration || ''),
-          jam: sanitize(g.jam || ''),
-          image: sanitize(g.image || ''),
-          short_desc: sanitize(g.short_desc || ''),
-          details: sanitize(g.details || ''),
-          url: sanitize(g.url || ''),
-          url_label: sanitize(g.url_label || ''),
-          platform: platformFromUrl(g.url || '')
-        }));
+          title: str(g.title),
+          date: str(g.date),
+          timestamp: Date.parse(g.date),
+          year: new Date(g.date).getFullYear(),
+          collaboration: str(g.collaboration),
+          jam: str(g.jam),
+          image: str(g.image),
+          short_desc: str(g.short_desc),
+          details: str(g.details),
+          url: str(g.url),
+          url_label: str(g.url_label),
+          platform: platformFromUrl(g.url),
+          searchText: [g.title, g.short_desc, g.details].map(str).join(' ').toLowerCase()
+        }))
+        .sort((a, b) => b.timestamp - a.timestamp);
 
       /* ── Elements ── */
-      const container = document.getElementById('game-cards-container');
-      const gamesCount = document.getElementById('games_count');
-      const yearNow = document.getElementById('year-now');
-      if (yearNow) yearNow.textContent = new Date().getFullYear();
-      const searchInput = document.getElementById('search-input');
-      const yearSelect = document.getElementById('year-select');
-      const yearTrigger = document.getElementById('year-trigger');
-      const yearList = document.getElementById('year-list');
-      let selectedYear = '';
-      const modal = document.getElementById('game-modal');
-      const modalTitle = document.getElementById('modal-title');
-      const modalMeta = document.getElementById('modal-meta-list');
-      const modalDesc = document.getElementById('modal-description');
-      const modalClose = document.getElementById('modal-close');
-      const modalCloseBtn = document.getElementById('modal-close-btn');
-      const modalLink = document.getElementById('modal-link');
+      const list = document.getElementById('game-list');
+      const count = document.getElementById('count');
+      const search = document.getElementById('search-input');
+      const yearSel = document.getElementById('year-select');
+      const form = document.getElementById('filters-form');
+      const motionMq = matchMedia('(prefers-reduced-motion: reduce)');
+      document.getElementById('year-now').textContent = new Date().getFullYear();
+      form.addEventListener('submit', e => e.preventDefault());
 
-      /* ── Year custom dropdown ── */
-      const years = Array.from(new Set(dataset.map(g => new Date(g.date).getFullYear()).filter(Boolean))).sort((a, b) => b - a);
-      for (const y of years) {
-        const opt = document.createElement('div');
-        opt.className = 'px-select-option';
-        opt.role = 'option';
-        opt.setAttribute('aria-selected', 'false');
-        opt.setAttribute('data-value', String(y));
-        opt.setAttribute('tabindex', '-1');
-        opt.textContent = String(y);
-        yearList.appendChild(opt);
+      const isoDate = d => new Date(d).toISOString().slice(0, 10);
+      const el = (tag, cls, text) => {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (text !== undefined && text !== null) e.textContent = text;
+        return e;
+      };
+
+      for (const year of [...new Set(dataset.map(g => g.year))]) {
+        const option = el('option', '', String(year));
+        option.value = String(year);
+        yearSel.appendChild(option);
       }
 
-      const openDropdown = () => {
-        yearSelect.classList.add('open');
-        yearSelect.setAttribute('aria-expanded', 'true');
-      };
-      const closeDropdown = () => {
-        yearSelect.classList.remove('open');
-        yearSelect.setAttribute('aria-expanded', 'false');
-      };
-      const selectYear = (val, label) => {
-        selectedYear = val;
-        yearTrigger.textContent = label;
-        yearTrigger.setAttribute('aria-label', `Filter by year: ${label}`);
-        yearList.querySelectorAll('.px-select-option').forEach(o => {
-          const isSelected = o.getAttribute('data-value') === val;
-          o.classList.toggle('selected', isSelected);
-          o.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-        });
-        closeDropdown();
-        render();
-      };
-
-      yearTrigger.addEventListener('click', () => {
-        yearSelect.classList.contains('open') ? closeDropdown() : openDropdown();
-      });
-      yearTrigger.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
-          e.preventDefault(); openDropdown();
-          const first = yearList.querySelector('.px-select-option');
-          if (first) first.focus();
-        } else if (e.key === 'Escape') { closeDropdown(); }
-      });
-
-      yearList.addEventListener('click', e => {
-        const opt = e.target.closest('.px-select-option');
-        if (opt) selectYear(opt.getAttribute('data-value'), opt.textContent.trim());
-      });
-      yearList.addEventListener('keydown', e => {
-        const opts = [...yearList.querySelectorAll('.px-select-option')];
-        const idx = opts.indexOf(document.activeElement);
-        if (e.key === 'ArrowDown') { e.preventDefault(); opts[Math.min(idx + 1, opts.length - 1)]?.focus(); }
-        else if (e.key === 'ArrowUp') { e.preventDefault(); opts[Math.max(idx - 1, 0)]?.focus(); }
-        else if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          const opt = document.activeElement.closest('.px-select-option');
-          if (opt) selectYear(opt.getAttribute('data-value'), opt.textContent.trim());
-        } else if (e.key === 'Escape') { closeDropdown(); yearTrigger.focus(); }
-        else if (e.key === 'Tab') { closeDropdown(); }
-      });
-
-      document.addEventListener('click', e => {
-        if (!yearSelect.contains(e.target)) closeDropdown();
-      });
-
-      /* ── Lazy load ── */
-      const io = new IntersectionObserver(entries => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          const el = e.target;
-          const src = el.getAttribute('data-src');
-          if (!src) continue;
-          if (el.tagName === 'IMG') {
-            el.src = src;
-          } else if (el.tagName === 'VIDEO') {
-            const s = document.createElement('source');
-            s.src = src; s.type = 'video/webm';
-            el.appendChild(s);
-            el.autoplay = true; el.loop = true; el.muted = true; el.playsInline = true;
-            try { el.load(); el.play(); } catch { }
+      /* ── Videos: load on first appearance; pause off-screen ── */
+      const videoObserver = new IntersectionObserver(entries => {
+        for (const entry of entries) {
+          const video = entry.target;
+          video.dataset.inView = entry.isIntersecting ? '1' : '0';
+          if (!entry.isIntersecting) {
+            video.pause();
+            continue;
           }
-          el.removeAttribute('data-src');
-          io.unobserve(el);
+          if (video.dataset.src) {
+            video.src = video.dataset.src;
+            delete video.dataset.src;
+          }
+          if (!document.hidden && !motionMq.matches) video.play().catch(() => {});
         }
-      }, { rootMargin: '120px' });
+      }, { threshold: 0.01 });
 
-      /* ── Render ── */
-      const render = () => {
-        container.setAttribute('aria-busy', 'true');
-        const q = searchInput.value.trim().toLowerCase();
-        const yf = selectedYear;
-
-        let filtered = dataset.slice();
-        if (q) filtered = filtered.filter(g =>
-          g.title.toLowerCase().includes(q) ||
-          g.short_desc.toLowerCase().includes(q) ||
-          g.details.toLowerCase().includes(q)
-        );
-        if (yf) filtered = filtered.filter(g => String(new Date(g.date).getFullYear()) === yf);
-        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (gamesCount) gamesCount.textContent = filtered.length;
-
-        const oldVideos = container.querySelectorAll('video');
-        for (const vid of oldVideos) {
-          vid.pause();
-          vid.removeAttribute('src');
-          vid.innerHTML = '';
-          vid.load();
-        }
-        io.disconnect();
-
-        container.innerHTML = '';
-        if (!filtered.length) {
-          const em = document.createElement('div');
-          em.className = 'empty-state';
-          em.innerHTML = 'NO GAMES FOUND<br><br>TRY A DIFFERENT SEARCH';
-          container.appendChild(em);
-          container.setAttribute('aria-busy', 'false');
-          return;
-        }
-
-        const frag = document.createDocumentFragment();
-        for (const g of filtered) {
-          const card = document.createElement('button');
-          card.type = 'button';
-          card.className = 'game-card';
-          card.setAttribute('aria-label', `${g.title} - ${new Date(g.date).getFullYear()}`);
-
-          /* media */
-          const mediaWrap = document.createElement('div');
-          mediaWrap.className = 'card-media';
-
-          const isVideo = g.image.endsWith('.webm');
-          if (g.image) {
-            if (isVideo) {
-              const vid = document.createElement('video');
-              vid.setAttribute('preload', 'none');
-              vid.setAttribute('muted', '');
-              vid.setAttribute('playsinline', '');
-              vid.setAttribute('data-src', g.image);
-              io.observe(vid);
-              mediaWrap.appendChild(vid);
-            } else {
-              const img = document.createElement('img');
-              img.alt = g.title;
-              img.loading = 'lazy';
-              img.decoding = 'async';
-              img.setAttribute('data-src', g.image);
-              io.observe(img);
-              mediaWrap.appendChild(img);
-            }
+      const syncVisibleVideos = () => {
+        for (const video of list.querySelectorAll('video')) {
+          if (document.hidden || motionMq.matches || video.dataset.inView !== '1') {
+            video.pause();
           } else {
-            const ph = document.createElement('div');
-            ph.className = 'card-media-placeholder';
-            ph.textContent = '?';
-            mediaWrap.appendChild(ph);
+            video.play().catch(() => {});
           }
-
-          if (g.platform) {
-            const badge = document.createElement('span');
-            badge.className = 'card-platform-badge';
-            badge.textContent = g.platform;
-            mediaWrap.appendChild(badge);
-          }
-
-          /* body */
-          const body = document.createElement('div');
-          body.className = 'card-body';
-
-          const titleEl = document.createElement('h3');
-          titleEl.className = 'card-title';
-          titleEl.textContent = g.title;
-
-          const metaEl = document.createElement('div');
-          metaEl.className = 'card-meta';
-          const dot = document.createElement('span');
-          dot.className = 'dot';
-          const dateEl = document.createElement('span');
-          dateEl.textContent = new Date(g.date).toISOString().slice(0, 10);
-          metaEl.appendChild(dot);
-          metaEl.appendChild(dateEl);
-
-          const descEl = document.createElement('p');
-          descEl.className = 'card-desc';
-          descEl.textContent = g.short_desc || g.details || '';
-
-          const action = document.createElement('span');
-          action.className = 'card-action';
-          action.textContent = 'VIEW DETAILS';
-
-          body.appendChild(titleEl);
-          body.appendChild(metaEl);
-          if (descEl.textContent) body.appendChild(descEl);
-          body.appendChild(action);
-
-          card.appendChild(mediaWrap);
-          card.appendChild(body);
-
-          card.addEventListener('click', () => openModal(g, card));
-          card.addEventListener('keydown', e => {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(g, card); }
-          });
-
-          frag.appendChild(card);
         }
-        container.appendChild(frag);
-        container.setAttribute('aria-busy', 'false');
       };
+      document.addEventListener('visibilitychange', syncVisibleVideos);
+      motionMq.addEventListener('change', syncVisibleVideos);
 
-      /* ── Modal ── */
-      let lastFocused = null;
-      const focusableSelectors = 'a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])';
-
-      const trapFocus = e => {
-        const els = modal.querySelectorAll(focusableSelectors);
-        if (!els.length) return;
-        const first = els[0], last = els[els.length - 1];
-        if (e.key === 'Tab') {
-          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-        } else if (e.key === 'Escape') { closeModal(); }
-      };
-
-      const openModal = (g, triggerEl) => {
-        lastFocused = triggerEl || document.activeElement;
-        modalTitle.textContent = g.title;
-
-        modalMeta.innerHTML = '';
-        const meta = [
-          { key: 'DATE', val: new Date(g.date).toISOString().slice(0, 10) },
-          g.collaboration ? { key: 'COLLAB', val: g.collaboration } : null,
-          g.jam ? { key: 'JAM', val: g.jam } : null,
-          g.platform ? { key: 'STORE', val: g.platform } : null,
-        ].filter(Boolean);
-
-        for (const m of meta) {
-          const li = document.createElement('li');
-          li.innerHTML = `<span class="key">${m.key}</span><span class="val">${m.val}</span>`;
-          modalMeta.appendChild(li);
-        }
-
-        modalDesc.textContent = g.details || g.short_desc || '';
-
-        if (g.url) {
-          modalLink.href = g.url;
-          modalLink.textContent = (g.url_label || 'OPEN GAME').toUpperCase();
-          modalLink.style.display = 'inline-flex';
+      const buildThumb = g => {
+        const wrap = el('div', 'thumb');
+        if (!g.image) return wrap;
+        const path = g.image.split(/[?#]/)[0].toLowerCase();
+        if (path.endsWith('.webm')) {
+          const video = el('video');
+          video.preload = 'none';
+          video.muted = true;
+          video.loop = true;
+          video.playsInline = true;
+          video.setAttribute('aria-hidden', 'true');
+          video.dataset.src = g.image;
+          wrap.appendChild(video);
         } else {
-          modalLink.style.display = 'none';
+          const img = el('img');
+          img.alt = ''; // Decorative: the adjacent title already identifies the game.
+          img.width = 320;
+          img.height = 240;
+          img.decoding = 'async';
+          img.loading = g === dataset[0] ? 'eager' : 'lazy';
+          if (g === dataset[0]) img.fetchPriority = 'high';
+          img.src = g.image;
+          wrap.appendChild(img);
+        }
+        return wrap;
+      };
+
+      const buildEntry = g => {
+        const detail = el('details');
+        const summary = el('summary');
+        const head = el('div', 'head');
+        head.appendChild(el('span', 'title', g.title));
+        const meta = [g.jam, g.collaboration && `with ${g.collaboration}`, g.platform]
+          .filter(Boolean).join(' / ');
+        if (meta) head.appendChild(el('div', 'meta', meta));
+
+        summary.append(buildThumb(g), head);
+        const desc = g.short_desc || g.details;
+        if (desc) summary.appendChild(el('p', 'desc', desc));
+        detail.appendChild(summary);
+
+        const more = el('div', 'more');
+        const dl = el('dl');
+        const rows = [
+          ['date', isoDate(g.date)],
+          g.collaboration && ['collab', g.collaboration],
+          g.jam && ['jam', g.jam],
+          g.platform && ['on', g.platform]
+        ].filter(Boolean);
+        for (const [key, value] of rows) dl.append(el('dt', '', key), el('dd', '', value));
+        head.appendChild(dl);
+
+        const text = g.details || g.short_desc;
+        if (text) more.appendChild(el('p', '', text));
+        if (g.url) {
+          const paragraph = el('p');
+          const link = el('a', '', g.url_label || 'Open game');
+          link.href = g.url;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          paragraph.appendChild(link);
+          more.appendChild(paragraph);
+        }
+        detail.appendChild(more);
+        return detail;
+      };
+
+      /* ── Render: reuse DOM nodes across filter changes ── */
+      const entriesCache = new WeakMap();
+      const yearCache = new Map();
+      let activeGames = new Set();
+
+      const getEntry = game => {
+        let entry = entriesCache.get(game);
+        if (!entry) {
+          entry = buildEntry(game);
+          entriesCache.set(game, entry);
+        }
+        return entry;
+      };
+
+      const getYearSection = year => {
+        if (!yearCache.has(year)) {
+          const section = el('section', 'year');
+          const entries = el('div', 'entries');
+          section.append(el('h2', '', String(year)), entries);
+          yearCache.set(year, { section, entries });
+        }
+        return yearCache.get(year);
+      };
+
+      const render = () => {
+        list.setAttribute('aria-busy', 'true');
+        const query = search.value.trim().toLowerCase();
+        const year = yearSel.value;
+        const filtered = dataset.filter(g =>
+          (!query || g.searchText.includes(query)) &&
+          (!year || String(g.year) === year)
+        );
+        const upcoming = new Set(filtered);
+        count.textContent = `${filtered.length} ${filtered.length === 1 ? 'game' : 'games'}`;
+
+        videoObserver.disconnect();
+        // Release downloaded video data for entries no longer displayed.
+        for (const game of activeGames) {
+          if (upcoming.has(game)) continue;
+          const video = entriesCache.get(game)?.querySelector('video');
+          if (!video) continue;
+          video.pause();
+          video.dataset.inView = '0';
+          if (video.hasAttribute('src')) {
+            video.removeAttribute('src');
+            video.load();
+          }
+          video.dataset.src = game.image;
         }
 
-        modal.classList.add('open');
-        modal.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-        document.addEventListener('keydown', trapFocus);
-        modal.addEventListener('click', onBackdrop);
-        modalClose.focus();
+        for (const { entries } of yearCache.values()) entries.replaceChildren();
+        const fragment = document.createDocumentFragment();
+        const addedYears = new Set();
+        for (const game of filtered) {
+          const { section, entries } = getYearSection(game.year);
+          if (!addedYears.has(game.year)) {
+            fragment.appendChild(section);
+            addedYears.add(game.year);
+          }
+          const entry = getEntry(game);
+          entries.appendChild(entry);
+        }
+        if (!filtered.length) {
+          fragment.appendChild(el('p', 'empty', 'Nothing found. Try another word or set the year back to "all".'));
+        }
+        list.replaceChildren(fragment);
+        for (const video of list.querySelectorAll('video')) videoObserver.observe(video);
+        activeGames = upcoming;
+        list.setAttribute('aria-busy', 'false');
       };
 
-      const closeModal = () => {
-        modal.classList.remove('open');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-        document.removeEventListener('keydown', trapFocus);
-        modal.removeEventListener('click', onBackdrop);
-        if (lastFocused) lastFocused.focus();
-      };
-
-      const onBackdrop = e => { if (e.target === modal) closeModal(); };
-
-      modalClose.addEventListener('click', closeModal);
-      modalCloseBtn.addEventListener('click', closeModal);
-
-      /* ── Controls ── */
-      let searchTimeout;
-      searchInput.addEventListener('input', () => {
-        clearTimeout(searchTimeout);
-        searchTimeout = setTimeout(render, 150);
-      }, { passive: true });
-
-      /* ── Init ── */
+      let searchTimer;
+      search.addEventListener('input', () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(render, 150);
+      });
+      yearSel.addEventListener('change', render);
       render();
 
-      /* ── JSON-LD ── */
+      /* ── Structured data ── */
       try {
-        const byDateDesc = (a, b) => new Date(b.date) - new Date(a.date);
         const ld = {
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          itemListElement: dataset.slice().sort(byDateDesc).map((g, i) => ({
-            "@type": "VideoGame",
+          '@context': 'https://schema.org',
+          '@type': 'ItemList',
+          itemListElement: dataset.map((g, index) => ({
+            '@type': 'VideoGame',
             name: g.title,
             datePublished: g.date,
-            description: g.short_desc || g.details || "",
-            url: g.url || "https://adriano-t.github.io/",
-            position: i + 1,
-            publisher: g.collaboration || "Independent",
-            applicationCategory: "Game"
+            description: g.short_desc || g.details || '',
+            url: g.url || 'https://adriano-t.github.io/',
+            position: index + 1,
+            publisher: g.collaboration || 'Independent',
+            applicationCategory: 'Game'
           }))
         };
-        const el = document.createElement('script');
-        el.type = 'application/ld+json';
-        el.textContent = JSON.stringify(ld);
-        document.head.appendChild(el);
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.textContent = JSON.stringify(ld);
+        document.head.appendChild(script);
       } catch { }
-    })();
+    }, { once: true });
+  </script>
+
+  <script>
+    /* ── ISOBAR: contour-map dithering, 1-bit pixel tide ── */
+    const initBackground = () => {
+      // Respect data-saving mode before allocating a GPU context.
+      if (navigator.connection?.saveData) {
+        document.documentElement.classList.add('no-webgl');
+        return;
+      }
+      const canvas = document.getElementById('bg');
+      const page = document.querySelector('.page');
+      const useFallback = () => document.documentElement.classList.add('no-webgl');
+      const gl = canvas.getContext('webgl', {
+        antialias: false, alpha: false, depth: false, stencil: false,
+        powerPreference: 'low-power'
+      });
+      if (!gl) { useFallback(); return; }
+
+      /* Fine-tune the look here. Lower contrast = softer dither. */
+      const LOOK = {
+        contrast: 0.90,  // 0.0-1.0: ink visibility (try 0.65 for a softer look)
+        density: 0.90,   // 0.0-1.5: how many pixels appear
+        speed: 0.70,     // 0.0-2.0: slow drifting contour lines
+        hover: 0.75      // 0.0-1.5: subtle cursor ripple
+      };
+
+      const isTouch = matchMedia('(pointer: coarse)').matches;
+      // Desired CSS scale: desktop 1:1, touch devices 2:1.
+      // Snap to an integral number of physical display pixels to avoid
+      // uneven resampling (hairline/stripe artifacts on fractional DPR).
+      const DPR = window.devicePixelRatio || 1;
+      const CSS_SCALE = 1; // 1 canvas pixel = 1 CSS pixel (desktop and mobile)
+      const PIXEL = Math.max(1, Math.round(CSS_SCALE * DPR)) / DPR;
+      const FPS = isTouch ? 20 : 30;
+      const vs = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
+      const fs = `
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+        precision highp float;
+        #else
+        precision mediump float;
+        #endif
+        uniform vec2 uRes;
+        uniform float uTime;
+        uniform float uLight;
+        uniform float uScroll;
+        uniform float uPageWidth;
+        uniform float uPixelSize;
+        uniform vec2 uMouse;
+        uniform float uHover;
+        uniform float uContrast;
+        uniform float uDensity;
+        uniform float uSpeed;
+        uniform float uHoverPower;
+
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+        }
+        float noise(vec2 p) {
+          vec2 i = floor(p), f = fract(p);
+          f = f * f * (3.0 - 2.0 * f);
+          return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
+                     mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x), f.y);
+        }
+        float fbm(vec2 p) {
+          float v = 0.0, a = 0.5;
+          for (int i = 0; i < 3; i++) {
+            v += a * noise(p);
+            p = p * 2.03 + 4.1;
+            a *= 0.5;
+          }
+          return v;
+        }
+        float bayer2(vec2 a) {
+          a = mod(floor(a), 2.0);
+          return 2.0 * a.x + 3.0 * a.y - 4.0 * a.x * a.y;
+        }
+        float bayer4(vec2 a) {
+          return 4.0 * bayer2(a) + bayer2(floor(a / 2.0));
+        }
+        float bayer8(vec2 a) {
+          return (4.0 * bayer4(a) + bayer2(floor(a / 4.0)) + 0.5) / 64.0;
+        }
+
+        void main() {
+          // Anchor the pixels to the document as the user scrolls.
+          vec2 pix = gl_FragCoord.xy - vec2(0.0, uScroll);
+          vec2 uv = pix / uRes.y * 2.35;
+          float t = uTime * 0.018 * uSpeed;
+          float side = gl_FragCoord.x < uRes.x * 0.5 ? -1.0 : 1.0;
+
+          // A compact, imperfect edge: dither vanishes as individual pixels.
+          float halfPage = min(uPageWidth, uRes.x) * 0.5;
+          float x = abs(gl_FragCoord.x - uRes.x * 0.5);
+          float edgeNoise = fbm(vec2(uv.y * 0.82 + t, side * 3.7));
+          float wiggle = (edgeNoise - 0.5) * (34.0 / uPixelSize);
+          float inwards = min(67.0 / uPixelSize, uRes.x * 0.22);
+          float outwards = min(48.0 / uPixelSize, uRes.x * 0.22);
+          float feather = smoothstep(halfPage - inwards, halfPage + outwards, x + wiggle);
+
+          // Warped printmaking / topographic maps rather than uniform static.
+          vec2 drift = vec2(t * 0.58, -t * 0.34);
+          vec2 fold = vec2(
+            fbm(uv * 0.77 + drift + vec2(1.3, 3.7)),
+            fbm(uv * 0.77 - drift + vec2(8.1, 0.4))
+          );
+          vec2 flowing = uv + (fold - 0.5) * 1.75;
+          float terrain = fbm(flowing * 1.15 + drift * 0.28);
+          float altitude = uv.y * 0.88 + uv.x * 0.14 + terrain * 2.85 + fold.x * 0.8;
+
+          // Cursor adds a slight ripple to the contours, not a glow or spotlight.
+          vec2 cursor = gl_FragCoord.xy - uMouse;
+          float distanceToCursor = length(cursor);
+          float radius = 155.0 / uPixelSize;
+          float local = (1.0 - smoothstep(0.0, radius, distanceToCursor));
+          local = local * local * uHover * uHoverPower;
+          altitude += local * 0.065 * sin(distanceToCursor * 0.22 - uTime * 1.5);
+
+          // Narrow contour lines cut through shaded, floating ink islands.
+          float contour = 1.0 - smoothstep(0.07, 0.23, abs(sin(altitude * 7.6)));
+          float bodyInk = smoothstep(0.27, 0.76, terrain);
+          float fineFlow = 0.5 + 0.5 * sin(altitude * 13.3 + fold.y * 3.0);
+          float coverage = 0.034 + 0.235 * bodyInk + 0.125 * contour + 0.026 * fineFlow;
+          coverage += local * (0.022 + 0.020 * contour);
+          coverage = clamp(feather * coverage * uDensity, 0.0, 0.49);
+
+          // Ordered 8x8 monochrome dithering, with a hint of print imperfection.
+          float threshold = bayer8(pix) + (hash(floor(pix / 8.0)) - 0.5) * 0.014;
+          float on = step(threshold, coverage);
+
+          vec3 paper = mix(vec3(12.0, 12.0, 12.0) / 255.0,
+                           vec3(244.0, 244.0, 240.0) / 255.0, uLight);
+          vec3 ink = mix(vec3(38.0, 38.0, 40.0) / 255.0,
+                         vec3(215.0, 215.0, 210.0) / 255.0, uLight);
+          ink = mix(paper, ink, clamp(uContrast, 0.0, 1.0));
+          gl_FragColor = vec4(mix(paper, ink, on), 1.0);
+        }`;
+
+      const compile = (type, src) => {
+        const sh = gl.createShader(type);
+        gl.shaderSource(sh, src);
+        gl.compileShader(sh);
+        return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null;
+      };
+      const v = compile(gl.VERTEX_SHADER, vs), f = compile(gl.FRAGMENT_SHADER, fs);
+      if (!v || !f) { useFallback(); return; }
+
+      const prog = gl.createProgram();
+      gl.attachShader(prog, v); gl.attachShader(prog, f);
+      gl.linkProgram(prog);
+      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { useFallback(); return; }
+      gl.useProgram(prog);
+
+      /* one oversized triangle covers the screen */
+      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      const loc = gl.getAttribLocation(prog, 'p');
+      gl.enableVertexAttribArray(loc);
+      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+      const uRes = gl.getUniformLocation(prog, 'uRes');
+      const uTime = gl.getUniformLocation(prog, 'uTime');
+      const uLight = gl.getUniformLocation(prog, 'uLight');
+      const uScroll = gl.getUniformLocation(prog, 'uScroll');
+      const uPageWidth = gl.getUniformLocation(prog, 'uPageWidth');
+      const uPixelSize = gl.getUniformLocation(prog, 'uPixelSize');
+      const uMouse = gl.getUniformLocation(prog, 'uMouse');
+      const uHover = gl.getUniformLocation(prog, 'uHover');
+      const uContrast = gl.getUniformLocation(prog, 'uContrast');
+      const uDensity = gl.getUniformLocation(prog, 'uDensity');
+      const uSpeed = gl.getUniformLocation(prog, 'uSpeed');
+      const uHoverPower = gl.getUniformLocation(prog, 'uHoverPower');
+      gl.uniform1f(uContrast, LOOK.contrast);
+      gl.uniform1f(uDensity, LOOK.density);
+      gl.uniform1f(uSpeed, LOOK.speed);
+      gl.uniform1f(uHoverPower, LOOK.hover);
+
+      const schemeMq = matchMedia('(prefers-color-scheme: dark)');
+      const motionMq = matchMedia('(prefers-reduced-motion: reduce)');
+      const start = performance.now();
+      let mouseX = -1000, mouseY = -1000;
+      let aimX = -1000, aimY = -1000;
+      let hover = 0, hoverTarget = 0;
+      let pageWidthCss = 0;
+
+      /* Only desktop mouse pointers activate the subtle interaction. */
+      addEventListener('pointermove', e => {
+        if (e.pointerType !== 'mouse') return;
+        aimX = e.clientX / PIXEL;
+        aimY = (innerHeight - e.clientY) / PIXEL;
+        const halfPage = pageWidthCss / 2;
+        hoverTarget = Math.abs(e.clientX - innerWidth / 2) > halfPage - 90 ? 1 : 0;
+      }, { passive: true });
+      document.addEventListener('mouseleave', () => { hoverTarget = 0; });
+
+      const resize = () => {
+        pageWidthCss = page.getBoundingClientRect().width;
+        canvas.width = Math.max(1, Math.ceil(innerWidth / PIXEL));
+        canvas.height = Math.max(1, Math.ceil(innerHeight / PIXEL));
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.uniform2f(uRes, canvas.width, canvas.height);
+        gl.uniform1f(uPageWidth, pageWidthCss / PIXEL);
+        gl.uniform1f(uPixelSize, PIXEL);
+        gl.uniform1f(uLight, schemeMq.matches ? 0 : 1);
+      };
+
+      const draw = now => {
+        if (!motionMq.matches) {
+          hover += (hoverTarget - hover) * 0.2;
+          mouseX += (aimX - mouseX) * 0.28;
+          mouseY += (aimY - mouseY) * 0.28;
+        } else hover = 0;
+        gl.uniform2f(uMouse, mouseX, mouseY);
+        gl.uniform1f(uHover, hover);
+        gl.uniform1f(uTime, (now - start) / 1000 + 20);
+        gl.uniform1f(uScroll, Math.round(scrollY / PIXEL));
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      };
+
+      // A timer queues only the requested FPS instead of polling RAF at 60 Hz.
+      let raf = 0, frameTimer = 0, scrollRaf = 0, lastDraw = -Infinity;
+      const interval = 1000 / FPS;
+      const stop = () => {
+        cancelAnimationFrame(raf);
+        cancelAnimationFrame(scrollRaf);
+        clearTimeout(frameTimer);
+        raf = frameTimer = scrollRaf = 0;
+      };
+      const loop = now => {
+        raf = 0;
+        if (document.hidden || motionMq.matches) return;
+        if (now - lastDraw >= interval) {
+          draw(now);
+          lastDraw = now;
+        }
+        frameTimer = setTimeout(() => {
+          raf = requestAnimationFrame(loop);
+        }, interval);
+      };
+      const run = () => {
+        stop();
+        if (document.hidden) return;
+        resize();
+        const now = performance.now();
+        draw(motionMq.matches ? start + 8000 : now);
+        lastDraw = now;
+        // Switch from the CSS fallback only once a frame is available.
+        document.documentElement.classList.remove('no-webgl');
+        if (!motionMq.matches) raf = requestAnimationFrame(loop);
+      };
+
+      // Keep the texture aligned to scrolling, without exceeding the FPS budget.
+      addEventListener('scroll', () => {
+        if (document.hidden || scrollRaf) return;
+        scrollRaf = requestAnimationFrame(now => {
+          scrollRaf = 0;
+          if (now - lastDraw < interval) return;
+          draw(motionMq.matches ? start + 8000 : now);
+          lastDraw = now;
+        });
+      }, { passive: true });
+
+      let resizeTimer;
+      addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(run, 150);
+      });
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else run();
+      });
+      canvas.addEventListener('webglcontextlost', event => {
+        event.preventDefault();
+        stop();
+        useFallback();
+      });
+      schemeMq.addEventListener('change', run);
+      motionMq.addEventListener('change', run);
+      run();
+    };
+
+    // Delay GPU compilation until the main document and its game list can paint.
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initBackground, { timeout: 1500 });
+    } else {
+      addEventListener('load', initBackground, { once: true });
+    }
   </script>
 </body>
 
