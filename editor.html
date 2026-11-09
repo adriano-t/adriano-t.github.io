@@ -1,0 +1,794 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1019">
+  <title>SVG Studio</title>
+  <style>
+    :root{color-scheme:dark;--bg:#0d1019;--surface:#151a26;--surface2:#1c2230;--surface3:#252c3d;--line:#30374a;--text:#f2f4fb;--muted:#929bb2;--accent:#a48cff;--accent2:#7660e9;--green:#58d4ac;--danger:#ee7a8d;--r:12px}
+    *{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--bg);font-size:13px}button,input,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.35;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+    .app{height:100dvh;min-height:580px;display:flex;flex-direction:column;overflow:hidden}
+    .topbar{height:74px;min-height:74px;display:flex;align-items:center;gap:20px;padding:0 22px;background:#131823;border-bottom:1px solid #2d3444;z-index:2}
+    .brand{display:flex;align-items:center;gap:12px;min-width:222px}.brand-mark{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#b49cff,#6756c8);display:grid;place-items:center;box-shadow:0 6px 24px #846eff22}.brand-mark svg{width:22px;height:22px}.brand-title{font-size:16px;letter-spacing:-.4px;font-weight:760;line-height:1.2}.brand-title span{color:#b8a8ff}.brand-sub{font-size:11px;color:var(--muted);margin-top:3px}
+    .divider-v{width:1px;height:28px;background:var(--line);flex:none}.top-actions{display:flex;align-items:center;gap:7px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}.btn{border:1px solid var(--line);border-radius:9px;background:var(--surface2);color:var(--text);height:36px;padding:0 13px;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:620;white-space:nowrap;transition:background .12s,border .12s,transform .12s}.btn:hover:not(:disabled){background:#30384b;border-color:#505977}.btn:active:not(:disabled){transform:translateY(1px)}.btn svg{height:16px;width:16px;stroke-width:1.9}.btn.primary{border-color:#9583ff;background:#9179f3;color:#121022}.btn.primary:hover{background:#b19cff}.btn.iconbtn{width:36px;padding:0}.btn.plain{background:transparent}.btn.danger{color:#f6a4b0}.btn.small{height:31px;padding:0 10px;font-size:12px}.top-separator{height:24px;border-left:1px solid var(--line);margin:0 4px}
+    .layout{display:grid;grid-template-columns:82px minmax(0,1fr) 296px;min-height:0;flex:1}.rail{border-right:1px solid var(--line);background:#131824;display:flex;flex-direction:column;align-items:center;padding:19px 7px;gap:4px}.rail-label{font-size:9px;letter-spacing:1.3px;color:#8b93a9;font-weight:760;margin:1px 0 12px;text-transform:uppercase}.tool{width:62px;height:57px;background:transparent;border:1px solid transparent;color:#aab2c6;border-radius:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:10px;transition:.12s}.tool:hover{background:#252b3b;color:#fff}.tool.active{background:#282642;border-color:#6657a9;color:#c7baff}.tool svg{width:20px;height:20px;stroke-width:1.8}.rail-spacer{flex:1}.rail-short{font-size:10px;text-align:center;color:#6f778d;line-height:1.6;padding:6px 5px}
+    .center{min-width:0;min-height:0;display:flex;flex-direction:column;background:#0e121c}.canvas-heading{height:61px;min-height:61px;display:flex;align-items:center;gap:12px;justify-content:space-between;padding:0 22px;border-bottom:1px solid #272e3d}.document-name{font-size:13px;font-weight:700}.document-meta{font-size:11px;color:var(--muted);margin-top:4px}.view-actions{display:flex;align-items:center;gap:9px}.view-label{font-size:11px;color:var(--muted)}.range{accent-color:#a48cff;max-width:116px;cursor:pointer}.zoom-value{font-size:11px;font-variant-numeric:tabular-nums;color:#b5bfd2;min-width:42px;text-align:right}.stage{flex:1;min-height:0;position:relative;overflow:hidden;background-color:#0f141f;background-image:radial-gradient(#4c566e48 .85px,transparent .85px);background-size:20px 20px;cursor:crosshair;outline:none}.stage canvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;user-select:none;outline:none}.stage.is-panning{cursor:grabbing}.stage[data-tool="pan"]{cursor:grab}.stage[data-tool="pan"].is-panning{cursor:grabbing}.stage.drag-over:after{content:"Rilascia qui SVG, PNG o JPG";position:absolute;inset:20px;z-index:4;background:#1d1c39e9;border:2px dashed var(--accent);border-radius:16px;display:grid;place-items:center;font-size:20px;font-weight:700;pointer-events:none}.canvas-hint{position:absolute;left:50%;bottom:27px;transform:translateX(-50%);border:1px solid #3b4255;background:#171d2adf;color:#aeb7cb;border-radius:100px;font-size:11px;padding:8px 13px;white-space:nowrap;pointer-events:none;transition:opacity .25s}.canvas-hint.hidden{opacity:0}.statusbar{min-height:35px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 20px;background:#141925;border-top:1px solid #2b3242;font-size:11px;color:#9ca7be}.status-right{display:flex;gap:17px}.status-point{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:7px}.kbd{font:10px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace;color:#bfc5d7;border:1px solid #52586a;border-radius:4px;padding:1px 5px;background:#242b3b}
+    .sidebar{overflow:auto;min-height:0;padding:19px 17px 26px;background:#151a26;border-left:1px solid var(--line);scrollbar-color:#3b4253 transparent;scrollbar-width:thin}.panel{margin-bottom:24px}.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.panel-heading{font-size:11px;font-weight:760;text-transform:uppercase;letter-spacing:1.05px;color:#aab4ca}.subtle{font-size:11px;color:var(--muted)}.color-well{display:flex;align-items:center;gap:10px}.color-well input[type=color]{appearance:none;-webkit-appearance:none;width:52px;height:48px;padding:4px;background:#222a3b;border:1px solid #4a5369;border-radius:10px;cursor:pointer}.color-well input[type=color]::-webkit-color-swatch-wrapper{padding:0}.color-well input[type=color]::-webkit-color-swatch{border:0;border-radius:6px}.color-well input[type=color]::-moz-color-swatch{border:0;border-radius:6px}.field{width:100%;height:38px;border:1px solid #444c5f;border-radius:9px;background:#202737;color:#eef1fd;padding:0 10px;outline:0}.field:focus{border-color:#a18cfa}.field.invalid{border-color:var(--danger)}.field-label{display:block;color:#a0a9bd;font-size:11px;margin:0 0 7px}.color-caption{color:var(--muted);font-size:11px;margin-top:5px}.palette{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;margin-top:13px}.swatch{height:23px;min-width:0;border:2px solid #454e5e;border-radius:6px;padding:0;transition:transform .1s,border-color .1s;position:relative}.swatch:hover{transform:scale(1.12);z-index:1}.swatch.selected{border-color:#fff;box-shadow:0 0 0 1px #9b89fb}.recent-palette{margin-top:9px}.recent-placeholder{height:23px;border:1px dashed #41495b;border-radius:6px;background:#202737;opacity:.55}.section-line{height:1px;background:#31384a;margin:19px 0}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.preset-row{display:flex;gap:6px;margin-bottom:13px}.preset{flex:1;height:30px;padding:0 5px;font-size:11px;border:1px solid #3d455a;border-radius:7px;background:#232a39;color:#bac4d5}.preset:hover{border-color:var(--accent);color:white}.preset.active{border-color:#7668b7;background:#302b48;color:#e6ddff}.field-group{margin-bottom:12px}.field-group .field{width:100%}.wide{width:100%}.toggle-row{display:flex;align-items:center;gap:9px;justify-content:space-between;margin:13px 0}.toggle-name{font-size:12px;color:#d5dbe9}.toggle-desc{font-size:10px;color:#818da4;margin-top:3px}.switch{appearance:none;width:38px;height:22px;border:1px solid #4a5366;background:#30384b;border-radius:100px;cursor:pointer;position:relative;flex:none;transition:.15s}.switch:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:100%;background:#b9c1d1;transition:.15s}.switch:checked{background:#8570ed;border-color:#9f8fff}.switch:checked:after{transform:translateX(16px);background:white}.bg-inline{display:flex;align-items:center;gap:10px}.bg-inline input[type=color]{width:38px;height:32px;padding:2px;border:1px solid #4a5366;background:#202737;border-radius:7px;cursor:pointer}.help-grid{display:grid;grid-template-columns:1fr auto;gap:10px 7px;color:#909bb0;font-size:11px}.help-grid span:nth-child(even){color:#d7ddea}.note{font-size:11px;line-height:1.6;color:#818da4}.mini-divider{border-top:1px solid #31384a;margin:12px 0}.footer-credit{color:#616d85;font-size:10px;line-height:1.6}
+    .anchor-grid{display:grid;grid-template-columns:repeat(3,36px);gap:5px;margin:9px 0 7px}
+    .anchor-choice{height:32px;border:1px solid #464e62;border-radius:7px;background:#232a39;color:#aab4ca;font-size:17px;line-height:1;display:grid;place-items:center}
+    .anchor-choice:hover{border-color:#8d7ae9;color:white}.anchor-choice.active{background:#393052;border-color:#a48cff;color:#e4ddff}
+    /* Galleria locale: miniature degli SVG originali, senza copie in localStorage. */
+    .history-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;max-height:min(62vh,620px);overflow:auto;padding:2px 3px 4px 1px;scrollbar-color:#464e62 transparent;scrollbar-width:thin}
+    .history-list>.note{grid-column:1/-1}
+    .history-entry{display:flex;flex-direction:column;gap:8px;min-width:0;border:1px solid #343d52;background:#1c2331;border-radius:10px;padding:8px}
+    .history-preview{position:relative;display:block;width:100%;aspect-ratio:1;border:1px solid #48516a;border-radius:7px;padding:6px;overflow:hidden;background-color:#e4e6ec;background-image:linear-gradient(45deg,#c5c9d3 25%,transparent 25%),linear-gradient(-45deg,#c5c9d3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c5c9d3 75%),linear-gradient(-45deg,transparent 75%,#c5c9d3 75%);background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0;color:#313d54}
+    .history-preview:hover{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}.history-preview img{display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated;pointer-events:none}
+    .history-preview-fallback{display:grid;place-items:center;width:100%;height:100%;font-size:10px;text-align:center}
+    .history-entry-title{font-size:11px;font-weight:650;color:#e7eafa;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.history-entry-meta{font-size:10px;color:#9ba7bd;margin-top:3px}
+    .history-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.history-buttons .btn{width:100%;min-width:0;height:27px;padding:0 3px;font-size:10px}.history-buttons .btn:first-child{grid-column:1/-1}
+    .gallery-preview-dialog{width:min(94vw,520px);max-width:520px;max-height:92dvh;overflow:auto;background:#1e2535;color:var(--text);border:1px solid #626087;border-radius:13px;padding:18px;box-shadow:0 18px 65px #000b}
+    .gallery-preview-dialog::backdrop{background:#050810d9}.gallery-preview-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.gallery-preview-head h3{font-size:14px;margin:0}
+    .gallery-preview-stage{height:min(52dvh,400px);min-height:180px;display:grid;place-items:center;overflow:hidden;border:1px solid #48516a;border-radius:10px;padding:16px;background-color:#e4e6ec;background-image:linear-gradient(45deg,#c5c9d3 25%,transparent 25%),linear-gradient(-45deg,#c5c9d3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c5c9d3 75%),linear-gradient(-45deg,transparent 75%,#c5c9d3 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}
+    .gallery-preview-stage img{width:100%;height:100%;object-fit:contain;image-rendering:pixelated}.gallery-preview-meta{font-size:11px;color:#aab6ca;margin:11px 0 15px}.gallery-preview-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+    .stage[data-tool="select"].is-selection-hover{cursor:move}.stage[data-tool="select"].is-moving-selection{cursor:grabbing}
+    .pixel-import-dialog{width:min(94vw,470px);max-width:470px;max-height:92dvh;overflow:auto;background:#1e2535;color:var(--text);border:1px solid #626087;border-radius:13px;padding:20px;box-shadow:0 18px 65px #000b}
+    .pixel-import-dialog::backdrop{background:#050810d9}.pixel-import-dialog h3{font-size:15px;margin:0 0 7px}.pixel-import-dialog p{font-size:11px;color:#aab6ca;line-height:1.6;margin:0 0 14px}
+    .pixel-import-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.pixel-import-preview{min-height:210px;max-height:310px;display:grid;place-items:center;border:1px solid #48516a;border-radius:10px;padding:12px;overflow:hidden;background-color:#e4e6ec;background-image:linear-gradient(45deg,#c5c9d3 25%,transparent 25%),linear-gradient(-45deg,#c5c9d3 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#c5c9d3 75%),linear-gradient(-45deg,transparent 75%,#c5c9d3 75%);background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0}
+    .pixel-import-preview canvas{display:block;max-width:100%;max-height:280px;image-rendering:pixelated}.pixel-import-details{margin:10px 0 16px;font-size:11px;color:#b8c3d9}.pixel-import-actions{display:flex;justify-content:flex-end;gap:8px}
+    @media(max-width:420px){.pixel-import-fields{grid-template-columns:1fr}}
+    .confirm-dialog{width:min(92vw,390px);max-width:390px;background:#1e2535;color:var(--text);border:1px solid #626087;border-radius:13px;padding:23px;box-shadow:0 18px 65px #000b}
+    .confirm-dialog::backdrop{background:#050810bc}
+    .confirm-dialog h3{font-size:15px;margin:0 0 10px}.confirm-dialog p{font-size:12px;line-height:1.6;color:#c1c9db;margin:0 0 20px}
+    .confirm-actions{display:flex;justify-content:flex-end;gap:8px}
+    .toast-region{position:fixed;bottom:52px;left:50%;transform:translateX(-50%);z-index:12;display:flex;flex-direction:column;align-items:center;pointer-events:none;gap:8px;max-width:min(90vw,480px)}.toast{background:#2b3549;color:#f0f3ff;border:1px solid #65738f;border-radius:10px;padding:12px 15px;box-shadow:0 12px 40px #0008;font-size:12px;line-height:1.5;max-width:100%;text-align:center}.toast.error{border-color:#ac617a}.toast.success{border-color:#509982}
+    @media(max-width:1160px){.layout{grid-template-columns:70px minmax(0,1fr) 262px}.rail{padding-left:3px;padding-right:3px}.topbar{padding:0 14px;gap:8px}.brand{min-width:180px}.sidebar{padding-left:13px;padding-right:13px}.btn{padding:0 9px}}
+    @media(max-width:930px){.app{height:auto;min-height:100dvh;overflow:visible}.topbar{height:auto;min-height:68px;padding:13px;align-items:flex-start;flex-wrap:wrap}.brand{flex:1}.top-actions{width:100%;margin-left:0;justify-content:flex-start}.layout{display:grid;grid-template-columns:68px minmax(0,1fr)}.rail{grid-row:1}.center{min-height:500px;grid-column:2}.sidebar{grid-column:1/-1;border-left:none;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 22px;overflow:visible}.sidebar .panel{min-width:0}.stage{min-height:380px}.canvas-hint{font-size:10px}}
+    @media(max-width:540px){.layout{grid-template-columns:1fr}.rail{grid-row:auto;grid-column:1;flex-direction:row;height:73px;padding:6px;overflow-x:auto;align-items:center;gap:4px}.rail-label,.rail-spacer,.rail-short{display:none}.tool{min-width:54px;height:56px;flex:none}.center{grid-column:1;min-height:430px}.canvas-heading{padding:0 12px}.view-actions{gap:5px}.view-actions .range{width:60px}.canvas-hint{display:none}.sidebar{display:block;padding:16px}.top-actions{gap:5px}.top-separator{display:none}.top-actions .btn{font-size:11px;padding:0 8px}.stage{min-height:330px}.statusbar{padding:0 10px}.status-right{gap:7px}.status-right .hide-small{display:none}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1" fill="white" stroke="none"/><rect x="14" y="3" width="7" height="7" rx="1" fill="#e2d8ff" stroke="none"/><rect x="3" y="14" width="7" height="7" rx="1" fill="#e2d8ff" stroke="none"/><rect x="14" y="14" width="7" height="7" rx="1" fill="none"/></svg></div>
+      <div><div class="brand-title">SVG <span>STUDIO</span></div><div class="brand-sub">Pixel art &amp; SVG editor</div></div>
+    </div>
+    <div class="top-actions">
+      <button id="undoBtn" class="btn iconbtn plain" title="Annulla (Ctrl+Z)" aria-label="Annulla"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M8 8H4V4M4 8c2-4 6-5 10-4a9 9 0 1 1-7 15"/></svg></button>
+      <button id="redoBtn" class="btn iconbtn plain" title="Ripeti (Ctrl+Y / Ctrl+Shift+Z)" aria-label="Ripeti"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 8h4V4m0 4c-2-4-6-5-10-4a9 9 0 1 0 7 15"/></svg></button>
+      <span class="top-separator"></span>
+      <button id="importBtn" class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg>Importa</button>
+      <button id="pasteImageBtn" class="btn" title="Incolla dagli appunti un'immagine e convertila in pixel SVG"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 5V3h6v2M8 15l3-3 2 2 2-2 2 3"/></svg>Incolla immagine</button>
+      <button id="copySvgBtn" class="btn" title="Copia SVG negli appunti (Ctrl+C sulla tela)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>Copia SVG</button>
+      <button id="copyDataUriBtn" class="btn" title="Copia Data URI SVG ottimizzato, pronto per CSS url(...)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10 13a5 5 0 0 0 7.1 0l2-2a5 5 0 0 0-7.1-7.1l-1.2 1.2"/><path d="M14 11a5 5 0 0 0-7.1 0l-2 2a5 5 0 0 0 7.1 7.1l1.2-1.2"/></svg>Copia Data URI</button>
+      <button id="exportSvgBtn" class="btn primary" title="Esporta SVG (Ctrl+S)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg>SVG</button>
+      <button id="exportPngBtn" class="btn" title="Esporta PNG"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="2"/><path d="m3 17 6-6 4 4 3-3 5 5"/></svg>PNG</button>
+    </div>
+  </header>
+  <main class="layout">
+    <nav class="rail" aria-label="Strumenti di disegno">
+      <div class="rail-label">Strumenti</div>
+      <button class="tool active" data-tool="pencil" title="Matita (B)" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 20 4-.9L20 7a2.1 2.1 0 0 0-3-3L5 16 4 20Z"/><path d="m14.5 6.5 3 3"/></svg>Matita</button>
+      <button class="tool" data-tool="eraser" title="Gomma (E)" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 14 9-10a2 2 0 0 1 3 0l5 5a2 2 0 0 1 0 3l-8 8H8l-4-4a2 2 0 0 1 0-2Z"/><path d="m9 9 8 8M13 20h8"/></svg>Gomma</button>
+      <button class="tool" data-tool="fill" title="Riempi (G)" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 12 8-8 8 8-8 8-8-8Z"/><path d="M3 4h6M20 17c0 2 2 3 2 4a2 2 0 0 1-4 0c0-1 2-2 2-4Z"/></svg>Riempi</button>
+      <button class="tool" data-tool="line" title="Linea (L)" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 19 19 5"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="5" r="2"/></svg>Linea</button>
+      <button class="tool" data-tool="rect" title="Rettangolo (R)" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="5" width="16" height="14" rx="1"/></svg>Rettangolo</button>
+      <button class="tool" data-tool="select" title="Selezione rettangolare (M): seleziona e trascina i pixel" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="13" height="13" rx="1" stroke-dasharray="3 2"/><path d="m11 11 9 9m-8-3 3-3m-1 5 5-5"/></svg>Seleziona</button>
+      <button class="tool" data-tool="picker" title="Contagocce (I) · oppure Alt" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m13 6 5-4 4 4-4 5M4 20l8-8M14 8l3 3M4 20l-1 2 3-1 12-12-3-3L4 20Z"/></svg>Colore</button>
+      <button class="tool" data-tool="replace-color" title="Sostituisci colore (T): clicca un pixel per sostituire tutte le occorrenze con il colore principale" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 7h12m-4-4 4 4-4 4M21 17H9m4-4-4 4 4 4"/><rect x="2" y="15" width="5" height="5" rx="1"/><rect x="17" y="4" width="5" height="5" rx="1"/></svg>Sostituisci</button>
+      <button class="tool" data-tool="delete-color" title="Cancella colore (X): clicca un pixel per rimuovere tutte le occorrenze di quel colore" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m4 7 7-4 10 8-8 10H6l-4-5 9-10M15 15l-5-5M13 21h8"/></svg>Canc. colore</button>
+      <button class="tool" data-tool="pan" title="Sposta (H) · oppure Spazio + trascina" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 13V5a2 2 0 0 1 4 0v6-4a2 2 0 0 1 4 0v5-2a2 2 0 0 1 4 0v5c0 5-3 7-8 7h-1c-3 0-5-2-7-5l-2-3a2 2 0 0 1 3-3l3 3"/></svg>Sposta</button>
+      <div class="rail-spacer"></div><div class="rail-short">Premi <span class="kbd">?</span><br>per i tasti</div>
+    </nav>
+    <section class="center" aria-label="Area di disegno">
+      <div class="canvas-heading"><div><div class="document-name">La tua tela <span style="color:#8b93aa">/</span> <span id="dimText">16 × 16</span></div><div class="document-meta">Disegna, trascina o incolla con <strong style="color:#c6baff">Ctrl+V</strong></div></div>
+        <div class="view-actions"><span class="view-label">Zoom</span><input class="range" type="range" id="zoomSlider" min="3" max="48" step="1" aria-label="Zoom"><span class="zoom-value" id="zoomText">100%</span><button class="btn small plain" id="fitBtn" title="Adatta al riquadro">Adatta</button></div>
+      </div>
+      <div id="stage" class="stage" data-tool="pencil"><canvas id="drawingCanvas" tabindex="0" role="img" aria-label="Tela pixel art, usa il mouse o il tocco per disegnare">Il browser non supporta Canvas.</canvas><div id="canvasHint" class="canvas-hint">Trascina per disegnare · <strong>Ctrl+V</strong> per convertire immagini in pixel SVG</div></div>
+      <div class="statusbar"><span id="statusMessage"><span class="status-point"></span>Pronto per disegnare</span><span class="status-right"><span id="positionText">X: — &nbsp; Y: —</span><span class="hide-small" id="pixelCount">0 pixel colorati</span></span></div>
+    </section>
+    <aside class="sidebar" aria-label="Impostazioni">
+      <section class="panel"><div class="panel-header"><span class="panel-heading">Colore principale</span><span class="subtle" id="colorName">Matita</span></div>
+        <div class="color-well"><input id="colorPicker" type="color" value="#9b87f5" aria-label="Seleziona colore"><div style="flex:1"><label class="field-label" for="hexInput">Colore esadecimale</label><input id="hexInput" class="field" type="text" spellcheck="false" maxlength="7" value="#9B87F5"></div></div>
+        <div class="section-line"></div><div class="panel-header" style="margin-bottom:7px"><span class="panel-heading">Palette rapida</span><span class="subtle">24 colori</span></div><div id="palette" class="palette"></div>
+        <div class="panel-header" style="margin:17px 0 0"><span class="panel-heading">Colori recenti</span><span class="subtle">Ultimi 16 · salvati</span></div>
+        <div id="recentColors" class="palette recent-palette" aria-label="Ultimi 16 colori selezionati"></div>
+        <p class="note" style="margin:10px 0 0">Con <strong>Sostituisci colore</strong>, clicca sulla tela: tutti i pixel di quel colore diventano il colore principale. Con <strong>Canc. colore</strong> diventano trasparenti.</p>
+        <div class="section-line"></div><div class="panel-header" style="margin-bottom:10px"><span class="panel-heading">Pennello</span><span id="brushValue" class="subtle">1 px</span></div><input id="brushRange" type="range" min="1" max="8" value="1" step="1" class="range" style="width:100%;max-width:none" aria-label="Dimensione pennello">
+        <div class="toggle-row"><div><div class="toggle-name">Simmetria orizzontale</div><div class="toggle-desc">Disegna anche sul lato opposto</div></div><input id="mirrorToggle" class="switch" type="checkbox" aria-label="Simmetria orizzontale"></div>
+      </section>
+      <section class="panel"><div class="panel-header"><span class="panel-heading">Dimensioni tela</span><span class="subtle">1–128 px</span></div>
+        <div class="preset-row"><button class="preset active" data-size="16">16 × 16</button><button class="preset" data-size="32">32 × 32</button><button class="preset" data-size="64">64 × 64</button></div>
+        <div class="form-row"><div class="field-group"><label class="field-label" for="widthInput">Larghezza</label><input id="widthInput" class="field" type="number" min="1" max="128" value="16"></div><div class="field-group"><label class="field-label" for="heightInput">Altezza</label><input id="heightInput" class="field" type="number" min="1" max="128" value="16"></div></div>
+        <label class="field-label" style="margin-top:8px">Ancoraggio del ridimensionamento</label>
+        <div id="anchorGrid" class="anchor-grid" role="group" aria-label="Punto fisso del ridimensionamento">
+          <button class="anchor-choice" data-anchor="top-left" title="Mantieni fisso: alto sinistra" aria-label="Alto sinistra" aria-pressed="false">↖</button>
+          <button class="anchor-choice" data-anchor="top" title="Mantieni fisso: alto centro" aria-label="Alto centro" aria-pressed="false">↑</button>
+          <button class="anchor-choice" data-anchor="top-right" title="Mantieni fisso: alto destra" aria-label="Alto destra" aria-pressed="false">↗</button>
+          <button class="anchor-choice" data-anchor="left" title="Mantieni fisso: centro sinistra" aria-label="Centro sinistra" aria-pressed="false">←</button>
+          <button class="anchor-choice active" data-anchor="center" title="Mantieni fisso: centro" aria-label="Centro" aria-pressed="true">●</button>
+          <button class="anchor-choice" data-anchor="right" title="Mantieni fisso: centro destra" aria-label="Centro destra" aria-pressed="false">→</button>
+          <button class="anchor-choice" data-anchor="bottom-left" title="Mantieni fisso: basso sinistra" aria-label="Basso sinistra" aria-pressed="false">↙</button>
+          <button class="anchor-choice" data-anchor="bottom" title="Mantieni fisso: basso centro" aria-label="Basso centro" aria-pressed="false">↓</button>
+          <button class="anchor-choice" data-anchor="bottom-right" title="Mantieni fisso: basso destra" aria-label="Basso destra" aria-pressed="false">↘</button>
+        </div>
+        <div class="color-caption" style="margin-bottom:10px">Il punto scelto resta fisso: i pixel vengono traslati prima di ritagliare o aggiungere spazio.</div>
+        <button id="resizeBtn" class="btn wide">Applica dimensioni</button>
+        <div class="section-line"></div><div class="panel-header"><span class="panel-heading">Aspetto tela</span></div>
+        <div class="toggle-row"><div class="toggle-name">Mostra griglia</div><input id="gridToggle" type="checkbox" class="switch" checked aria-label="Mostra griglia"></div>
+        <div class="toggle-row"><div><div class="toggle-name">Sfondo colorato</div><div class="toggle-desc">Disattivato = trasparente</div></div><input id="bgToggle" type="checkbox" class="switch" aria-label="Sfondo colorato"></div>
+        <div class="bg-inline"><input id="bgPicker" type="color" value="#ffffff" aria-label="Colore sfondo" disabled><span id="bgNote" class="subtle">Trasparente (scacchiera)</span></div>
+        <div class="section-line"></div><div class="form-row"><div class="field-group"><label class="field-label" for="pngScale">Scala esportazione PNG</label><select id="pngScale" class="field"><option value="1">1×</option><option value="4">4×</option><option value="8" selected>8×</option><option value="16">16×</option></select></div><div class="field-group"><label class="field-label">Azioni</label><button id="clearBtn" class="btn danger wide">Svuota tela</button></div></div>
+      </section>
+      <section class="panel" aria-label="Archivio SVG">
+        <div class="panel-header"><span class="panel-heading">Archivio SVG</span><span id="svgHistoryCount" class="subtle">0 / 100</span></div>
+        <p class="note" style="margin:0 0 12px">Gli ultimi 100 SVG salvati tramite SVG, Ctrl+S, Copia SVG o Copia Data URI restano in questo browser. Le copie consecutive identiche non creano duplicati.</p>
+        <p class="note" style="margin:0 0 12px">Clicca una miniatura per ingrandirla, oppure usa <strong>Ripristina</strong> per caricarla sulla tela.</p>
+        <div id="svgHistoryList" class="history-list" aria-live="polite"></div>
+        <button id="clearSvgHistoryBtn" class="btn danger wide small" style="margin-top:10px" disabled>Svuota archivio</button>
+      </section>
+      <section class="panel"><div class="panel-header"><span class="panel-heading">Scorciatoie</span><span class="subtle">Tastiera</span></div><div class="help-grid"><span>Incolla immagine → pixel SVG</span><span>Ctrl+V</span><span>Annulla / Ripeti</span><span>Ctrl+Z / Ctrl+Y</span><span>Salva SVG</span><span>Ctrl+S</span><span>Matita / Gomma</span><span>B / E</span><span>Riempi / Contagocce</span><span>G / I</span><span>Linea / Rettangolo</span><span>L / R</span><span>Seleziona / Sposta pixel</span><span>M / trascina</span><span>Deseleziona / Cancella pixel</span><span>Esc / Canc</span><span>Sostituisci / Canc. colore</span><span>T / X</span><span>Sposta la tela</span><span>Spazio + drag</span><span>Colore temporaneo</span><span>Alt + click</span></div><div class="mini-divider"></div><p class="note">Copia un’immagine (anche uno screenshot) e premi Ctrl+V sulla tela: scegli la risoluzione, controlla l’anteprima e converti in pixel. Lo SVG ottenuto è esportabile e viene archiviato nella galleria. Puoi anche incollare codice SVG o importare un file.</p><div class="footer-credit">Offline · Nessuna libreria esterna · SVG senza griglia · PNG trasparente</div></section>
+    </aside>
+  </main>
+</div>
+<input id="fileInput" type="file" accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp" hidden>
+<div id="toastRegion" class="toast-region" role="status" aria-live="polite"></div>
+<dialog id="pixelImportDialog" class="pixel-import-dialog" aria-labelledby="pixelImportTitle">
+  <h3 id="pixelImportTitle">Converti immagine in pixel SVG</h3>
+  <p id="pixelImportSource">Immagine copiata dagli appunti</p>
+  <div class="pixel-import-fields">
+    <div><label class="field-label" for="pixelImportSize">Risoluzione massima</label><select id="pixelImportSize" class="field"><option value="16">16 pixel</option><option value="32" selected>32 pixel</option><option value="64">64 pixel</option><option value="128">128 pixel</option></select></div>
+    <div><label class="field-label" for="pixelImportSampling">Campionamento</label><select id="pixelImportSampling" class="field"><option value="nearest" selected>Pixel netti</option><option value="smooth">Morbido / foto</option></select></div>
+  </div>
+  <div class="pixel-import-preview"><canvas id="pixelImportPreview" role="img" aria-label="Anteprima della conversione in pixel art"></canvas></div>
+  <div id="pixelImportDetails" class="pixel-import-details" aria-live="polite"></div>
+  <div class="pixel-import-actions"><button id="pixelImportCancel" type="button" class="btn">Annulla</button><button id="pixelImportConfirm" type="button" class="btn primary">Converti in SVG</button></div>
+</dialog>
+<dialog id="svgPreviewDialog" class="gallery-preview-dialog" aria-labelledby="svgPreviewTitle">
+  <div class="gallery-preview-head"><h3 id="svgPreviewTitle">Anteprima SVG</h3><button id="svgPreviewCloseBtn" type="button" class="btn small" aria-label="Chiudi anteprima">Chiudi</button></div>
+  <div class="gallery-preview-stage"><img id="svgPreviewImage" alt="Anteprima ingrandita del disegno salvato"></div>
+  <p id="svgPreviewMeta" class="gallery-preview-meta"></p>
+  <div class="gallery-preview-actions"><button id="svgPreviewDownloadBtn" type="button" class="btn">Scarica</button><button id="svgPreviewRestoreBtn" type="button" class="btn primary">Ripristina sulla tela</button></div>
+</dialog>
+<dialog id="historyConfirmDialog" class="confirm-dialog" aria-labelledby="historyConfirmTitle" aria-describedby="historyConfirmMessage">
+  <h3 id="historyConfirmTitle">Conferma eliminazione</h3>
+  <p id="historyConfirmMessage"></p>
+  <form method="dialog" class="confirm-actions"><button class="btn" value="no" autofocus>No</button><button class="btn danger" value="yes">Sì, elimina</button></form>
+</dialog>
+<script>
+'use strict';
+(() => {
+  const $ = id => document.getElementById(id);
+  const canvas = $('drawingCanvas'), stage = $('stage');
+  const ctx = canvas.getContext('2d', {alpha:true});
+  const artCanvas = document.createElement('canvas'), artCtx = artCanvas.getContext('2d', {willReadFrequently:true});
+  if (!ctx || !artCtx) { alert('Questo browser non supporta Canvas 2D.'); return; }
+  const PALETTE = ['#161826','#30384b','#606c85','#a9b4c5','#f9f7fc','#fff2cb','#fac993','#ff9066','#f55f78','#cf529a','#9558ce','#705ee6','#9b87f5','#5a84ee','#3daed8','#60c9d7','#5bcea7','#78b65d','#d0d65d','#f4cb62','#e89843','#a46e53','#6f4f60','#352c47'];
+  const STORAGE = 'pixel-studio-v2-project';
+  const RECENT_COLORS_STORAGE = 'pixel-studio-v2-recent-colors';
+  const RECENT_COLORS_LIMIT = 16;
+  const SVG_HISTORY_STORAGE = 'pixel-studio-v2-svg-history';
+  const SVG_HISTORY_LIMIT = 100;
+  const MAX = 128, MIN = 1, HISTORY_LIMIT = 60;
+  const RESIZE_ANCHORS = {
+    'top-left':[0,0], top:[0.5,0], 'top-right':[1,0],
+    left:[0,0.5], center:[0.5,0.5], right:[1,0.5],
+    'bottom-left':[0,1], bottom:[0.5,1], 'bottom-right':[1,1]
+  };
+  const state = {w:16,h:16,pixels:new Uint32Array(256),bg:null,bgLast:'#ffffff',color:'#9b87f5',tool:'pencil',brush:1,mirror:false,grid:true,zoom:24,ox:0,oy:0,hover:null,draft:null,drag:null,selection:null,resizeAnchor:'center',space:false,dirty:true,everDrawn:false};
+  let pickerReturnTool = 'pencil', svgHistory = [], recentColors = [];
+  let rasterImport = null;
+  const historyPreviewUrls = new Set();
+  let largePreviewUrl = null;
+  let undoStack = [], redoStack = [], pending = false, autosaveTimer = null, toastTimer = null, stageW = 0, stageH = 0;
+  const clamp = (n,a,b) => Math.max(a,Math.min(b,n));
+  const pack = (r,g,b,a=255) => (((r&255)<<24)|((g&255)<<16)|((b&255)<<8)|(a&255))>>>0;
+  const rgb = hex => {let h=hex.replace('#','');return pack(parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16));};
+  const hex = p => '#' + ((p>>>8)&0xffffff).toString(16).padStart(6,'0');
+  const rgba = p => [(p>>>24)&255,(p>>>16)&255,(p>>>8)&255,p&255];
+  const isEditable = el => !!(el && (el.matches?.('input,textarea,select,[contenteditable="true"]') || el.closest?.('[contenteditable="true"]')));
+  const snapshot = () => ({w:state.w,h:state.h,pixels:state.pixels.slice(),bg:state.bg});
+  const equals = (a,b) => a.w===b.w && a.h===b.h && a.bg===b.bg && a.pixels.every((v,i)=>v===b.pixels[i]);
+  function pushUndo(before) {if(equals(before,snapshot())) return false; undoStack.push(before); if(undoStack.length>HISTORY_LIMIT) undoStack.shift(); redoStack=[]; afterChange();return true;}
+  function restore(s){state.w=s.w;state.h=s.h;state.pixels=s.pixels.slice();state.bg=s.bg;state.dirty=true;state.draft=null;state.drag=null;state.selection=null;syncControls();requestRender();scheduleSave();}
+  function undo(){if(!undoStack.length)return;redoStack.push(snapshot());restore(undoStack.pop());updateHistoryButtons();toast('Modifica annullata');}
+  function redo(){if(!redoStack.length)return;undoStack.push(snapshot());restore(redoStack.pop());updateHistoryButtons();toast('Modifica ripristinata');}
+  function updateHistoryButtons(){$('undoBtn').disabled=!undoStack.length;$('redoBtn').disabled=!redoStack.length;}
+  function afterChange(){state.dirty=true;state.everDrawn=true;$('canvasHint').classList.add('hidden');updateHistoryButtons();syncControls();requestRender();scheduleSave();}
+  function scheduleSave(){clearTimeout(autosaveTimer);autosaveTimer=setTimeout(()=>{try{localStorage.setItem(STORAGE,JSON.stringify({v:2,w:state.w,h:state.h,pixels:Array.from(state.pixels),bg:state.bg,color:state.color,brush:state.brush,resizeAnchor:state.resizeAnchor}));}catch(e){console.warn('Salvataggio locale non disponibile',e);}},450);}
+  function loadSaved(){try{const raw=localStorage.getItem(STORAGE);if(!raw)return;const x=JSON.parse(raw);if(x?.v!==2||!Number.isInteger(x.w)||!Number.isInteger(x.h)||x.w<MIN||x.h<MIN||x.w>MAX||x.h>MAX||!Array.isArray(x.pixels)||x.pixels.length!==x.w*x.h)return;state.w=x.w;state.h=x.h;state.pixels=Uint32Array.from(x.pixels);state.bg=/^#[0-9a-f]{6}$/i.test(x.bg)?x.bg:null;if(state.bg)state.bgLast=state.bg;if(/^#[0-9a-f]{6}$/i.test(x.color))state.color=x.color;state.brush=clamp(Number(x.brush)||1,1,8);if(RESIZE_ANCHORS[x.resizeAnchor])state.resizeAnchor=x.resizeAnchor;state.everDrawn=state.pixels.some(v=>!!(v&255));state.dirty=true;}catch(e){console.warn('Impossibile ripristinare il lavoro',e);}}
+  function toast(message,kind='info'){const region=$('toastRegion');region.replaceChildren();const t=document.createElement('div');t.className='toast '+kind;t.textContent=message;region.appendChild(t);clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.remove(),3200);}
+  function setTool(tool){
+    if(!['pencil','eraser','fill','line','rect','select','picker','replace-color','delete-color','pan'].includes(tool))return;
+    const oldTool=state.tool;
+    if(tool==='picker'&&oldTool!=='picker')pickerReturnTool=oldTool;
+    if(oldTool==='select'&&tool!=='select'&&tool!=='picker')state.selection=null;
+    if(tool!=='select'&&tool!=='picker'&&oldTool==='picker'&&pickerReturnTool==='select')state.selection=null;
+    state.tool=tool;stage.dataset.tool=tool;
+    stage.classList.remove('is-selection-hover','is-moving-selection');
+    document.querySelectorAll('[data-tool].tool').forEach(el=>{const active=el.dataset.tool===tool;el.classList.toggle('active',active);el.setAttribute('aria-pressed',String(active));});
+    $('colorName').textContent=({pencil:'Matita',eraser:'Gomma',fill:'Riempi',line:'Linea',rect:'Rettangolo',select:'Selezione',picker:'Contagocce','replace-color':'Sostituisci colore','delete-color':'Cancella colore',pan:'Sposta'})[tool];
+    requestRender();
+  }
+  function renderRecentColors(){
+    const fragment=document.createDocumentFragment();
+    for(let i=0;i<RECENT_COLORS_LIMIT;i++){
+      const color=recentColors[i];
+      if(!color){const placeholder=document.createElement('span');placeholder.className='recent-placeholder';placeholder.setAttribute('aria-hidden','true');fragment.appendChild(placeholder);continue;}
+      const button=document.createElement('button');button.type='button';button.className='swatch';button.style.backgroundColor=color;button.dataset.color=color;button.title=color.toUpperCase();button.setAttribute('aria-label','Colore recente '+color.toUpperCase());button.addEventListener('click',()=>setColor(color));fragment.appendChild(button);
+    }
+    $('recentColors').replaceChildren(fragment);
+    syncSelectedColors();
+  }
+  function loadRecentColors(){
+    try{const saved=JSON.parse(localStorage.getItem(RECENT_COLORS_STORAGE)||'[]');if(Array.isArray(saved)){const unique=new Set();for(const color of saved){if(typeof color==='string'&&/^#[0-9a-f]{6}$/i.test(color))unique.add(color.toLowerCase());if(unique.size===RECENT_COLORS_LIMIT)break;}recentColors=Array.from(unique);}}
+    catch(err){console.warn('Impossibile leggere i colori recenti',err);}
+    renderRecentColors();
+  }
+  function rememberColor(color){
+    recentColors=[color,...recentColors.filter(c=>c!==color)].slice(0,RECENT_COLORS_LIMIT);
+    try{localStorage.setItem(RECENT_COLORS_STORAGE,JSON.stringify(recentColors));}catch(err){console.warn('Impossibile salvare i colori recenti',err);}
+    renderRecentColors();
+  }
+  function syncSelectedColors(){document.querySelectorAll('#palette .swatch, #recentColors .swatch').forEach(b=>b.classList.toggle('selected',b.dataset.color===state.color));}
+  function setColor(value,record=true){const s=value.trim();if(!/^#[a-fA-F0-9]{6}$/.test(s)){return false;}state.color=s.toLowerCase();$('colorPicker').value=state.color;$('hexInput').value=state.color.toUpperCase();$('hexInput').classList.remove('invalid');if(record)rememberColor(state.color);else syncSelectedColors();scheduleSave();requestRender();return true;}
+  function buildPalette(){const node=$('palette');for(const c of PALETTE){const b=document.createElement('button');b.type='button';b.className='swatch';b.style.background=c;b.dataset.color=c;b.title=c.toUpperCase();b.setAttribute('aria-label','Colore '+c);b.addEventListener('click',()=>setColor(c));node.appendChild(b);}setColor(state.color,false);}
+  function syncControls(){const w=state.w,h=state.h;$('dimText').textContent=`${w} × ${h}`;$('widthInput').value=w;$('heightInput').value=h;document.querySelectorAll('.preset').forEach(p=>p.classList.toggle('active',w===h&&Number(p.dataset.size)===w));$('gridToggle').checked=state.grid;$('mirrorToggle').checked=state.mirror;$('brushRange').value=state.brush;$('brushValue').textContent=state.brush+' px';document.querySelectorAll('.anchor-choice').forEach(b=>{const active=b.dataset.anchor===state.resizeAnchor;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});$('bgToggle').checked=!!state.bg;$('bgPicker').disabled=!state.bg;$('bgPicker').value=state.bg||state.bgLast;$('bgNote').textContent=state.bg?'Colore applicato all’esportazione':'Trasparente (scacchiera)';$('pixelCount').textContent=state.pixels.reduce((n,p)=>n+((p&255)!==0),0)+' pixel colorati';}
+  function resizeTo(w,h,preserve=true){
+    w=clamp(Math.round(w),MIN,MAX);h=clamp(Math.round(h),MIN,MAX);
+    if(w===state.w&&h===state.h){syncControls();return;}
+    const before=snapshot(),next=new Uint32Array(w*h);
+    const [ax,ay]=RESIZE_ANCHORS[state.resizeAnchor];
+    const dx=Math.round((w-state.w)*ax),dy=Math.round((h-state.h)*ay);
+    let clipped=0;
+    if(preserve){
+      for(let y=0;y<state.h;y++)for(let x=0;x<state.w;x++){
+        const p=state.pixels[y*state.w+x];if(!p)continue;
+        const nx=x+dx,ny=y+dy;
+        if(nx>=0&&nx<w&&ny>=0&&ny<h)next[ny*w+nx]=p;
+        else clipped++;
+      }
+    }
+    state.w=w;state.h=h;state.pixels=next;state.selection=null;
+    pushUndo(before);fitCanvas();
+    toast(`Tela ${w} × ${h} · ancoraggio ${state.resizeAnchor}${clipped?` · ${clipped} pixel fuori dalla nuova area`:''}`,clipped?'info':'success');
+  }
+  function markDirty(){state.dirty=true;requestRender();}
+  function writePixel(x,y,value){if(x<0||x>=state.w||y<0||y>=state.h)return false;const k=y*state.w+x;if(state.pixels[k]===value)return false;state.pixels[k]=value;return true;}
+  function paintCell(x,y,value){let changed=false;const start=Math.floor((state.brush-1)/2),end=Math.ceil((state.brush-1)/2);for(let dy=-start;dy<=end;dy++)for(let dx=-start;dx<=end;dx++){changed=writePixel(x+dx,y+dy,value)||changed;if(state.mirror)changed=writePixel(state.w-1-x-dx,y+dy,value)||changed;}if(changed)markDirty();return changed;}
+  function iterateLine(x0,y0,x1,y1,callback){let dx=Math.abs(x1-x0),dy=Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1,err=dx-dy;for(;;){callback(x0,y0);if(x0===x1&&y0===y1)break;const e2=err*2;if(e2>-dy){err-=dy;x0+=sx;}if(e2<dx){err+=dx;y0+=sy;}}}
+  function drawShape(a,b,tool,callback){if(tool==='line'){iterateLine(a.x,a.y,b.x,b.y,callback);}else if(tool==='rect'){const x0=Math.min(a.x,b.x),x1=Math.max(a.x,b.x),y0=Math.min(a.y,b.y),y1=Math.max(a.y,b.y);for(let x=x0;x<=x1;x++){callback(x,y0);if(y1!==y0)callback(x,y1);}for(let y=y0+1;y<y1;y++){callback(x0,y);if(x1!==x0)callback(x1,y);}}}
+  function floodFill(x,y,value){const w=state.w,h=state.h,pixels=state.pixels,index=y*w+x,target=pixels[index];if(target===value)return false;const stack=new Int32Array(w*h);let head=0,tail=1;stack[0]=index;pixels[index]=value;while(head<tail){const k=stack[head++],px=k%w,py=(k/w)|0;const neighbors=[px>0?k-1:-1,px<w-1?k+1:-1,py>0?k-w:-1,py<h-1?k+w:-1];for(const j of neighbors)if(j>=0&&pixels[j]===target){pixels[j]=value;stack[tail++]=j;}}markDirty();return true;}
+  function paintValue(tool=state.tool){return tool==='eraser'?0:rgb(state.color);}
+  function changeAllPixelsOfColor(x,y,tool){
+    const source=state.pixels[y*state.w+x];
+    if((source&255)===0){toast('Seleziona un pixel colorato, non trasparente');return;}
+    const target=tool==='delete-color'?0:rgb(state.color);
+    if(source===target){toast('Il colore di destinazione è già quello selezionato');return;}
+    const before=snapshot();let changed=0;
+    for(let i=0;i<state.pixels.length;i++)if(state.pixels[i]===source){state.pixels[i]=target;changed++;}
+    if(pushUndo(before))toast(`${changed} pixel ${tool==='delete-color'?'cancellati':'sostituiti'} in tutta la tela`,'success');
+  }
+  function pickPixel(x,y){const p=state.pixels[y*state.w+x];if((p&255)===0){toast('Pixel trasparente: nessun colore da prelevare');return;}setColor(hex(p));toast('Colore campionato: '+hex(p).toUpperCase());}
+  function canvasPoint(e){const r=canvas.getBoundingClientRect();const x=Math.floor((e.clientX-r.left-state.ox)/state.zoom),y=Math.floor((e.clientY-r.top-state.oy)/state.zoom);return {x,y,inside:x>=0&&x<state.w&&y>=0&&y<state.h};}
+  function bounded(p){return {x:clamp(p.x,0,state.w-1),y:clamp(p.y,0,state.h-1)};}
+  function selectionFrom(a,b){
+    const x=Math.min(a.x,b.x),y=Math.min(a.y,b.y);
+    return {x,y,w:Math.abs(a.x-b.x)+1,h:Math.abs(a.y-b.y)+1};
+  }
+  function pointInSelection(p){const r=state.selection;return !!(r&&p.inside&&p.x>=r.x&&p.y>=r.y&&p.x<r.x+r.w&&p.y<r.y+r.h);}
+  // Un movimento è calcolato sempre dallo snapshot iniziale: niente pixel duplicati
+  // nelle aree sovrapposte, e le parti trasparenti non cancellano la destinazione.
+  function movedSelectionPixels(source,sel,dx,dy){
+    const result=source.slice(),w=state.w;
+    for(let y=0;y<sel.h;y++)for(let x=0;x<sel.w;x++)result[(sel.y+y)*w+sel.x+x]=0;
+    for(let y=0;y<sel.h;y++)for(let x=0;x<sel.w;x++){
+      const pixel=source[(sel.y+y)*w+sel.x+x];
+      if(pixel&255)result[(sel.y+y+dy)*w+sel.x+x+dx]=pixel;
+    }
+    return result;
+  }
+  function moveDelta(d,p){
+    d.dx=clamp(p.x-d.start.x,-d.selection.x,state.w-d.selection.x-d.selection.w);
+    d.dy=clamp(p.y-d.start.y,-d.selection.y,state.h-d.selection.y-d.selection.h);
+  }
+  function updateSelectionCursor(p){
+    stage.classList.toggle('is-selection-hover',state.tool==='select'&&!state.drag&&pointInSelection(p));
+  }
+  function deleteSelectedPixels(){
+    if(!state.selection)return;
+    const before=snapshot(),r=state.selection;
+    for(let y=r.y;y<r.y+r.h;y++)state.pixels.fill(0,y*state.w+r.x,y*state.w+r.x+r.w);
+    if(pushUndo(before))toast('Pixel selezionati eliminati','success');
+    else toast('La selezione è già vuota');
+  }
+  function beginPointer(e){
+    if(e.button!==0&&e.button!==1)return;
+    if(state.drag)return;
+    e.preventDefault();canvas.focus({preventScroll:true});
+    const p=canvasPoint(e);state.hover=p.inside?p:null;
+    const pan=e.button===1||state.tool==='pan'||state.space;
+    if(pan){
+      state.drag={kind:'pan',startX:e.clientX,startY:e.clientY,ox:state.ox,oy:state.oy};stage.classList.add('is-panning');
+    }else if(p.inside){
+      const tool=e.altKey?'picker':state.tool;
+      if(tool==='picker'){
+        pickPixel(p.x,p.y);
+        if(state.tool==='picker')setTool(pickerReturnTool);
+      }else if(tool==='select'){
+        if(pointInSelection(p)){
+          state.drag={kind:'move-selection',start:bounded(p),selection:{...state.selection},before:snapshot(),dx:0,dy:0};
+          stage.classList.add('is-moving-selection');
+        }else{
+          state.selection=selectionFrom(bounded(p),bounded(p));
+          state.drag={kind:'select',start:bounded(p)};
+        }
+      }else if(tool==='fill'){
+        const before=snapshot();if(floodFill(p.x,p.y,paintValue(tool)))pushUndo(before);
+      }else if(tool==='replace-color'||tool==='delete-color'){
+        changeAllPixelsOfColor(p.x,p.y,tool);
+      }else if(tool==='pencil'||tool==='eraser'){
+        state.drag={kind:'paint',tool,last:p,before:snapshot()};paintCell(p.x,p.y,paintValue(tool));
+      }else if(tool==='line'||tool==='rect'){
+        state.drag={kind:'shape',tool,before:snapshot()};state.draft={a:bounded(p),b:bounded(p),tool};
+      }
+    }
+    updateSelectionCursor(p);
+    if(state.drag){try{canvas.setPointerCapture(e.pointerId);}catch(err){}}
+    updatePosition(p);requestRender();
+  }
+  function movePointer(e){
+    const p=canvasPoint(e);state.hover=p.inside?p:null;updatePosition(p);
+    if(state.drag?.kind==='pan'){
+      state.ox=state.drag.ox+(e.clientX-state.drag.startX);state.oy=state.drag.oy+(e.clientY-state.drag.startY);
+    }else if(state.drag?.kind==='paint'){
+      const target=bounded(p),from=state.drag.last;
+      iterateLine(from.x,from.y,target.x,target.y,(x,y)=>paintCell(x,y,paintValue(state.drag.tool)));
+      state.drag.last=target;
+    }else if(state.drag?.kind==='shape'){
+      state.draft.b=bounded(p);
+    }else if(state.drag?.kind==='select'){
+      state.selection=selectionFrom(state.drag.start,bounded(p));
+    }else if(state.drag?.kind==='move-selection'){
+      moveDelta(state.drag,p);
+    }
+    updateSelectionCursor(p);requestRender();
+  }
+  function endPointer(e){
+    if(!state.drag)return;
+    const d=state.drag;
+    if(e.type!=='pointercancel'&&(d.kind==='select'||d.kind==='move-selection')){
+      const p=bounded(canvasPoint(e));
+      if(d.kind==='select')state.selection=selectionFrom(d.start,p);
+      else moveDelta(d,p);
+    }
+    if(d.kind==='shape'&&state.draft){
+      const value=paintValue(d.tool);drawShape(state.draft.a,state.draft.b,d.tool,(x,y)=>paintCell(x,y,value));
+      state.draft=null;pushUndo(d.before);
+    }else if(d.kind==='paint'){
+      pushUndo(d.before);
+    }else if(d.kind==='move-selection'&&e.type!=='pointercancel'){
+      if(d.dx||d.dy){
+        state.pixels=movedSelectionPixels(d.before.pixels,d.selection,d.dx,d.dy);
+        state.selection={...d.selection,x:d.selection.x+d.dx,y:d.selection.y+d.dy};
+        pushUndo(d.before);
+      }
+    }else if(d.kind==='select'&&e.type==='pointercancel'){
+      state.selection=null;
+    }
+    state.drag=null;stage.classList.remove('is-panning','is-moving-selection');
+    try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}catch(err){}
+    updateSelectionCursor(canvasPoint(e));requestRender();
+  }
+  function updatePosition(p){$('positionText').textContent=p.inside?`X: ${p.x}   Y: ${p.y}`:'X: —   Y: —';}
+  function zoomAt(value,anchorX=stageW/2,anchorY=stageH/2){const next=clamp(Math.round(value),3,48),old=state.zoom;const worldX=(anchorX-state.ox)/old,worldY=(anchorY-state.oy)/old;state.zoom=next;state.ox=anchorX-worldX*next;state.oy=anchorY-worldY*next;syncZoom();requestRender();}
+  function syncZoom(){$('zoomSlider').value=state.zoom;$('zoomText').textContent=Math.round(state.zoom/24*100)+'%';}
+  function fitCanvas(){const availableW=Math.max(stageW||600,240),availableH=Math.max(stageH||400,240);state.zoom=clamp(Math.floor(Math.min((availableW-84)/state.w,(availableH-84)/state.h)),3,48);state.ox=Math.round((availableW-state.w*state.zoom)/2);state.oy=Math.round((availableH-state.h*state.zoom)/2);syncZoom();requestRender();}
+  // La scacchiera segue la dimensione di UNA cella logica (non un pattern fisso di 10px).
+  // Anche su tele rettangolari, ogni tassello e ogni pixel hanno lato identico su X e Y.
+  const checkerPatterns=new Map();
+  function checkerPattern(cellSize){
+    if(checkerPatterns.has(cellSize))return checkerPatterns.get(cellSize);
+    const tile=document.createElement('canvas');tile.width=tile.height=cellSize*2;
+    const c=tile.getContext('2d');c.fillStyle='#d9dce5';c.fillRect(0,0,tile.width,tile.height);
+    c.fillStyle='#f1f2f7';c.fillRect(0,0,cellSize,cellSize);c.fillRect(cellSize,cellSize,cellSize,cellSize);
+    const pattern=ctx.createPattern(tile,'repeat');checkerPatterns.set(cellSize,pattern);
+    return pattern;
+  }
+  function redrawArt(){artCanvas.width=state.w;artCanvas.height=state.h;const img=artCtx.createImageData(state.w,state.h);for(let i=0;i<state.pixels.length;i++){const p=state.pixels[i],k=i*4;img.data[k]=(p>>>24)&255;img.data[k+1]=(p>>>16)&255;img.data[k+2]=(p>>>8)&255;img.data[k+3]=p&255;}artCtx.putImageData(img,0,0);state.dirty=false;}
+  const movePreviewCanvas=document.createElement('canvas'),movePreviewCtx=movePreviewCanvas.getContext('2d');
+  function previewMoveArt(d){
+    movePreviewCanvas.width=state.w;movePreviewCanvas.height=state.h;
+    const pixels=movedSelectionPixels(d.before.pixels,d.selection,d.dx,d.dy);
+    const img=movePreviewCtx.createImageData(state.w,state.h);
+    for(let i=0;i<pixels.length;i++){
+      const p=pixels[i],k=i*4;
+      img.data[k]=(p>>>24)&255;img.data[k+1]=(p>>>16)&255;img.data[k+2]=(p>>>8)&255;img.data[k+3]=p&255;
+    }
+    movePreviewCtx.putImageData(img,0,0);
+    return movePreviewCanvas;
+  }
+  function requestRender(){if(pending)return;pending=true;requestAnimationFrame(render);}
+  function render(){pending=false;const bounds=canvas.getBoundingClientRect(),cssW=bounds.width,cssH=bounds.height;
+    if(cssW<=0||cssH<=0)return;
+    const dpr=Math.max(1,window.devicePixelRatio||1),newW=Math.max(1,Math.round(cssW*dpr)),newH=Math.max(1,Math.round(cssH*dpr));
+    if(canvas.width!==newW||canvas.height!==newH){canvas.width=newW;canvas.height=newH;}
+    // Corregge il round del DPR su entrambi gli assi: 1 unità = 1 CSS px, sempre.
+    ctx.setTransform(newW/cssW,0,0,newH/cssH,0,0);ctx.clearRect(0,0,cssW,cssH);
+    if(state.dirty)redrawArt();const s=state.zoom,w=state.w*s,h=state.h*s,x=state.ox,y=state.oy;
+    ctx.save();ctx.shadowColor='#000a';ctx.shadowBlur=28;ctx.shadowOffsetY=13;ctx.fillStyle='#232939';ctx.fillRect(x-2,y-2,w+4,h+4);ctx.restore();ctx.save();ctx.beginPath();ctx.rect(x,y,w,h);ctx.clip();ctx.save();ctx.translate(x,y);ctx.fillStyle=checkerPattern(s);ctx.fillRect(0,0,w,h);ctx.restore();if(state.bg){ctx.fillStyle=state.bg;ctx.fillRect(x,y,w,h);}ctx.imageSmoothingEnabled=false;ctx.drawImage(state.drag?.kind==='move-selection'?previewMoveArt(state.drag):artCanvas,x,y,w,h);
+    if(state.draft){ctx.globalAlpha=.65;ctx.fillStyle=state.draft.tool==='eraser'?'#f9f9fd':state.color;drawShape(state.draft.a,state.draft.b,state.draft.tool,(px,py)=>{const half1=Math.floor((state.brush-1)/2),half2=Math.ceil((state.brush-1)/2);for(let dy=-half1;dy<=half2;dy++)for(let dx=-half1;dx<=half2;dx++)ctx.fillRect(x+(px+dx)*s,y+(py+dy)*s,s,s);});ctx.globalAlpha=1;}
+    if(state.grid&&s>=9){ctx.beginPath();ctx.strokeStyle='rgba(47,56,82,.29)';ctx.lineWidth=1;for(let i=1;i<state.w;i++){const px=Math.round(x+i*s)+.5;ctx.moveTo(px,y);ctx.lineTo(px,y+h);}for(let i=1;i<state.h;i++){const py=Math.round(y+i*s)+.5;ctx.moveTo(x,py);ctx.lineTo(x+w,py);}ctx.stroke();}
+    if(state.tool==='select'&&state.selection){
+      const r=state.selection,d=state.drag?.kind==='move-selection'?state.drag:null;
+      const rx=x+(r.x+(d?.dx||0))*s,ry=y+(r.y+(d?.dy||0))*s;
+      ctx.save();ctx.lineWidth=1.5;ctx.setLineDash([6,4]);
+      ctx.strokeStyle='#f5f2ff';ctx.strokeRect(rx+.5,ry+.5,r.w*s,r.h*s);
+      ctx.lineDashOffset=5;ctx.strokeStyle='#6b50cc';ctx.strokeRect(rx+.5,ry+.5,r.w*s,r.h*s);
+      ctx.restore();
+    }
+    if(state.hover && !state.drag && state.tool!=='pan'&&state.tool!=='select'){const {x:px,y:py}=state.hover;ctx.strokeStyle='#a58aff';ctx.lineWidth=2;ctx.strokeRect(Math.round(x+px*s)+1,Math.round(y+py*s)+1,Math.max(1,s-2),Math.max(1,s-2));}
+    ctx.restore();ctx.strokeStyle='#747d95';ctx.lineWidth=1;ctx.strokeRect(x-.5,y-.5,w+1,h+1);
+  }
+  function measure(){const r=stage.getBoundingClientRect(),oldW=stageW,oldH=stageH;stageW=r.width;stageH=r.height;if(oldW&&oldH){state.ox+=(stageW-oldW)/2;state.oy+=(stageH-oldH)/2;}requestRender();}
+  // Costruisce rettangoli massimi per bande orizzontali e li estende sulle righe successive.
+  function mergeColorRects(indices,w){
+    const rects=[];let previous=new Map(),current=new Map(),lastY=-2;
+    for(let i=0;i<indices.length;){
+      const position=indices[i++],y=Math.floor(position/w),x=position%w;
+      let end=x+1;
+      while(end<w&&i<indices.length&&indices[i]===y*w+end){i++;end++;}
+      if(y!==lastY){previous=y===lastY+1?current:new Map();current=new Map();lastY=y;}
+      const key=x+','+end;
+      let rect=previous.get(key);
+      if(rect)rect.h++;
+      else{rect={x,y,w:end-x,h:1};rects.push(rect);}
+      current.set(key,rect);
+    }
+    return rects;
+  }
+  function rectPath(r){return `M${r.x} ${r.y}h${r.w}v${r.h}h-${r.w}z`;}
+  // Traccia i bordi esterni delle celle: elimina anche i lati interni tra pixel adiacenti.
+  // I bordi dei fori hanno orientamento opposto, quindi il fill-rule di default li conserva.
+  function outlinePath(indices,w){
+    const filled=new Set(indices),adjacent=new Map(),edges=[];
+    const stride=w+1;
+    function edge(x,y,dx,dy,dir){
+      const start=y*stride+x,end=(y+dy)*stride+x+dx;
+      const id=edges.length;edges.push({x,y,dx,dy,dir,end});
+      if(!adjacent.has(start))adjacent.set(start,[]);
+      adjacent.get(start).push(id);
+    }
+    for(const index of indices){
+      const x=index%w,y=Math.floor(index/w);
+      if(y===0||!filled.has(index-w))edge(x,y,1,0,0);
+      if(x===w-1||!filled.has(index+1))edge(x+1,y,0,1,1);
+      if(!filled.has(index+w))edge(x+1,y+1,-1,0,2);
+      if(x===0||!filled.has(index-1))edge(x,y+1,0,-1,3);
+    }
+    const visited=new Uint8Array(edges.length),paths=[];
+    for(let seed=0;seed<edges.length;seed++){
+      if(visited[seed])continue;
+      const loop=[];let current=seed;
+      while(!visited[current]){
+        visited[current]=1;
+        const e=edges[current];loop.push(e);
+        const possible=adjacent.get(e.end)||[];
+        const order=[(e.dir+1)%4,e.dir,(e.dir+3)%4,(e.dir+2)%4];
+        let next=-1;
+        for(const direction of order){
+          next=possible.find(id=>!visited[id]&&edges[id].dir===direction)??-1;
+          if(next!==-1)break;
+        }
+        if(next<0)break;
+        current=next;
+      }
+      // Sposta l'origine su un angolo per evitare un comando duplicato.
+      const corner=loop.findIndex((e,i)=>e.dir!==loop[(i+loop.length-1)%loop.length].dir);
+      if(corner>0)loop.push(...loop.splice(0,corner));
+      const runs=[];
+      for(const e of loop){
+        const last=runs[runs.length-1];
+        if(last&&last.dir===e.dir)last.length++;
+        else runs.push({dir:e.dir,length:1});
+      }
+      let d=`M${loop[0].x} ${loop[0].y}`;
+      // z chiude l'ultimo lato (rettilineo) gratuitamente.
+      for(const run of runs.slice(0,-1))d+=(run.dir%2===0?'h':'v')+(run.dir>=2?'-':'')+run.length;
+      paths.push(d+'z');
+    }
+    return paths.join('');
+  }
+  function exportSvgString(){
+    const {w,h,pixels,bg}=state,groups=new Map();
+    for(let i=0;i<pixels.length;i++){
+      const color=pixels[i];
+      if(!(color&255))continue;
+      if(!groups.has(color))groups.set(color,[]);
+      groups.get(color).push(i);
+    }
+    const out=[`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges">`];
+    if(bg)out.push(`<path fill="${bg}" d="M0 0h${w}v${h}h-${w}z"/>`);
+    for(const [color,indices] of groups){
+      const attrs=` fill="${hex(color)}"${(color&255)===255?'':` fill-opacity="${((color&255)/255).toFixed(5)}"`}`;
+      const rects=mergeColorRects(indices,w);
+      const packed=rects.map(rectPath).join('');
+      const contour=outlinePath(indices,w);
+      const path=`<path${attrs} d="${contour.length<packed.length?contour:packed}"/>`;
+      const oneRect=r=>`<rect${r.x?` x="${r.x}"`:''}${r.y?` y="${r.y}"`:''} width="${r.w}" height="${r.h}"${attrs}/>`;
+      const multipleRects=rects.map(oneRect).join('');
+      const groupedRects=`<g${attrs}>${rects.map(r=>`<rect${r.x?` x="${r.x}"`:''}${r.y?` y="${r.y}"`:''} width="${r.w}" height="${r.h}"/>`).join('')}</g>`;
+      out.push([path,multipleRects,groupedRects].reduce((best,option)=>option.length<best.length?option:best));
+    }
+    return out.join('')+'</svg>';
+  }
+  function downloadBlob(blob,filename){const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200);}
+  function confirmSvgHistoryDeletion(message,callback){
+    const dialog=$('historyConfirmDialog');
+    $('historyConfirmMessage').textContent=message;
+    dialog.onclose=()=>{if(dialog.returnValue==='yes')callback();};
+    if(typeof dialog.showModal==='function')dialog.showModal();
+    else if(confirm(message))callback();
+  }
+  function loadSvgHistory(){
+    try{
+      const stored=JSON.parse(localStorage.getItem(SVG_HISTORY_STORAGE)||'[]');
+      if(Array.isArray(stored))svgHistory=stored.filter(x=>x&&typeof x.svg==='string'&&x.svg.startsWith('<svg')&&Number.isFinite(x.at)&&Number.isInteger(x.w)&&Number.isInteger(x.h)&&typeof x.id==='string').slice(0,SVG_HISTORY_LIMIT);
+    }catch(e){console.warn('Archivio SVG non disponibile',e);}
+    renderSvgHistory();
+  }
+  function writeSvgHistory(items){
+    try{localStorage.setItem(SVG_HISTORY_STORAGE,JSON.stringify(items));svgHistory=items;renderSvgHistory();return true;}
+    catch(e){console.warn('Impossibile aggiornare archivio SVG',e);toast('Spazio locale insufficiente o archiviazione disabilitata','error');return false;}
+  }
+  function archiveSvg(svg){
+    // Non duplicare il salvataggio se l'ultimo SVG archiviato è identico.
+    if(svgHistory[0]?.svg===svg)return true;
+    const entry={id:Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8),at:Date.now(),w:state.w,h:state.h,svg};
+    let entries=[entry,...svgHistory].slice(0,SVG_HISTORY_LIMIT);
+    // localStorage ha una quota limitata: preserva sempre i salvataggi più recenti.
+    while(entries.length){
+      try{localStorage.setItem(SVG_HISTORY_STORAGE,JSON.stringify(entries));svgHistory=entries;renderSvgHistory();return true;}
+      catch(e){if(entries.length===1)break;entries=entries.slice(0,-1);}
+    }
+    toast('Archivio locale pieno: impossibile memorizzare lo SVG','error');
+    return false;
+  }
+  // Rilascia gli URL dei Blob quando la galleria viene aggiornata, anche se
+  // un'immagine con caricamento lazy non è stata ancora visualizzata.
+  function clearHistoryPreviewUrls(){
+    for(const url of historyPreviewUrls)URL.revokeObjectURL(url);
+    historyPreviewUrls.clear();
+  }
+  function svgHistoryBlob(entry){return new Blob([entry.svg],{type:'image/svg+xml;charset=utf-8'});}
+  function svgHistoryFilename(entry){return `pixel-studio-${entry.w}x${entry.h}-${entry.at}.svg`;}
+  function showSvgHistoryPreview(entry){
+    const dialog=$('svgPreviewDialog');
+    if(typeof dialog.showModal!=='function'){importSvg(entry.svg);return;}
+    if(largePreviewUrl)URL.revokeObjectURL(largePreviewUrl);
+    largePreviewUrl=URL.createObjectURL(svgHistoryBlob(entry));
+    $('svgPreviewImage').src=largePreviewUrl;
+    $('svgPreviewTitle').textContent=`SVG ${entry.w} × ${entry.h}`;
+    $('svgPreviewMeta').textContent='Salvato il '+new Date(entry.at).toLocaleString('it-IT',{dateStyle:'medium',timeStyle:'short'});
+    $('svgPreviewRestoreBtn').onclick=()=>{dialog.close();importSvg(entry.svg);};
+    $('svgPreviewDownloadBtn').onclick=()=>downloadBlob(svgHistoryBlob(entry),svgHistoryFilename(entry));
+    if(!dialog.open)dialog.showModal();
+  }
+  function renderSvgHistory(){
+    const list=$('svgHistoryList');list.replaceChildren();clearHistoryPreviewUrls();
+    $('svgHistoryCount').textContent=svgHistory.length+' / '+SVG_HISTORY_LIMIT;
+    $('clearSvgHistoryBtn').disabled=!svgHistory.length;
+    if(!svgHistory.length){const empty=document.createElement('p');empty.className='note';empty.textContent='Nessun SVG salvato finora.';list.appendChild(empty);return;}
+    for(const entry of svgHistory){
+      const row=document.createElement('div');row.className='history-entry';
+      const preview=document.createElement('button');preview.type='button';preview.className='history-preview';
+      preview.title='Ingrandisci il disegno salvato';
+      preview.setAttribute('aria-label',`Ingrandisci SVG ${entry.w} × ${entry.h} salvato il ${new Date(entry.at).toLocaleString('it-IT')}`);
+      const img=document.createElement('img');img.alt='';img.loading='lazy';img.decoding='async';
+      const url=URL.createObjectURL(svgHistoryBlob(entry));historyPreviewUrls.add(url);
+      const release=()=>{URL.revokeObjectURL(url);historyPreviewUrls.delete(url);};
+      img.addEventListener('load',release,{once:true});
+      img.addEventListener('error',()=>{release();img.replaceWith(Object.assign(document.createElement('span'),{className:'history-preview-fallback',textContent:'Anteprima non disponibile'}));},{once:true});
+      img.src=url;preview.appendChild(img);
+      preview.addEventListener('click',()=>showSvgHistoryPreview(entry));
+      const info=document.createElement('div'),title=document.createElement('div'),meta=document.createElement('div');
+      title.className='history-entry-title';title.textContent=`SVG ${entry.w} × ${entry.h}`;
+      meta.className='history-entry-meta';meta.textContent=new Date(entry.at).toLocaleString('it-IT',{dateStyle:'short',timeStyle:'short'});
+      info.append(title,meta);
+      const actions=document.createElement('div');actions.className='history-buttons';
+      const restoreBtn=document.createElement('button');restoreBtn.className='btn small';restoreBtn.textContent='Ripristina';
+      restoreBtn.title='Carica questo SVG nella tela (annullabile con Ctrl+Z)';
+      restoreBtn.addEventListener('click',()=>importSvg(entry.svg));
+      const downloadBtn=document.createElement('button');downloadBtn.className='btn small';downloadBtn.textContent='Scarica';
+      downloadBtn.addEventListener('click',()=>downloadBlob(svgHistoryBlob(entry),svgHistoryFilename(entry)));
+      const deleteBtn=document.createElement('button');deleteBtn.className='btn small danger';deleteBtn.textContent='Elimina';
+      deleteBtn.setAttribute('aria-label',`Elimina SVG ${entry.w} × ${entry.h} del ${meta.textContent}`);
+      deleteBtn.addEventListener('click',()=>{
+        confirmSvgHistoryDeletion(`Eliminare questo SVG del ${meta.textContent} dall'archivio?`,()=>{
+          if(writeSvgHistory(svgHistory.filter(x=>x.id!==entry.id)))toast('SVG eliminato dall’archivio','success');
+        });
+      });
+      actions.append(restoreBtn,downloadBtn,deleteBtn);row.append(preview,info,actions);list.appendChild(row);
+    }
+  }
+  function saveSvg(){
+    const svg=exportSvgString();
+    downloadBlob(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}),`pixel-studio-${state.w}x${state.h}.svg`);
+    if(archiveSvg(svg))toast('SVG esportato e archiviato','success');
+  }
+  function renderExportCanvas(scale=1){const c=document.createElement('canvas');c.width=state.w*scale;c.height=state.h*scale;const cx=c.getContext('2d');cx.imageSmoothingEnabled=false;if(state.bg){cx.fillStyle=state.bg;cx.fillRect(0,0,c.width,c.height);}if(state.dirty)redrawArt();cx.drawImage(artCanvas,0,0,c.width,c.height);return c;}
+  function savePng(){const scale=Number($('pngScale').value)||8,c=renderExportCanvas(scale);c.toBlob(blob=>{if(!blob){toast('Impossibile creare il PNG','error');return;}downloadBlob(blob,`pixel-studio-${state.w}x${state.h}-${scale}x.png`);toast(`PNG ${c.width} × ${c.height} esportato`,'success');},'image/png');}
+  function legacyCopy(text){const area=document.createElement('textarea');area.value=text;area.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(area);area.focus();area.select();let done=false;try{done=document.execCommand('copy');}catch(e){}area.remove();canvas.focus({preventScroll:true});return done;}
+  async function copyText(text){
+    try{
+      if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(text);
+      else if(!legacyCopy(text))throw new Error('Clipboard non disponibile');
+      return true;
+    }catch(err){
+      if(legacyCopy(text))return true;
+      toast('Copia non autorizzata dal browser: usa HTTPS o localhost','error');
+      return false;
+    }
+  }
+  async function copySvg(){
+    const svg=exportSvgString();
+    if(!await copyText(svg))return;
+    if(archiveSvg(svg))toast('SVG copiato e presente nella galleria','success');
+  }
+  async function copyDataUri(){
+    const svg=exportSvgString();
+    // Gli apici sono usati solo per la versione copiata: nell'archivio resta l'SVG originale.
+    const encoded=encodeURIComponent(svg.replace(/"/g,"'")).replace(/%20/g,' ').replace(/%3D/gi,'=').replace(/%3A/gi,':').replace(/%2F/gi,'/');
+    if(!await copyText('data:image/svg+xml,'+encoded))return;
+    if(archiveSvg(svg))toast('Data URI copiato · SVG presente nella galleria','success');
+  }
+  function extractSvg(text){if(typeof text!=='string')return null;const match=text.match(/<svg\b[\s\S]*?<\/svg\s*>/i);return match?match[0]:null;}
+  function extractDataUrl(text){if(typeof text!=='string')return null;let value=text.trim();if(!value)return null;const wrapped=value.match(/^url\((.*)\)$/i);if(wrapped)value=wrapped[1].trim().replace(/^(["'])(.*)\1$/,'$2').trim();return /^data:image\/(svg\+xml|png|jpeg|webp)(?:;base64)?,/i.test(value)?value:null;}
+  async function importDataUrl(dataUrl,fromClipboard=false){
+    const input=extractDataUrl(dataUrl);if(!input)return false;
+    try{
+      if(/^data:image\/svg\+xml[,;]/i.test(input)){
+        const raw=input.slice(input.indexOf(',')+1);
+        return await importSvg(input.includes(';base64,')?atob(raw):decodeURIComponent(raw));
+      }
+      const blob=await(await fetch(input)).blob();
+      return fromClipboard?await openRasterConversion(blob):await importImageBlob(blob);
+    }catch(err){toast('Data URL immagine non valido: '+err.message,'error');return false;}
+  }
+  function parseSimpleColor(value,opacity=1){if(!value)return null;const color=value.trim().toLowerCase();if(color==='none'||color==='transparent')return 0;let r,g,b,a=255;let match;if((match=color.match(/^#([0-9a-f]{3,4})$/i))){const p=match[1];r=parseInt(p[0]+p[0],16);g=parseInt(p[1]+p[1],16);b=parseInt(p[2]+p[2],16);if(p.length===4)a=parseInt(p[3]+p[3],16);}else if((match=color.match(/^#([0-9a-f]{6}|[0-9a-f]{8})$/i))){const p=match[1];r=parseInt(p.slice(0,2),16);g=parseInt(p.slice(2,4),16);b=parseInt(p.slice(4,6),16);if(p.length===8)a=parseInt(p.slice(6,8),16);}else if((match=color.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)(?:\s*,\s*([\d.]+))?\s*\)$/))){r=clamp(Number(match[1]),0,255);g=clamp(Number(match[2]),0,255);b=clamp(Number(match[3]),0,255);if(match[4]!==undefined)a=Math.round(clamp(Number(match[4]),0,1)*255);}else return null;return pack(r,g,b,Math.round(a*clamp(opacity,0,1)));}
+  function parseSvgDocument(text){if(text.length>4*1024*1024)throw new Error('SVG troppo grande (limite 4 MB)');if(/<!DOCTYPE|<!ENTITY/i.test(text))throw new Error('DTD ed entità esterne non sono supportate');const doc=new DOMParser().parseFromString(text,'image/svg+xml');if(doc.querySelector('parsererror'))throw new Error('Sintassi SVG non valida');const root=doc.documentElement;if(root.localName.toLowerCase()!=='svg')throw new Error('Non è un file SVG');return root;}
+  function numberAttr(el,attr,fallback=0){const n=parseFloat(el.getAttribute(attr));return Number.isFinite(n)?n:fallback;}
+  function validDimension(n){return Number.isInteger(n)&&n>=MIN&&n<=MAX;}
+  function ownSvgData(root){if(root.getAttribute('data-pixel-editor')!=='pixel-studio-v2')return null;const w=Number(root.getAttribute('data-width')),h=Number(root.getAttribute('data-height'));if(!validDimension(w)||!validDimension(h))throw new Error('Dimensioni SVG fuori intervallo');const data=new Uint32Array(w*h);const group=Array.from(root.children).find(el=>el.getAttribute('data-role')==='pixels');if(!group)throw new Error('Livello pixel mancante');for(const el of Array.from(group.children)){if(el.localName!=='rect')continue;const x=numberAttr(el,'x'),y=numberAttr(el,'y'),rw=numberAttr(el,'width'),rh=numberAttr(el,'height');if(![x,y,rw,rh].every(Number.isInteger)||rw<=0||rh<=0||x<0||y<0||x+rw>w||y+rh>h)throw new Error('Coordinate SVG non valide');const color=parseSimpleColor(el.getAttribute('fill'),numberAttr(el,'fill-opacity',1));if(color===null)throw new Error('Colore SVG non riconosciuto');for(let yy=y;yy<y+rh;yy++)for(let xx=x;xx<x+rw;xx++)data[yy*w+xx]=color;}
+    const bg=root.getAttribute('data-background');return {w,h,pixels:data,bg: /^#[0-9a-f]{6}$/i.test(bg||'')?bg.toLowerCase():null};}
+  function legacySvgData(root){const all=Array.from(root.querySelectorAll('rect'));const rects=all.filter(el=>el.getAttribute('data-role')!=='bg');if(rects.length<16||rects.length>MAX*MAX)return null;const widths=rects.map(el=>numberAttr(el,'width',-1));const heights=rects.map(el=>numberAttr(el,'height',-1));const cell=widths[0];if(cell!==20||widths.some(v=>v!==cell)||heights.some(v=>v!==cell))return null;const vb=(root.getAttribute('viewBox')||'').trim().split(/[\s,]+/).map(Number);const svgW=numberAttr(root,'width',vb.length===4?vb[2]:0),svgH=numberAttr(root,'height',vb.length===4?vb[3]:0);const w=svgW/cell,h=svgH/cell;if(!validDimension(w)||!validDimension(h)||rects.length!==w*h)return null;const data=new Uint32Array(w*h);for(const el of rects){const x=numberAttr(el,'x')/cell,y=numberAttr(el,'y')/cell;if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=w||y>=h)return null;const c=parseSimpleColor(el.getAttribute('fill')||'#000000');if(c===null)return null;data[y*w+x]=c;}const bgEl=all.find(el=>el.getAttribute('data-role')==='bg');const bc=bgEl?parseSimpleColor(bgEl.getAttribute('fill')):null;return {w,h,pixels:data,bg:bc!==null&&(bc&255)===255?hex(bc):null};}
+  function sanitizeSvg(root){const cloned=root.cloneNode(true);const removeNames=new Set(['script','foreignObject','iframe','object','embed','audio','video','image','use','animate','animateMotion','animateTransform','set','style','link']);const walk=[cloned];while(walk.length){const el=walk.pop();for(const child of Array.from(el.children)){if(removeNames.has(child.localName)){child.remove();}else walk.push(child);}for(const a of Array.from(el.attributes)){const name=a.name.toLowerCase(),value=a.value;if(name.startsWith('on')||name==='href'||name.endsWith(':href')||(/url\s*\(/i.test(value)&&!/^url\s*\(\s*['"]?#[^)]*\)/i.test(value))||/@import/i.test(value))el.removeAttribute(a.name);}}cloned.setAttribute('xmlns','http://www.w3.org/2000/svg');return new XMLSerializer().serializeToString(cloned);}
+  function svgIntrinsicSize(root){const vb=(root.getAttribute('viewBox')||'').trim().split(/[\s,]+/).map(Number);const hasViewBox=vb.length===4&&vb.every(Number.isFinite)&&vb[2]>0&&vb[3]>0;const w=numberAttr(root,'width',hasViewBox?vb[2]:0),h=numberAttr(root,'height',hasViewBox?vb[3]:0);return {w,h};}
+  function imageFromBlob(blob){return new Promise((resolve,reject)=>{const url=URL.createObjectURL(blob),img=new Image();img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Impossibile leggere l’immagine'));};img.src=url;});}
+  async function imageDataFromBlob(blob,intrinsic=null){const img=await imageFromBlob(blob);const iw=intrinsic?.w||img.naturalWidth,ih=intrinsic?.h||img.naturalHeight;if(!iw||!ih)throw new Error('Immagine senza dimensioni valide');if(intrinsic&&(!validDimension(iw)||!validDimension(ih)))throw new Error('Dimensioni SVG non supportate (1–128 pixel per lato)');const w=validDimension(iw)?iw:state.w,h=validDimension(ih)?ih:state.h;const temp=document.createElement('canvas');temp.width=w;temp.height=h;const cx=temp.getContext('2d',{willReadFrequently:true});cx.imageSmoothingEnabled=false;cx.drawImage(img,0,0,w,h);const data=cx.getImageData(0,0,w,h).data,pixels=new Uint32Array(w*h);for(let i=0;i<pixels.length;i++){const k=i*4;pixels[i]=pack(data[k],data[k+1],data[k+2],data[k+3]);}return {w,h,pixels,bg:null};}
+  function installImported(doc){const before=snapshot();state.w=doc.w;state.h=doc.h;state.pixels=doc.pixels;state.selection=null;state.bg=doc.bg;if(state.bg)state.bgLast=state.bg;state.dirty=true;pushUndo(before);syncControls();fitCanvas();toast(`Importazione completata: ${state.w} × ${state.h}`,'success');}
+  async function importSvg(text){try{const root=parseSvgDocument(extractSvg(text)||text);let doc=ownSvgData(root)||legacySvgData(root);if(!doc){const source=sanitizeSvg(root);doc=await imageDataFromBlob(new Blob([source],{type:'image/svg+xml'}),svgIntrinsicSize(root));}installImported(doc);return true;}catch(e){console.warn('Errore importazione SVG',e);toast('SVG non importato: '+e.message,'error');return false;}}
+  async function importImageBlob(blob){try{if(blob.size>20*1024*1024)throw new Error('Immagine troppo grande (max 20 MB)');if(blob.type==='image/svg+xml'||blob.name?.toLowerCase().endsWith('.svg'))return importSvg(await blob.text());const doc=await imageDataFromBlob(blob);installImported(doc);return true;}catch(e){console.warn('Errore importazione',e);toast('Immagine non importata: '+e.message,'error');return false;}}
+  async function importFile(file){if(!file)return;const name=file.name?.toLowerCase()||'';if(file.type==='image/svg+xml'||name.endsWith('.svg')){await importSvg(await file.text());}else if(file.type.startsWith('image/')||/\.(png|jpe?g|webp)$/.test(name)){await importImageBlob(file);}else toast('Formato non supportato. Usa SVG, PNG, JPG o WebP.','error');}
+  // Riduzione proporzionale dell'immagine a celle reali (<= 128 per lato).
+  // Non si ingrandiscono le immagini piccole: i loro pixel originali restano intatti.
+  function rasterTargetSize(width,height,maxSide){
+    const scale=Math.min(1,clamp(maxSide,1,MAX)/Math.max(width,height));
+    return {w:clamp(Math.round(width*scale),1,MAX),h:clamp(Math.round(height*scale),1,MAX)};
+  }
+  function rasterizeImage(image,maxSide,smooth){
+    const {w,h}=rasterTargetSize(image.naturalWidth,image.naturalHeight,maxSide);
+    const temp=document.createElement('canvas');temp.width=w;temp.height=h;
+    const cx=temp.getContext('2d',{willReadFrequently:true});
+    if(!cx)throw new Error('Canvas 2D non disponibile');
+    cx.imageSmoothingEnabled=smooth;
+    cx.imageSmoothingQuality=smooth?'high':'low';
+    cx.clearRect(0,0,w,h);cx.drawImage(image,0,0,w,h);
+    const data=cx.getImageData(0,0,w,h).data,pixels=new Uint32Array(w*h);
+    for(let i=0;i<pixels.length;i++){
+      const k=i*4;pixels[i]=pack(data[k],data[k+1],data[k+2],data[k+3]);
+    }
+    return {w,h,pixels,bg:null};
+  }
+  function refreshRasterConversion(){
+    if(!rasterImport)return;
+    const size=Number($('pixelImportSize').value)||32;
+    const smooth=$('pixelImportSampling').value==='smooth';
+    try{
+      const doc=rasterizeImage(rasterImport.image,size,smooth);
+      rasterImport.doc=doc;
+      const preview=$('pixelImportPreview');preview.width=doc.w;preview.height=doc.h;
+      const c=preview.getContext('2d');
+      const img=c.createImageData(doc.w,doc.h);
+      for(let i=0;i<doc.pixels.length;i++){
+        const value=doc.pixels[i],j=i*4;
+        img.data[j]=(value>>>24)&255;img.data[j+1]=(value>>>16)&255;
+        img.data[j+2]=(value>>>8)&255;img.data[j+3]=value&255;
+      }
+      c.putImageData(img,0,0);
+      const scale=290/Math.max(doc.w,doc.h);
+      preview.style.width=Math.round(doc.w*scale)+'px';
+      preview.style.height=Math.round(doc.h*scale)+'px';
+      $('pixelImportDetails').textContent=`SVG finale: ${doc.w} × ${doc.h} pixel · proporzioni e trasparenza conservate`;
+      $('pixelImportConfirm').disabled=false;
+    }catch(err){rasterImport.doc=null;$('pixelImportConfirm').disabled=true;toast('Anteprima non disponibile: '+err.message,'error');}
+  }
+  async function openRasterConversion(blob){
+    try{
+      if(!blob||blob.size>20*1024*1024)throw new Error('Immagine troppo grande (max 20 MB)');
+      const image=await imageFromBlob(blob);
+      if(!image.naturalWidth||!image.naturalHeight)throw new Error('Dimensioni immagine non valide');
+      if(image.naturalWidth*image.naturalHeight>40000000)throw new Error('Immagine troppo grande (oltre 40 megapixel)');
+      rasterImport={image,doc:null};
+      $('pixelImportSize').value='32';
+      $('pixelImportSampling').value='nearest';
+      $('pixelImportSource').textContent=`Immagine originale: ${image.naturalWidth} × ${image.naturalHeight} pixel. Scegli la risoluzione e controlla il risultato.`;
+      refreshRasterConversion();
+      const dialog=$('pixelImportDialog');
+      if(typeof dialog.showModal==='function'){
+        if(!dialog.open)dialog.showModal();
+      }else{
+        confirmRasterConversion();
+      }
+      return true;
+    }catch(err){toast('Impossibile incollare l’immagine: '+err.message,'error');return false;}
+  }
+  function confirmRasterConversion(){
+    const doc=rasterImport?.doc;if(!doc)return;
+    const dialog=$('pixelImportDialog');
+    if(dialog.open)dialog.close();
+    rasterImport=null;
+    installImported(doc);
+    // Il risultato è un insieme di pixel editabili, esportabile come SVG di rettangoli/path.
+    if(archiveSvg(exportSvgString()))toast(`Immagine convertita in SVG ${doc.w} × ${doc.h} e aggiunta alla galleria`,'success');
+  }
+  async function pasteImageFromClipboard(){
+    // La lettura via API è possibile solo con permesso del browser e contesto sicuro.
+    // Ctrl+V rimane disponibile anche aprendo editor.html come file locale.
+    if(!navigator.clipboard?.read){canvas.focus({preventScroll:true});toast('Copia un’immagine, poi premi Ctrl+V sulla tela');return;}
+    try{
+      const entries=await navigator.clipboard.read();
+      for(const entry of entries){
+        const type=entry.types.find(t=>t==='image/png'||t==='image/jpeg'||t==='image/webp');
+        if(type)return void await openRasterConversion(await entry.getType(type));
+        if(entry.types.includes('image/svg+xml'))return void await importSvg(await(await entry.getType('image/svg+xml')).text());
+      }
+      canvas.focus({preventScroll:true});toast('Gli appunti non contengono un’immagine: usa Copia immagine e Ctrl+V');
+    }catch(err){canvas.focus({preventScroll:true});toast('Per incollare, copia l’immagine e premi Ctrl+V sulla tela');}
+  }
+  async function handlePaste(e){
+    if(isEditable(e.target)||$('pixelImportDialog').open||$('svgPreviewDialog').open)return;
+    const cd=e.clipboardData;if(!cd)return;
+    const items=Array.from(cd.items||[]),plain=cd.getData('text/plain'),html=cd.getData('text/html');
+    // Il codice SVG testuale conserva l'importazione vettoriale originale.
+    const svg=extractSvg(plain)||extractSvg(html);
+    if(svg){e.preventDefault();await importSvg(svg);return;}
+    const svgItem=items.find(i=>i.type==='image/svg+xml');
+    if(svgItem){e.preventDefault();const blob=svgItem.getAsFile();if(blob)await importSvg(await blob.text());return;}
+    // Dati raster copiati da screenshot, programmi di grafica e pagine web.
+    const imageItem=items.find(i=>['image/png','image/jpeg','image/webp'].includes(i.type))
+      ||items.find(i=>i.type.startsWith('image/')&&i.type!=='image/svg+xml');
+    if(imageItem){e.preventDefault();const blob=imageItem.getAsFile();if(blob)await openRasterConversion(blob);return;}
+    const dataUrl=extractDataUrl(plain)||extractDataUrl(html);
+    if(dataUrl){e.preventDefault();await importDataUrl(dataUrl,true);}
+  }
+  function bind(){
+    $('pixelImportSize').addEventListener('change',refreshRasterConversion);
+    $('pixelImportSampling').addEventListener('change',refreshRasterConversion);
+    $('pixelImportCancel').addEventListener('click',()=>$('pixelImportDialog').close());
+    $('pixelImportConfirm').addEventListener('click',confirmRasterConversion);
+    $('pixelImportDialog').addEventListener('close',()=>{rasterImport=null;});
+    $('pasteImageBtn').addEventListener('click',pasteImageFromClipboard);
+    $('svgPreviewCloseBtn').addEventListener('click',()=>$('svgPreviewDialog').close());$('svgPreviewDialog').addEventListener('close',()=>{if(largePreviewUrl){URL.revokeObjectURL(largePreviewUrl);largePreviewUrl=null;}$('svgPreviewImage').removeAttribute('src');});document.querySelectorAll('.tool').forEach(b=>b.addEventListener('click',()=>setTool(b.dataset.tool)));document.querySelectorAll('.anchor-choice').forEach(b=>b.addEventListener('click',()=>{state.resizeAnchor=b.dataset.anchor;syncControls();scheduleSave();}));$('clearSvgHistoryBtn').addEventListener('click',()=>{if(svgHistory.length)confirmSvgHistoryDeletion(`Eliminare definitivamente tutti i ${svgHistory.length} SVG dall’archivio?`,()=>{if(writeSvgHistory([]))toast('Archivio SVG svuotato','success');});});$('colorPicker').addEventListener('input',e=>setColor(e.target.value,false));$('colorPicker').addEventListener('change',e=>setColor(e.target.value));$('hexInput').addEventListener('input',e=>{if(/^#[a-f0-9]{6}$/i.test(e.target.value))setColor(e.target.value);else e.target.classList.add('invalid');});$('hexInput').addEventListener('blur',()=>{$('hexInput').value=state.color.toUpperCase();$('hexInput').classList.remove('invalid');});$('brushRange').addEventListener('input',e=>{state.brush=Number(e.target.value);$('brushValue').textContent=state.brush+' px';scheduleSave();});$('mirrorToggle').addEventListener('change',e=>state.mirror=e.target.checked);
+    $('gridToggle').addEventListener('change',e=>{state.grid=e.target.checked;requestRender();});$('bgToggle').addEventListener('change',e=>{const before=snapshot();state.bg=e.target.checked?state.bgLast:null;pushUndo(before);syncControls();requestRender();});$('bgPicker').addEventListener('input',e=>{const before=snapshot();state.bgLast=e.target.value;state.bg=e.target.value;pushUndo(before);});document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>resizeTo(Number(b.dataset.size),Number(b.dataset.size))));$('resizeBtn').addEventListener('click',()=>{const w=Number($('widthInput').value),h=Number($('heightInput').value);if(!Number.isInteger(w)||!Number.isInteger(h)||w<MIN||h<MIN||w>MAX||h>MAX){toast('Inserisci dimensioni intere tra 1 e 128','error');return;}resizeTo(w,h);});$('clearBtn').addEventListener('click',()=>{if(!state.pixels.some(v=>v!==0))return toast('La tela è già vuota');if(!confirm('Vuoi cancellare tutti i pixel? Potrai annullare con Ctrl+Z.'))return;const before=snapshot();state.pixels.fill(0);state.selection=null;pushUndo(before);toast('Tela svuotata','success');});
+    $('zoomSlider').addEventListener('input',e=>zoomAt(Number(e.target.value)));$('fitBtn').addEventListener('click',fitCanvas);$('undoBtn').addEventListener('click',undo);$('redoBtn').addEventListener('click',redo);$('exportSvgBtn').addEventListener('click',saveSvg);$('exportPngBtn').addEventListener('click',savePng);$('copySvgBtn').addEventListener('click',copySvg);$('copyDataUriBtn').addEventListener('click',copyDataUri);$('importBtn').addEventListener('click',()=>$('fileInput').click());$('fileInput').addEventListener('change',async e=>{await importFile(e.target.files?.[0]);e.target.value='';});
+    canvas.addEventListener('pointerdown',beginPointer);canvas.addEventListener('pointermove',movePointer);canvas.addEventListener('pointerup',endPointer);canvas.addEventListener('pointercancel',endPointer);canvas.addEventListener('pointerleave',()=>{if(!state.drag){state.hover=null;updatePosition({inside:false});requestRender();}});canvas.addEventListener('contextmenu',e=>e.preventDefault());stage.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();const r=canvas.getBoundingClientRect();zoomAt(state.zoom+(e.deltaY<0?2:-2),e.clientX-r.left,e.clientY-r.top);}},{passive:false});
+    let dragDepth=0;stage.addEventListener('dragenter',e=>{e.preventDefault();dragDepth++;stage.classList.add('drag-over');});stage.addEventListener('dragover',e=>{e.preventDefault();if(e.dataTransfer)e.dataTransfer.dropEffect='copy';});stage.addEventListener('dragleave',e=>{e.preventDefault();dragDepth=Math.max(0,dragDepth-1);if(!dragDepth)stage.classList.remove('drag-over');});stage.addEventListener('drop',async e=>{e.preventDefault();dragDepth=0;stage.classList.remove('drag-over');if(e.dataTransfer?.files?.length){await importFile(e.dataTransfer.files[0]);}else{const data=e.dataTransfer?.getData('text/plain');if(data){if(extractSvg(data))await importSvg(data);else if(extractDataUrl(data))await importDataUrl(data);}}});
+    document.addEventListener('paste',handlePaste);document.addEventListener('keydown',e=>{if($('historyConfirmDialog').open||isEditable(e.target))return;const mod=e.ctrlKey||e.metaKey,k=e.key.toLowerCase();if(mod){if(k==='a'&&(state.tool==='select'||document.activeElement===canvas)){e.preventDefault();setTool('select');state.selection={x:0,y:0,w:state.w,h:state.h};requestRender();return;}if(k==='z'){e.preventDefault();if(e.shiftKey)redo();else undo();return;}if(k==='y'){e.preventDefault();redo();return;}if(k==='s'){e.preventDefault();saveSvg();return;}if(k==='c'&&document.activeElement===canvas){e.preventDefault();copySvg();return;}return;}if(e.code==='Space'&&!e.repeat){e.preventDefault();state.space=true;return;}if(e.altKey)return;if(k==='escape'){if(state.drag?.kind==='select'||state.drag?.kind==='move-selection'){state.drag=null;stage.classList.remove('is-moving-selection');}state.selection=null;requestRender();return;}if((k==='delete'||k==='backspace')&&state.tool==='select'&&state.selection){e.preventDefault();deleteSelectedPixels();return;}const map={b:'pencil',e:'eraser',g:'fill',l:'line',r:'rect',m:'select',i:'picker',t:'replace-color',x:'delete-color',h:'pan'};if(map[k]){e.preventDefault();setTool(map[k]);}else if(k==='+'||k==='='){e.preventDefault();zoomAt(state.zoom+2);}else if(k==='-'){e.preventDefault();zoomAt(state.zoom-2);}else if(k==='0'){e.preventDefault();fitCanvas();}else if(k==='?'){toast('B Matita · E Gomma · G Riempi · L Linea · R Rettangolo · M Seleziona · I Contagocce · T Sostituisci colore · X Cancella colore · H Sposta · Spazio per spostare');}});document.addEventListener('keyup',e=>{if(e.code==='Space')state.space=false;});window.addEventListener('blur',()=>{state.space=false;if(state.drag){const d=state.drag;if((d.kind==='paint'||d.kind==='shape')&&d.before)pushUndo(d.before);if(d.kind==='select')state.selection=null;state.drag=null;state.draft=null;stage.classList.remove('is-panning','is-moving-selection');requestRender();}});window.addEventListener('beforeunload',()=>{if(autosaveTimer){clearTimeout(autosaveTimer);try{localStorage.setItem(STORAGE,JSON.stringify({v:2,w:state.w,h:state.h,pixels:Array.from(state.pixels),bg:state.bg,color:state.color,brush:state.brush,resizeAnchor:state.resizeAnchor}));}catch(e){}}});
+  }
+  loadSaved();loadRecentColors();buildPalette();if(!recentColors.length)rememberColor(state.color);bind();loadSvgHistory();syncControls();setTool('pencil');updateHistoryButtons();requestAnimationFrame(()=>{measure();fitCanvas();if(state.everDrawn)$('canvasHint').classList.add('hidden');});if(typeof ResizeObserver!=='undefined')new ResizeObserver(measure).observe(stage);else window.addEventListener('resize',measure);
+})();
+</script>
+</body>
+</html>
