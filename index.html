@@ -1,447 +1,572 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tiz - Personal website</title>
+    <meta
+      name="description"
+      content="Explore a curated collection of indie games, collaborations and game jam entries by Tiz. Discover projects, platforms and details in a clean, accessible portfolio."
+    />
+    <meta
+      name="keywords"
+      content="Games, Game Portfolio, Indie Games, Game Development, Game Jams, Horror Games, Puzzle Games"
+    />
+    <meta name="author" content="Tiz" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+    <link rel="canonical" href="https://adriano-t.github.io/" />
+    <meta property="og:title" content="Tiz - games i made" />
+    <meta
+      property="og:description"
+      content="Indie games, collaborations and game jams. Explore the full portfolio."
+    />
+    <meta property="og:url" content="https://adriano-t.github.io/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@tizrevolab" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tiz - Personal website</title>
-  <meta name="description"
-    content="Explore a curated collection of indie games, collaborations and game jam entries by Tiz. Discover projects, platforms and details in a clean, accessible portfolio.">
-  <meta name="keywords"
-    content="Games, Game Portfolio, Indie Games, Game Development, Game Jams, Horror Games, Puzzle Games">
-  <meta name="author" content="Tiz">
-  <meta name="color-scheme" content="light dark">
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <link rel="canonical" href="https://adriano-t.github.io/">
-  <meta property="og:title" content="Tiz - games i made">
-  <meta property="og:description" content="Indie games, collaborations and game jams. Explore the full portfolio.">
-  <meta property="og:url" content="https://adriano-t.github.io/">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:site" content="@tizrevolab">
+    <script src="./games/main.js?v=4"></script>
+    <script defer src="./games/games.js?v=4"></script>
+    <link rel="stylesheet" href="./style.css?v=10" />
+  </head>
 
-  <script src="./games/main.js?v=4"></script>
-  <script defer src="./games/games.js?v=4"></script>
-  <link rel="stylesheet" href="./style.css?v=6">  
-</head>
+  <body>
+    <canvas id="bg" aria-hidden="true"></canvas>
 
-<body>
-  <canvas id="bg" aria-hidden="true"></canvas>
+    <div class="page">
+      <header>
+        <h1><span class="critter" aria-hidden="true"></span>Tiz</h1>
+        <p>Games i made. Jams, collabs and solo stuff.</p>
+        <nav aria-label="Profiles">
+          <a
+            href="https://tiz010.itch.io"
+            target="_blank"
+            rel="noopener noreferrer"
+            >itch.io</a
+          >
+          /
+          <a
+            href="https://x.com/tizrevolab"
+            target="_blank"
+            rel="noopener noreferrer"
+            >twitter</a
+          >
+        </nav>
 
-  <div class="page">
-    <header>
-      <h1><span class="critter" aria-hidden="true"></span>Tiz</h1>
-      <p>Games i made. Jams, collabs and solo stuff.</p>
-      <nav aria-label="Profiles">
-        <a href="https://tiz010.itch.io" target="_blank" rel="noopener noreferrer">itch.io</a> /
-        <a href="https://x.com/tizrevolab" target="_blank" rel="noopener noreferrer">twitter</a>
-      </nav>
+        <div class="pond" aria-hidden="true"></div>
+      </header>
 
-    <div class="pond" aria-hidden="true"></div>
-    </header>
+      <form id="filters-form" role="search" aria-label="Search and filters">
+        <label
+          >search
+          <span class="srch"
+            ><input
+              id="search-input"
+              type="search"
+              aria-label="Search games by title or description"
+          /></span>
+        </label>
+        <label
+          >year
+          <span class="sel"
+            ><select id="year-select" aria-label="Filter by year">
+              <option value="">all</option>
+            </select></span
+          >
+        </label>
+        <span id="count" aria-live="polite"></span>
+      </form>
 
-    <form id="filters-form" role="search" aria-label="Search and filters">
-      <label>search
-        <span class="srch"><input id="search-input" type="search" aria-label="Search games by title or description"></span>
-      </label>
-      <label>year
-        <span class="sel"><select id="year-select" aria-label="Filter by year">
-          <option value="">all</option>
-        </select></span>
-      </label>
-      <span id="count" aria-live="polite"></span>
-    </form>
+      <main id="game-list" aria-busy="false"></main>
 
-    <main id="game-list" aria-busy="false"></main>
+      <footer>
+        &copy; <span id="year-now"></span> tiz<span
+          class="heart"
+          aria-hidden="true"
+        ></span>
+      </footer>
+    </div>
 
-    <footer>&copy; <span id="year-now"></span> tiz<span class="heart" aria-hidden="true"></span></footer>
-  </div>
-
-  <script>
-    // The deferred games.js runs before DOMContentLoaded, so its data is ready here.
-    document.addEventListener('DOMContentLoaded', () => {
-      /* ── Data ── */
-      let rawGames = [];
-      if (Array.isArray(window.games)) rawGames = window.games;
-      else { try { if (Array.isArray(games)) rawGames = games; } catch { } }
-
-      const str = v => typeof v === 'string' ? v : '';
-      const platformFromUrl = url => {
-        if (!url) return '';
-        try {
-          const h = new URL(url).hostname;
-          if (h.includes('steampowered')) return 'Steam';
-          if (h.includes('itch.io')) return 'itch.io';
-          if (h.includes('gamejolt')) return 'Game Jolt';
-          if (h.includes('play.google')) return 'Google Play';
-          if (h.includes('gx.games')) return 'GX.games';
-          if (h.includes('drive.google')) return 'Google Drive';
-          if (h.includes('globalgamejam')) return 'Global Game Jam';
-          return 'Website';
-        } catch { return 'Website'; }
-      };
-
-      const dataset = rawGames
-        .filter(g => g && g.title && g.date && Number.isFinite(Date.parse(g.date)))
-        .map(g => ({
-          title: str(g.title),
-          date: str(g.date),
-          timestamp: Date.parse(g.date),
-          year: new Date(g.date).getFullYear(),
-          collaboration: str(g.collaboration),
-          jam: str(g.jam),
-          image: str(g.image),
-          short_desc: str(g.short_desc),
-          details: str(g.details),
-          url: str(g.url),
-          url_label: str(g.url_label),
-          platform: platformFromUrl(g.url),
-          searchText: [g.title, g.short_desc, g.details].map(str).join(' ').toLowerCase()
-        }))
-        .sort((a, b) => b.timestamp - a.timestamp);
-
-      /* ── Elements ── */
-      const list = document.getElementById('game-list');
-      const count = document.getElementById('count');
-      const search = document.getElementById('search-input');
-      const yearSel = document.getElementById('year-select');
-      const form = document.getElementById('filters-form');
-      const motionMq = matchMedia('(prefers-reduced-motion: reduce)');
-      document.getElementById('year-now').textContent = new Date().getFullYear();
-      form.addEventListener('submit', e => e.preventDefault());
-
-      const isoDate = d => new Date(d).toISOString().slice(0, 10);
-      const el = (tag, cls, text) => {
-        const e = document.createElement(tag);
-        if (cls) e.className = cls;
-        if (text !== undefined && text !== null) e.textContent = text;
-        return e;
-      };
-
-      for (const year of [...new Set(dataset.map(g => g.year))]) {
-        const option = el('option', '', String(year));
-        option.value = String(year);
-        yearSel.appendChild(option);
-      }
-
-      /* ── Videos: load on first appearance; pause off-screen ── */
-      const videoObserver = new IntersectionObserver(entries => {
-        for (const entry of entries) {
-          const video = entry.target;
-          video.dataset.inView = entry.isIntersecting ? '1' : '0';
-          if (!entry.isIntersecting) {
-            video.pause();
-            continue;
+    <script>
+      // The deferred games.js runs before DOMContentLoaded, so its data is ready here.
+      document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+          /* ── Data ── */
+          let rawGames = [];
+          if (Array.isArray(window.games)) rawGames = window.games;
+          else {
+            try {
+              if (Array.isArray(games)) rawGames = games;
+            } catch {}
           }
-          if (video.dataset.src) {
-            video.src = video.dataset.src;
-            delete video.dataset.src;
+
+          const str = (v) => (typeof v === "string" ? v : "");
+          const platformFromUrl = (url) => {
+            if (!url) return "";
+            try {
+              const h = new URL(url).hostname;
+              if (h.includes("steampowered")) return "Steam";
+              if (h.includes("itch.io")) return "itch.io";
+              if (h.includes("gamejolt")) return "Game Jolt";
+              if (h.includes("play.google")) return "Google Play";
+              if (h.includes("gx.games")) return "GX.games";
+              if (h.includes("drive.google")) return "Google Drive";
+              if (h.includes("globalgamejam")) return "Global Game Jam";
+              return "Website";
+            } catch {
+              return "Website";
+            }
+          };
+
+          const dataset = rawGames
+            .filter(
+              (g) =>
+                g && g.title && g.date && Number.isFinite(Date.parse(g.date)),
+            )
+            .map((g) => ({
+              title: str(g.title),
+              date: str(g.date),
+              timestamp: Date.parse(g.date),
+              year: new Date(g.date).getFullYear(),
+              collaboration: str(g.collaboration),
+              jam: str(g.jam),
+              image: str(g.image),
+              short_desc: str(g.short_desc),
+              details: str(g.details),
+              url: str(g.url),
+              url_label: str(g.url_label),
+              platform: platformFromUrl(g.url),
+              searchText: [g.title, g.short_desc, g.details]
+                .map(str)
+                .join(" ")
+                .toLowerCase(),
+            }))
+            .sort((a, b) => b.timestamp - a.timestamp);
+
+          /* ── Elements ── */
+          const list = document.getElementById("game-list");
+          const count = document.getElementById("count");
+          const search = document.getElementById("search-input");
+          const yearSel = document.getElementById("year-select");
+          const form = document.getElementById("filters-form");
+          const motionMq = matchMedia("(prefers-reduced-motion: reduce)");
+          document.getElementById("year-now").textContent =
+            new Date().getFullYear();
+          form.addEventListener("submit", (e) => e.preventDefault());
+
+          const isoDate = (d) => new Date(d).toISOString().slice(0, 10);
+          const el = (tag, cls, text) => {
+            const e = document.createElement(tag);
+            if (cls) e.className = cls;
+            if (text !== undefined && text !== null) e.textContent = text;
+            return e;
+          };
+
+          for (const year of [...new Set(dataset.map((g) => g.year))]) {
+            const option = el("option", "", String(year));
+            option.value = String(year);
+            yearSel.appendChild(option);
           }
-          if (!document.hidden && !motionMq.matches) video.play().catch(() => {});
-        }
-      }, { threshold: 0.01 });
 
-      const syncVisibleVideos = () => {
-        for (const video of list.querySelectorAll('video')) {
-          if (document.hidden || motionMq.matches || video.dataset.inView !== '1') {
-            video.pause();
-          } else {
-            video.play().catch(() => {});
-          }
-        }
-      };
-      document.addEventListener('visibilitychange', syncVisibleVideos);
-      motionMq.addEventListener('change', syncVisibleVideos);
+          /* ── Videos: load on first appearance; pause off-screen ── */
+          const videoObserver = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                const video = entry.target;
+                video.dataset.inView = entry.isIntersecting ? "1" : "0";
+                if (!entry.isIntersecting) {
+                  video.pause();
+                  continue;
+                }
+                if (video.dataset.src) {
+                  video.src = video.dataset.src;
+                  delete video.dataset.src;
+                }
+                if (!document.hidden && !motionMq.matches)
+                  video.play().catch(() => {});
+              }
+            },
+            { threshold: 0.01 },
+          );
 
-      const buildThumb = g => {
-        const wrap = el('div', 'thumb');
-        if (!g.image) return wrap;
-        const path = g.image.split(/[?#]/)[0].toLowerCase();
-        if (path.endsWith('.webm')) {
-          const video = el('video');
-          video.preload = 'none';
-          video.muted = true;
-          video.loop = true;
-          video.playsInline = true;
-          video.setAttribute('aria-hidden', 'true');
-          video.dataset.src = g.image;
-          wrap.appendChild(video);
-        } else {
-          const img = el('img');
-          img.alt = ''; // Decorative: the adjacent title already identifies the game.
-          img.width = 320;
-          img.height = 240;
-          img.decoding = 'async';
-          img.loading = g === dataset[0] ? 'eager' : 'lazy';
-          if (g === dataset[0]) img.fetchPriority = 'high';
-          img.src = g.image;
-          wrap.appendChild(img);
-        }
-        return wrap;
-      };
+          const syncVisibleVideos = () => {
+            for (const video of list.querySelectorAll("video")) {
+              if (
+                document.hidden ||
+                motionMq.matches ||
+                video.dataset.inView !== "1"
+              ) {
+                video.pause();
+              } else {
+                video.play().catch(() => {});
+              }
+            }
+          };
+          document.addEventListener("visibilitychange", syncVisibleVideos);
+          motionMq.addEventListener("change", syncVisibleVideos);
 
-      const buildEntry = g => {
-        const detail = el('details');
-        const summary = el('summary');
-        const head = el('div', 'head');
-        head.appendChild(el('span', 'title', g.title));
-        const meta = [g.jam, g.collaboration && `with ${g.collaboration}`, g.platform]
-          .filter(Boolean).join(' / ');
-        if (meta) head.appendChild(el('div', 'meta', meta));
+          const buildThumb = (g) => {
+            const wrap = el("div", "thumb");
+            if (!g.image) return wrap;
+            const path = g.image.split(/[?#]/)[0].toLowerCase();
+            if (path.endsWith(".webm")) {
+              const video = el("video");
+              video.preload = "none";
+              video.muted = true;
+              video.loop = true;
+              video.playsInline = true;
+              video.setAttribute("aria-hidden", "true");
+              video.dataset.src = g.image;
+              wrap.appendChild(video);
+            } else {
+              const img = el("img");
+              img.alt = ""; // Decorative: the adjacent title already identifies the game.
+              img.width = 320;
+              img.height = 240;
+              img.decoding = "async";
+              img.loading = g === dataset[0] ? "eager" : "lazy";
+              if (g === dataset[0]) img.fetchPriority = "high";
+              img.src = g.image;
+              wrap.appendChild(img);
+            }
+            return wrap;
+          };
 
-        summary.append(buildThumb(g), head);
-        const desc = g.short_desc || g.details;
-        if (desc) summary.appendChild(el('p', 'desc', desc));
-        detail.appendChild(summary);
+          const buildEntry = (g) => {
+            const detail = el("details");
+            const summary = el("summary");
+            const head = el("div", "head");
+            head.appendChild(el("span", "title", g.title));
+            const meta = [
+              g.jam,
+              g.collaboration && `with ${g.collaboration}`,
+              g.platform,
+            ].filter(Boolean);
+            if (meta.length) {
+              const metadata = el("div", "meta");
+              for (const item of meta)
+                metadata.appendChild(el("span", "meta-item", item));
+              head.appendChild(metadata);
+            }
 
-        const more = el('div', 'more');
-        const dl = el('dl');
-        const rows = [
-          ['date', isoDate(g.date)],
-          g.collaboration && ['collab', g.collaboration],
-          g.jam && ['jam', g.jam],
-          g.platform && ['on', g.platform]
-        ].filter(Boolean);
-        for (const [key, value] of rows) dl.append(el('dt', '', key), el('dd', '', value));
-        head.appendChild(dl);
+            summary.append(buildThumb(g), head);
+            const desc = g.short_desc || g.details;
+            if (desc) summary.appendChild(el("p", "desc", desc));
+            detail.appendChild(summary);
 
-        const text = g.details || g.short_desc;
-        if (text) more.appendChild(el('p', '', text));
-        if (g.url) {
-          const paragraph = el('p');
-          const link = el('a', '', g.url_label || 'Open game');
-          link.href = g.url;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          paragraph.appendChild(link);
-          more.appendChild(paragraph);
-        }
-        detail.appendChild(more);
-        return detail;
-      };
+            const more = el("div", "more");
+            const dl = el("dl");
+            const rows = [
+              ["date", isoDate(g.date)],
+              g.collaboration && ["collab", g.collaboration],
+              g.jam && ["jam", g.jam],
+              g.platform && ["on", g.platform],
+            ].filter(Boolean);
+            for (const [key, value] of rows)
+              dl.append(el("dt", "", key), el("dd", "", value));
+            head.appendChild(dl);
 
-      /* ── Render: reuse DOM nodes across filter changes ── */
-      const entriesCache = new WeakMap();
-      const yearCache = new Map();
-      let activeGames = new Set();
+            const text = g.details || g.short_desc;
+            if (text) more.appendChild(el("p", "", text));
+            if (g.url) {
+              const paragraph = el("p");
+              const link = el("a", "", g.url_label || "Open game");
+              link.href = g.url;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              paragraph.appendChild(link);
+              more.appendChild(paragraph);
+            }
+            detail.appendChild(more);
+            return detail;
+          };
 
-      const getEntry = game => {
-        let entry = entriesCache.get(game);
-        if (!entry) {
-          entry = buildEntry(game);
-          entriesCache.set(game, entry);
-        }
-        return entry;
-      };
+          /* ── Render: reuse DOM nodes across filter changes ── */
+          const entriesCache = new WeakMap();
+          const yearCache = new Map();
+          let activeGames = new Set();
 
-      const getYearSection = year => {
-        if (!yearCache.has(year)) {
-          const section = el('section', 'year');
-          const entries = el('div', 'entries');
-          section.append(el('h2', '', String(year)), entries);
-          yearCache.set(year, { section, entries });
-        }
-        return yearCache.get(year);
-      };
+          const getEntry = (game) => {
+            let entry = entriesCache.get(game);
+            if (!entry) {
+              entry = buildEntry(game);
+              entriesCache.set(game, entry);
+            }
+            return entry;
+          };
 
-      const render = () => {
-        list.setAttribute('aria-busy', 'true');
-        const query = search.value.trim().toLowerCase();
-        const year = yearSel.value;
-        const filtered = dataset.filter(g =>
-          (!query || g.searchText.includes(query)) &&
-          (!year || String(g.year) === year)
-        );
-        const upcoming = new Set(filtered);
-        count.textContent = `${filtered.length} ${filtered.length === 1 ? 'game' : 'games'}`;
+          const getYearSection = (year) => {
+            if (!yearCache.has(year)) {
+              const section = el("section", "year");
+              const entries = el("div", "entries");
+              section.append(el("h2", "", String(year)), entries);
+              yearCache.set(year, { section, entries });
+            }
+            return yearCache.get(year);
+          };
 
-        videoObserver.disconnect();
-        // Release downloaded video data for entries no longer displayed.
-        for (const game of activeGames) {
-          if (upcoming.has(game)) continue;
-          const video = entriesCache.get(game)?.querySelector('video');
-          if (!video) continue;
-          video.pause();
-          video.dataset.inView = '0';
-          if (video.hasAttribute('src')) {
-            video.removeAttribute('src');
-            video.load();
-          }
-          video.dataset.src = game.image;
-        }
+          const render = () => {
+            list.setAttribute("aria-busy", "true");
+            const query = search.value.trim().toLowerCase();
+            const year = yearSel.value;
+            const filtered = dataset.filter(
+              (g) =>
+                (!query || g.searchText.includes(query)) &&
+                (!year || String(g.year) === year),
+            );
+            const upcoming = new Set(filtered);
+            count.textContent = `${filtered.length} ${filtered.length === 1 ? "game" : "games"}`;
 
-        for (const { entries } of yearCache.values()) entries.replaceChildren();
-        const fragment = document.createDocumentFragment();
-        const addedYears = new Set();
-        for (const game of filtered) {
-          const { section, entries } = getYearSection(game.year);
-          if (!addedYears.has(game.year)) {
-            fragment.appendChild(section);
-            addedYears.add(game.year);
-          }
-          const entry = getEntry(game);
-          entries.appendChild(entry);
-        }
-        if (!filtered.length) {
-          fragment.appendChild(el('p', 'empty', 'Nothing found. Try another word or set the year back to "all".'));
-        }
-        list.replaceChildren(fragment);
-        for (const video of list.querySelectorAll('video')) videoObserver.observe(video);
-        activeGames = upcoming;
-        list.setAttribute('aria-busy', 'false');
-      };
+            videoObserver.disconnect();
+            // Release downloaded video data for entries no longer displayed.
+            for (const game of activeGames) {
+              if (upcoming.has(game)) continue;
+              const video = entriesCache.get(game)?.querySelector("video");
+              if (!video) continue;
+              video.pause();
+              video.dataset.inView = "0";
+              if (video.hasAttribute("src")) {
+                video.removeAttribute("src");
+                video.load();
+              }
+              video.dataset.src = game.image;
+            }
 
-      let searchTimer;
-      search.addEventListener('input', () => {
-        clearTimeout(searchTimer);
-        searchTimer = setTimeout(render, 150);
-      });
-      yearSel.addEventListener('change', render);
-      render();
+            for (const { entries } of yearCache.values())
+              entries.replaceChildren();
+            const fragment = document.createDocumentFragment();
+            const addedYears = new Set();
+            for (const game of filtered) {
+              const { section, entries } = getYearSection(game.year);
+              if (!addedYears.has(game.year)) {
+                fragment.appendChild(section);
+                addedYears.add(game.year);
+              }
+              const entry = getEntry(game);
+              entries.appendChild(entry);
+            }
+            if (!filtered.length) {
+              fragment.appendChild(
+                el(
+                  "p",
+                  "empty",
+                  'Nothing found. Try another word or set the year back to "all".',
+                ),
+              );
+            }
+            list.replaceChildren(fragment);
+            for (const video of list.querySelectorAll("video"))
+              videoObserver.observe(video);
+            activeGames = upcoming;
+            list.setAttribute("aria-busy", "false");
+          };
 
-      /* ── Structured data ── */
-      try {
-        const ld = {
-          '@context': 'https://schema.org',
-          '@type': 'ItemList',
-          itemListElement: dataset.map((g, index) => ({
-            '@type': 'VideoGame',
-            name: g.title,
-            datePublished: g.date,
-            description: g.short_desc || g.details || '',
-            url: g.url || 'https://adriano-t.github.io/',
-            position: index + 1,
-            publisher: g.collaboration || 'Independent',
-            applicationCategory: 'Game'
-          }))
-        };
-        const script = document.createElement('script');
-        script.type = 'application/ld+json';
-        script.textContent = JSON.stringify(ld);
-        document.head.appendChild(script);
-      } catch { }
-    }, { once: true });
-  </script>
+          let searchTimer;
+          search.addEventListener("input", () => {
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(render, 150);
+          });
+          yearSel.addEventListener("change", render);
+          render();
 
-  <script>
-    /* ── Pond flora ──
+          /* ── Structured data ── */
+          try {
+            const ld = {
+              "@context": "https://schema.org",
+              "@type": "ItemList",
+              itemListElement: dataset.map((g, index) => ({
+                "@type": "VideoGame",
+                name: g.title,
+                datePublished: g.date,
+                description: g.short_desc || g.details || "",
+                url: g.url || "https://adriano-t.github.io/",
+                position: index + 1,
+                publisher: g.collaboration || "Independent",
+                applicationCategory: "Game",
+              })),
+            };
+            const script = document.createElement("script");
+            script.type = "application/ld+json";
+            script.textContent = JSON.stringify(ld);
+            document.head.appendChild(script);
+          } catch {}
+        },
+        { once: true },
+      );
+    </script>
+
+    <script>
+      /* ── Pond flora ──
        Lily pads and lotus blooms are generated from the data below.
        Each cluster lives in the free water on the right of the header;
        percentages keep the composition fluid. Pads only use 0/180deg. */
-    (() => {
-      const pond = document.querySelector('.pond');
-      if (!pond) return;
+      (() => {
+        const pond = document.querySelector(".pond");
+        if (!pond) return;
 
-      const clusters = [
-        {
-          name: 'bloom',
-          items: [
-            { kind: 'pad',   x: 0,     y: 0,     s: 1,    variant: 2, rot: 180, z: 1 },
-            { kind: 'pad',   x: 51.92, y: 0,     s: 0.9,  variant: 1, rot: 0,   z: 1 },
-            { kind: 'pad',   x: 0,     y: 52.5,  s: 0.9,  variant: 1, rot: 180, z: 1 },
-            { kind: 'pad',   x: 51.92, y: 52.5,  s: 0.8,  variant: 2, rot: 0,   z: 1 },
-            { kind: 'lotus', x: 27.16, y: 25.35, s: 0.95, z: 5 }
-          ]
-        },
-        {
-          name: 'leaves',
-          items: [
-            { kind: 'pad', x: 0,     y: 0,     s: 0.9,  variant: 1, rot: 180, z: 1 },
-            { kind: 'pad', x: 49.49, y: 0,     s: 1,    variant: 2, rot: 0,   z: 1 },
-            { kind: 'pad', x: 28.54, y: 54.75, s: 0.85, variant: 1, rot: 0,   z: 1 }
-          ]
-        },
-        {
-          name: 'lone',
-          items: [
-            { kind: 'pad', x: 0, y: 0, s: 1, variant: 2, rot: 0, z: 1 }
-          ]
+        const clusters = [
+          {
+            name: "bloom",
+            items: [
+              { kind: "pad", x: 0, y: 0, s: 1, variant: 2, rot: 180, z: 1 },
+              { kind: "pad", x: 51.92, y: 0, s: 0.9, variant: 1, rot: 0, z: 1 },
+              {
+                kind: "pad",
+                x: 0,
+                y: 52.5,
+                s: 0.9,
+                variant: 1,
+                rot: 180,
+                z: 1,
+              },
+              {
+                kind: "pad",
+                x: 51.92,
+                y: 52.5,
+                s: 0.8,
+                variant: 2,
+                rot: 0,
+                z: 1,
+              },
+              { kind: "lotus", x: 27.16, y: 25.35, s: 0.95, z: 5 },
+            ],
+          },
+          {
+            name: "leaves",
+            items: [
+              { kind: "pad", x: 0, y: 0, s: 0.9, variant: 1, rot: 180, z: 1 },
+              { kind: "pad", x: 49.49, y: 0, s: 1, variant: 2, rot: 0, z: 1 },
+              {
+                kind: "pad",
+                x: 28.54,
+                y: 54.75,
+                s: 0.85,
+                variant: 1,
+                rot: 0,
+                z: 1,
+              },
+            ],
+          },
+          {
+            name: "lone",
+            items: [
+              { kind: "pad", x: 0, y: 0, s: 1, variant: 2, rot: 0, z: 1 },
+            ],
+          },
+        ];
+
+        const fragment = document.createDocumentFragment();
+
+        for (const [clusterIndex, cluster] of clusters.entries()) {
+          const group = document.createElement("div");
+          group.className = `pond-cluster pond-cluster--${cluster.name}`;
+
+          cluster.items.forEach((item, index) => {
+            const node = document.createElement("i");
+            node.className = `flora flora--${item.kind}`;
+            node.style.setProperty("--x", `${item.x}%`);
+            node.style.setProperty("--y", `${item.y}%`);
+            // Keep the pixel art in its sweet spot: 0.75–1×.
+            node.style.setProperty("--s", Math.min(1, Math.max(0.75, item.s)));
+            node.style.setProperty("--z", item.z ?? 1);
+
+            if (item.kind === "pad") {
+              node.dataset.variant = item.variant;
+              node.style.setProperty(
+                "--rot",
+                `${item.rot === 180 ? 180 : 0}deg`,
+              );
+            }
+
+            const lotus = item.kind === "lotus";
+            const direction = index % 2 ? 1 : -1;
+            const drift = lotus ? 1 : 2;
+            const phase = index + clusterIndex * 3;
+            node.style.setProperty(
+              "--dx",
+              `${direction * (drift + (index % 3))}px`,
+            );
+            node.style.setProperty(
+              "--dy",
+              `${(index % 2 ? -1 : 1) * (drift + ((index + 1) % 3))}px`,
+            );
+            node.style.setProperty(
+              "--dur",
+              `${(lotus ? 4.1 : 3.3) + (index % 4) * 0.42}s`,
+            );
+            node.style.setProperty(
+              "--delay",
+              `${-(phase * 0.71 + (lotus ? 0.35 : 0)).toFixed(2)}s`,
+            );
+
+            group.appendChild(node);
+          });
+
+          fragment.appendChild(group);
         }
-      ];
 
-      const fragment = document.createDocumentFragment();
+        pond.appendChild(fragment);
+      })();
+    </script>
 
-      for (const [clusterIndex, cluster] of clusters.entries()) {
-        const group = document.createElement('div');
-        group.className = `pond-cluster pond-cluster--${cluster.name}`;
-
-        cluster.items.forEach((item, index) => {
-          const node = document.createElement('i');
-          node.className = `flora flora--${item.kind}`;
-          node.style.setProperty('--x', `${item.x}%`);
-          node.style.setProperty('--y', `${item.y}%`);
-          // Keep the pixel art in its sweet spot: 0.75–1×.
-          node.style.setProperty('--s', Math.min(1, Math.max(0.75, item.s)));
-          node.style.setProperty('--z', item.z ?? 1);
-
-          if (item.kind === 'pad') {
-            node.dataset.variant = item.variant;
-            node.style.setProperty('--rot', `${item.rot === 180 ? 180 : 0}deg`);
-          }
-
-          const lotus = item.kind === 'lotus';
-          const direction = index % 2 ? 1 : -1;
-          const drift = lotus ? 1 : 2;
-          const phase = index + clusterIndex * 3;
-          node.style.setProperty('--dx', `${direction * (drift + (index % 3))}px`);
-          node.style.setProperty('--dy', `${(index % 2 ? -1 : 1) * (drift + ((index + 1) % 3))}px`);
-          node.style.setProperty('--dur', `${(lotus ? 4.1 : 3.3) + (index % 4) * 0.42}s`);
-          node.style.setProperty('--delay', `${-(phase * 0.71 + (lotus ? 0.35 : 0)).toFixed(2)}s`);
-
-          group.appendChild(node);
+    <script>
+      /* ── ISOBAR: contour-map dithering, 1-bit pixel tide ── */
+      const initBackground = () => {
+        // Respect data-saving mode before allocating a GPU context.
+        if (navigator.connection?.saveData) {
+          document.documentElement.classList.add("no-webgl");
+          return;
+        }
+        const canvas = document.getElementById("bg");
+        const page = document.querySelector(".page");
+        const headerEl = document.querySelector("header");
+        const headerBottom = () =>
+          headerEl.getBoundingClientRect().bottom + scrollY;
+        const useFallback = () =>
+          document.documentElement.classList.add("no-webgl");
+        const gl = canvas.getContext("webgl", {
+          antialias: false,
+          alpha: false,
+          depth: false,
+          stencil: false,
+          powerPreference: "low-power",
         });
+        if (!gl) {
+          useFallback();
+          return;
+        }
 
-        fragment.appendChild(group);
-      }
+        /* Fine-tune the look here. Lower contrast = softer dither. */
+        const LOOK = {
+          contrast: 0.9, // 0.0-1.0: ink visibility (try 0.65 for a softer look)
+          density: 0.9, // 0.0-1.5: how many pixels appear
+          speed: 0.7, // 0.0-2.0: slow drifting contour lines
+          hover: 0.75, // 0.0-1.5: subtle cursor ripple
+        };
 
-      pond.appendChild(fragment);
-    })();
-  </script>
+        const isTouch = matchMedia("(pointer: coarse)").matches;
+        // Desired CSS scale: desktop 1:1, touch devices 2:1.
+        // Snap to an integral number of physical display pixels to avoid
+        // uneven resampling (hairline/stripe artifacts on fractional DPR).
+        const DPR = window.devicePixelRatio || 1;
+        const CSS_SCALE = 1; // 1 canvas pixel = 1 CSS pixel (desktop and mobile)
+        const PIXEL = Math.max(1, Math.round(CSS_SCALE * DPR)) / DPR;
+        const GRID = Math.max(1, Math.round((isTouch ? 2 : 3) / PIXEL)); // 1 pixel-art px = 3 css px
+        const FISH_SIZE = [
+          (isTouch ? 30 : 42) / PIXEL,
+          (isTouch ? 24 : 34) / PIXEL,
+        ]; // metà lunghezza
 
-  <script>
-    /* ── ISOBAR: contour-map dithering, 1-bit pixel tide ── */
-    const initBackground = () => {
-      // Respect data-saving mode before allocating a GPU context.
-      if (navigator.connection?.saveData) {
-        document.documentElement.classList.add('no-webgl');
-        return;
-      }
-      const canvas = document.getElementById('bg');
-      const page = document.querySelector('.page');
-      const headerEl = document.querySelector('header');
-      const headerBottom = () => headerEl.getBoundingClientRect().bottom + scrollY;
-      const useFallback = () => document.documentElement.classList.add('no-webgl');
-      const gl = canvas.getContext('webgl', {
-        antialias: false, alpha: false, depth: false, stencil: false,
-        powerPreference: 'low-power'
-      });
-      if (!gl) { useFallback(); return; }
-
-      /* Fine-tune the look here. Lower contrast = softer dither. */
-      const LOOK = {
-        contrast: 0.90,  // 0.0-1.0: ink visibility (try 0.65 for a softer look)
-        density: 0.90,   // 0.0-1.5: how many pixels appear
-        speed: 0.70,     // 0.0-2.0: slow drifting contour lines
-        hover: 0.75      // 0.0-1.5: subtle cursor ripple
-      };
-
-      const isTouch = matchMedia('(pointer: coarse)').matches;
-      // Desired CSS scale: desktop 1:1, touch devices 2:1.
-      // Snap to an integral number of physical display pixels to avoid
-      // uneven resampling (hairline/stripe artifacts on fractional DPR).
-      const DPR = window.devicePixelRatio || 1;
-      const CSS_SCALE = 1; // 1 canvas pixel = 1 CSS pixel (desktop and mobile)
-      const PIXEL = Math.max(1, Math.round(CSS_SCALE * DPR)) / DPR;
-      const GRID = Math.max(1, Math.round((isTouch ? 2 : 3) / PIXEL)); // 1 pixel-art px = 3 css px
-      const FISH_SIZE = [(isTouch ? 30 : 42) / PIXEL, (isTouch ? 24 : 34) / PIXEL]; // metà lunghezza
- 
-      const FPS = isTouch ? 20 : 30;
-      // Extra document-anchored pixels above/below the viewport.
-      // 0.75 = a 2.5-viewport-tall canvas on long pages. Raise for fast flings;
-      // lower to reduce GPU workload. Repainting remains limited to FPS.
-      const SCROLL_OVERSCAN = 0.75;
-      const vs = 'attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }';
-      const fs = `
+        const FPS = isTouch ? 20 : 30;
+        // Extra document-anchored pixels above/below the viewport.
+        // 0.75 = a 2.5-viewport-tall canvas on long pages. Raise for fast flings;
+        // lower to reduce GPU workload. Repainting remains limited to FPS.
+        const SCROLL_OVERSCAN = 0.75;
+        const vs =
+          "attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }";
+        const fs = `
   #ifdef GL_FRAGMENT_PRECISION_HIGH
   precision highp float;
   #else
@@ -585,246 +710,286 @@
     fishCol = fi.z > 0.5 ? vec3(0.04) : fishCol;
     gl_FragColor = vec4(mix(col, fishCol, fishOn), 1.0);
   }`;
- 
-      const compile = (type, src) => {
-        const sh = gl.createShader(type);
-        gl.shaderSource(sh, src);
-        gl.compileShader(sh);
-        return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null;
-      };
-      const v = compile(gl.VERTEX_SHADER, vs), f = compile(gl.FRAGMENT_SHADER, fs);
-      if (!v || !f) { useFallback(); return; }
 
-      const prog = gl.createProgram();
-      gl.attachShader(prog, v); gl.attachShader(prog, f);
-      gl.linkProgram(prog);
-      if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { useFallback(); return; }
-      gl.useProgram(prog);
-
-      /* one oversized triangle covers the screen */
-      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
-      const loc = gl.getAttribLocation(prog, 'p');
-      gl.enableVertexAttribArray(loc);
-      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-
-      const uRes = gl.getUniformLocation(prog, 'uRes');
-      const uTime = gl.getUniformLocation(prog, 'uTime');
-      const uLight = gl.getUniformLocation(prog, 'uLight');
-      const uScroll = gl.getUniformLocation(prog, 'uScroll');
-      const uPageWidth = gl.getUniformLocation(prog, 'uPageWidth');
-      const uPixelSize = gl.getUniformLocation(prog, 'uPixelSize');
-      const uMouse = gl.getUniformLocation(prog, 'uMouse');
-      const uHover = gl.getUniformLocation(prog, 'uHover');
-      const uContrast = gl.getUniformLocation(prog, 'uContrast');
-      const uDensity = gl.getUniformLocation(prog, 'uDensity');
-      const uSpeed = gl.getUniformLocation(prog, 'uSpeed');
-      const uHoverPower = gl.getUniformLocation(prog, 'uHoverPower');
-      const uFishA = gl.getUniformLocation(prog, 'uFishA');
-      const uFishB = gl.getUniformLocation(prog, 'uFishB');
-      const uFishSize = gl.getUniformLocation(prog, 'uFishSize');
-      const uGrid = gl.getUniformLocation(prog, 'uGrid');
-      const uHeader = gl.getUniformLocation(prog, 'uHeader');
-      
-      gl.uniform2f(uFishSize, FISH_SIZE[0], FISH_SIZE[1]);
-      gl.uniform1f(uGrid, GRID);
- 
-      gl.uniform1f(uContrast, LOOK.contrast);
-      gl.uniform1f(uDensity, LOOK.density);
-      gl.uniform1f(uSpeed, LOOK.speed);
-      gl.uniform1f(uHoverPower, LOOK.hover);
-
-      const schemeMq = matchMedia('(prefers-color-scheme: dark)');
-      const motionMq = matchMedia('(prefers-reduced-motion: reduce)');
-      const start = performance.now();
-      let mouseX = -1000, mouseY = -1000;
-      let aimX = -1000, aimY = -1000;
-      let hover = 0, hoverTarget = 0;
-      let pageWidthCss = 0;
-      let baseTop = 0;        // Canvas top in document CSS pixels.
-      let bufferHeight = 0;   // Canvas height in CSS pixels.
-      let bufferPixels = 0;   // Canvas drawing-buffer height in pixels.
-      let visiblePixels = 0;  // Viewport drawing-buffer height in pixels.
-      let overscan = 0;
-
-      /* Only desktop mouse pointers activate the subtle interaction. */
-      addEventListener('pointermove', e => {
-        if (e.pointerType !== 'mouse') return;
-        aimX = e.clientX / PIXEL;
-        aimY = (innerHeight - e.clientY) / PIXEL;
-        const halfPage = pageWidthCss / 2;
-        hoverTarget = Math.abs(e.clientX - innerWidth / 2) > halfPage - 90 ? 1 : 0;
-      }, { passive: true });
-      document.addEventListener('mouseleave', () => { hoverTarget = 0; });
-
-      // The canvas is a sliding window of document-space pixels. Unlike a
-      // fixed canvas, its already-rendered contents move with the document
-      // automatically at the browser's scrolling/compositor refresh rate.
-      // WebGL only recomputes the texture at FPS.
-      const documentHeight = () => Math.max(innerHeight, page.offsetTop + page.offsetHeight);
-      const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
-
-      const anchorBuffer = (force = false) => {
-        const maximumTop = Math.max(0, documentHeight() - bufferHeight);
-        const wantedTop = clamp(Math.round(scrollY - overscan), 0, maximumTop);
-        // Avoid moving the canvas on every WebGL frame. The old pixels scroll
-        // naturally until the desired anchor is sufficiently far away.
-        if (force || Math.abs(wantedTop - baseTop) > overscan * 0.45) {
-          baseTop = wantedTop;
-          canvas.style.top = `${baseTop}px`;
+        const compile = (type, src) => {
+          const sh = gl.createShader(type);
+          gl.shaderSource(sh, src);
+          gl.compileShader(sh);
+          return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null;
+        };
+        const v = compile(gl.VERTEX_SHADER, vs),
+          f = compile(gl.FRAGMENT_SHADER, fs);
+        if (!v || !f) {
+          useFallback();
+          return;
         }
-      };
 
-      const resize = () => {
-        pageWidthCss = page.getBoundingClientRect().width;
-        overscan = Math.max(200, Math.round(innerHeight * SCROLL_OVERSCAN));
-        const availableHeight = documentHeight();
-        // Never extend the document or its scrollbar with the background.
-        const wantedHeight = Math.min(availableHeight, innerHeight + overscan * 2);
-        bufferPixels = Math.max(1, Math.ceil(wantedHeight / PIXEL));
-        bufferHeight = bufferPixels * PIXEL;
-        visiblePixels = Math.max(1, Math.ceil(innerHeight / PIXEL));
-        canvas.width = Math.max(1, Math.ceil(innerWidth / PIXEL));
-        canvas.height = bufferPixels;
-        canvas.style.height = `${bufferHeight}px`;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-        // Keep uRes at VIEWPORT resolution to preserve the original pattern
-        // scale, despite the taller actual WebGL drawing buffer.
-        gl.uniform2f(uRes, canvas.width, visiblePixels);
-        gl.uniform1f(uPageWidth, pageWidthCss / PIXEL);
-        gl.uniform1f(uPixelSize, PIXEL);
-        gl.uniform1f(uHeader, visiblePixels - headerBottom() / PIXEL);
-        gl.uniform1f(uLight, schemeMq.matches ? 0 : 1);
-        anchorBuffer(true);
-      };
-
-      const FISH = [
-  { fx: 0.09, fy: 0.23, ph: 0.0, y0: 20 },
-  { fx: 0.045, fy: 0.021, ph: 2.1, y0: 360 }
-];
-const fishState = (i, now) => {
-  const s = (now - start) / 1000 + i * 37;
-  const f = FISH[i];
-  const h = i === 0 ? Math.max(40, headerBottom() - 90) : Math.max(500, documentHeight() - 700);
-  const a = s * f.fx + f.ph, b = s * f.fy + f.ph * 1.7;
-  const x = innerWidth * (0.5 + 0.44 * Math.sin(a));
-  const y = f.y0 + h * (0.5 + 0.5 * Math.sin(b));
-  const vx = innerWidth * 0.44 * f.fx * Math.cos(a);
-  const vy = h * 0.5 * f.fy * Math.cos(b);
-  return [
-    Math.round(x / PIXEL / GRID) * GRID,
-    Math.round((visiblePixels - y / PIXEL) / GRID) * GRID,
-    Math.atan2(-vy, vx),
-    s * 5.0
-  ];
-};
-
-
-      const draw = now => {
-        anchorBuffer();
-        if (!motionMq.matches) {
-          hover += (hoverTarget - hover) * 0.2;
-          mouseX += (aimX - mouseX) * 0.28;
-          mouseY += (aimY - mouseY) * 0.28;
-        } else hover = 0;
-        // Convert the pointer from viewport space into the tall buffer.
-        // This keeps the cursor ripple at the same place on the screen.
-        const pointerShift = bufferPixels - visiblePixels + (baseTop - scrollY) / PIXEL;
-        gl.uniform2f(uMouse, mouseX, mouseY + pointerShift);
-        gl.uniform1f(uHover, hover);
-        gl.uniform1f(uTime, (now - start) / 1000 + 20);
-        // Original viewport shader: pix.y = gl_FragCoord.y - scrollY/PIXEL.
-        // Here a fragment has document Y = baseTop + (bufferPixels - fragY)*PIXEL,
-        // so this offset makes pix.y = visiblePixels - documentY/PIXEL.
-        // Identical document pixel = identical shader coordinates on every scroll.
-        gl.uniform1f(uScroll, bufferPixels - visiblePixels + baseTop / PIXEL);
-        gl.uniform4fv(uFishA, fishState(0, now));
-gl.uniform4fv(uFishB, fishState(1, now));
- 
-        gl.drawArrays(gl.TRIANGLES, 0, 3);
-      };
-
-      // A timer queues only the requested FPS instead of polling RAF at 60 Hz.
-      let raf = 0, frameTimer = 0, scrollRaf = 0, lastDraw = -Infinity;
-      const interval = 1000 / FPS;
-      const stop = () => {
-        cancelAnimationFrame(raf);
-        cancelAnimationFrame(scrollRaf);
-        clearTimeout(frameTimer);
-        raf = frameTimer = scrollRaf = 0;
-      };
-      const loop = now => {
-        raf = 0;
-        if (document.hidden || motionMq.matches) return;
-        if (now - lastDraw >= interval) {
-          draw(now);
-          lastDraw = now;
+        const prog = gl.createProgram();
+        gl.attachShader(prog, v);
+        gl.attachShader(prog, f);
+        gl.linkProgram(prog);
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+          useFallback();
+          return;
         }
-        frameTimer = setTimeout(() => {
-          raf = requestAnimationFrame(loop);
-        }, interval);
-      };
-      const run = () => {
-        stop();
-        if (document.hidden) return;
-        resize();
-        const now = performance.now();
-        draw(motionMq.matches ? start + 8000 : now);
-        lastDraw = now;
-        // Switch from the CSS fallback only once a frame is available.
-        document.documentElement.classList.remove('no-webgl');
-        if (!motionMq.matches) raf = requestAnimationFrame(loop);
-      };
+        gl.useProgram(prog);
 
-      // Normally: NO drawing and NO transform updates on scroll. The canvas is
-      // already in document space and therefore follows scroll natively.
-      // Only a large scroll jump that escapes the pre-rendered buffer forces an
-      // extra draw, preventing blank areas on fast trackpad/touch gestures.
-      addEventListener('scroll', () => {
-        if (document.hidden || scrollRaf) return;
-        const top = scrollY;
-        const bottom = top + innerHeight;
-        if (top < baseTop || bottom > baseTop + bufferHeight) {
-          scrollRaf = requestAnimationFrame(now => {
-            scrollRaf = 0;
-            if (document.hidden) return;
-            anchorBuffer(true);
-            draw(motionMq.matches ? start + 8000 : now);
+        /* one oversized triangle covers the screen */
+        gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(
+          gl.ARRAY_BUFFER,
+          new Float32Array([-1, -1, 3, -1, -1, 3]),
+          gl.STATIC_DRAW,
+        );
+        const loc = gl.getAttribLocation(prog, "p");
+        gl.enableVertexAttribArray(loc);
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+        const uRes = gl.getUniformLocation(prog, "uRes");
+        const uTime = gl.getUniformLocation(prog, "uTime");
+        const uLight = gl.getUniformLocation(prog, "uLight");
+        const uScroll = gl.getUniformLocation(prog, "uScroll");
+        const uPageWidth = gl.getUniformLocation(prog, "uPageWidth");
+        const uPixelSize = gl.getUniformLocation(prog, "uPixelSize");
+        const uMouse = gl.getUniformLocation(prog, "uMouse");
+        const uHover = gl.getUniformLocation(prog, "uHover");
+        const uContrast = gl.getUniformLocation(prog, "uContrast");
+        const uDensity = gl.getUniformLocation(prog, "uDensity");
+        const uSpeed = gl.getUniformLocation(prog, "uSpeed");
+        const uHoverPower = gl.getUniformLocation(prog, "uHoverPower");
+        const uFishA = gl.getUniformLocation(prog, "uFishA");
+        const uFishB = gl.getUniformLocation(prog, "uFishB");
+        const uFishSize = gl.getUniformLocation(prog, "uFishSize");
+        const uGrid = gl.getUniformLocation(prog, "uGrid");
+        const uHeader = gl.getUniformLocation(prog, "uHeader");
+
+        gl.uniform2f(uFishSize, FISH_SIZE[0], FISH_SIZE[1]);
+        gl.uniform1f(uGrid, GRID);
+
+        gl.uniform1f(uContrast, LOOK.contrast);
+        gl.uniform1f(uDensity, LOOK.density);
+        gl.uniform1f(uSpeed, LOOK.speed);
+        gl.uniform1f(uHoverPower, LOOK.hover);
+
+        const schemeMq = matchMedia("(prefers-color-scheme: dark)");
+        const motionMq = matchMedia("(prefers-reduced-motion: reduce)");
+        const start = performance.now();
+        let mouseX = -1000,
+          mouseY = -1000;
+        let aimX = -1000,
+          aimY = -1000;
+        let hover = 0,
+          hoverTarget = 0;
+        let pageWidthCss = 0;
+        let baseTop = 0; // Canvas top in document CSS pixels.
+        let bufferHeight = 0; // Canvas height in CSS pixels.
+        let bufferPixels = 0; // Canvas drawing-buffer height in pixels.
+        let visiblePixels = 0; // Viewport drawing-buffer height in pixels.
+        let overscan = 0;
+
+        /* Only desktop mouse pointers activate the subtle interaction. */
+        addEventListener(
+          "pointermove",
+          (e) => {
+            if (e.pointerType !== "mouse") return;
+            aimX = e.clientX / PIXEL;
+            aimY = (innerHeight - e.clientY) / PIXEL;
+            const halfPage = pageWidthCss / 2;
+            hoverTarget =
+              Math.abs(e.clientX - innerWidth / 2) > halfPage - 90 ? 1 : 0;
+          },
+          { passive: true },
+        );
+        document.addEventListener("mouseleave", () => {
+          hoverTarget = 0;
+        });
+
+        // The canvas is a sliding window of document-space pixels. Unlike a
+        // fixed canvas, its already-rendered contents move with the document
+        // automatically at the browser's scrolling/compositor refresh rate.
+        // WebGL only recomputes the texture at FPS.
+        const documentHeight = () =>
+          Math.max(innerHeight, page.offsetTop + page.offsetHeight);
+        const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+        const anchorBuffer = (force = false) => {
+          const maximumTop = Math.max(0, documentHeight() - bufferHeight);
+          const wantedTop = clamp(
+            Math.round(scrollY - overscan),
+            0,
+            maximumTop,
+          );
+          // Avoid moving the canvas on every WebGL frame. The old pixels scroll
+          // naturally until the desired anchor is sufficiently far away.
+          if (force || Math.abs(wantedTop - baseTop) > overscan * 0.45) {
+            baseTop = wantedTop;
+            canvas.style.top = `${baseTop}px`;
+          }
+        };
+
+        const resize = () => {
+          pageWidthCss = page.getBoundingClientRect().width;
+          overscan = Math.max(200, Math.round(innerHeight * SCROLL_OVERSCAN));
+          const availableHeight = documentHeight();
+          // Never extend the document or its scrollbar with the background.
+          const wantedHeight = Math.min(
+            availableHeight,
+            innerHeight + overscan * 2,
+          );
+          bufferPixels = Math.max(1, Math.ceil(wantedHeight / PIXEL));
+          bufferHeight = bufferPixels * PIXEL;
+          visiblePixels = Math.max(1, Math.ceil(innerHeight / PIXEL));
+          canvas.width = Math.max(1, Math.ceil(innerWidth / PIXEL));
+          canvas.height = bufferPixels;
+          canvas.style.height = `${bufferHeight}px`;
+          gl.viewport(0, 0, canvas.width, canvas.height);
+          // Keep uRes at VIEWPORT resolution to preserve the original pattern
+          // scale, despite the taller actual WebGL drawing buffer.
+          gl.uniform2f(uRes, canvas.width, visiblePixels);
+          gl.uniform1f(uPageWidth, pageWidthCss / PIXEL);
+          gl.uniform1f(uPixelSize, PIXEL);
+          gl.uniform1f(uHeader, visiblePixels - headerBottom() / PIXEL);
+          gl.uniform1f(uLight, schemeMq.matches ? 0 : 1);
+          anchorBuffer(true);
+        };
+
+        const FISH = [
+          { fx: 0.09, fy: 0.23, ph: 0.0, y0: 20 },
+          { fx: 0.045, fy: 0.021, ph: 2.1, y0: 360 },
+        ];
+        const fishState = (i, now) => {
+          const s = (now - start) / 1000 + i * 37;
+          const f = FISH[i];
+          const h =
+            i === 0
+              ? Math.max(40, headerBottom() - 90)
+              : Math.max(500, documentHeight() - 700);
+          const a = s * f.fx + f.ph,
+            b = s * f.fy + f.ph * 1.7;
+          const x = innerWidth * (0.5 + 0.44 * Math.sin(a));
+          const y = f.y0 + h * (0.5 + 0.5 * Math.sin(b));
+          const vx = innerWidth * 0.44 * f.fx * Math.cos(a);
+          const vy = h * 0.5 * f.fy * Math.cos(b);
+          return [
+            Math.round(x / PIXEL / GRID) * GRID,
+            Math.round((visiblePixels - y / PIXEL) / GRID) * GRID,
+            Math.atan2(-vy, vx),
+            s * 5.0,
+          ];
+        };
+
+        const draw = (now) => {
+          anchorBuffer();
+          if (!motionMq.matches) {
+            hover += (hoverTarget - hover) * 0.2;
+            mouseX += (aimX - mouseX) * 0.28;
+            mouseY += (aimY - mouseY) * 0.28;
+          } else hover = 0;
+          // Convert the pointer from viewport space into the tall buffer.
+          // This keeps the cursor ripple at the same place on the screen.
+          const pointerShift =
+            bufferPixels - visiblePixels + (baseTop - scrollY) / PIXEL;
+          gl.uniform2f(uMouse, mouseX, mouseY + pointerShift);
+          gl.uniform1f(uHover, hover);
+          gl.uniform1f(uTime, (now - start) / 1000 + 20);
+          // Original viewport shader: pix.y = gl_FragCoord.y - scrollY/PIXEL.
+          // Here a fragment has document Y = baseTop + (bufferPixels - fragY)*PIXEL,
+          // so this offset makes pix.y = visiblePixels - documentY/PIXEL.
+          // Identical document pixel = identical shader coordinates on every scroll.
+          gl.uniform1f(uScroll, bufferPixels - visiblePixels + baseTop / PIXEL);
+          gl.uniform4fv(uFishA, fishState(0, now));
+          gl.uniform4fv(uFishB, fishState(1, now));
+
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+        };
+
+        // A timer queues only the requested FPS instead of polling RAF at 60 Hz.
+        let raf = 0,
+          frameTimer = 0,
+          scrollRaf = 0,
+          lastDraw = -Infinity;
+        const interval = 1000 / FPS;
+        const stop = () => {
+          cancelAnimationFrame(raf);
+          cancelAnimationFrame(scrollRaf);
+          clearTimeout(frameTimer);
+          raf = frameTimer = scrollRaf = 0;
+        };
+        const loop = (now) => {
+          raf = 0;
+          if (document.hidden || motionMq.matches) return;
+          if (now - lastDraw >= interval) {
+            draw(now);
             lastDraw = now;
-          });
-        }
-      }, { passive: true });
+          }
+          frameTimer = setTimeout(() => {
+            raf = requestAnimationFrame(loop);
+          }, interval);
+        };
+        const run = () => {
+          stop();
+          if (document.hidden) return;
+          resize();
+          const now = performance.now();
+          draw(motionMq.matches ? start + 8000 : now);
+          lastDraw = now;
+          // Switch from the CSS fallback only once a frame is available.
+          document.documentElement.classList.remove("no-webgl");
+          if (!motionMq.matches) raf = requestAnimationFrame(loop);
+        };
 
-      let resizeTimer;
-      const scheduleResize = () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(run, 100);
+        // Normally: NO drawing and NO transform updates on scroll. The canvas is
+        // already in document space and therefore follows scroll natively.
+        // Only a large scroll jump that escapes the pre-rendered buffer forces an
+        // extra draw, preventing blank areas on fast trackpad/touch gestures.
+        addEventListener(
+          "scroll",
+          () => {
+            if (document.hidden || scrollRaf) return;
+            const top = scrollY;
+            const bottom = top + innerHeight;
+            if (top < baseTop || bottom > baseTop + bufferHeight) {
+              scrollRaf = requestAnimationFrame((now) => {
+                scrollRaf = 0;
+                if (document.hidden) return;
+                anchorBuffer(true);
+                draw(motionMq.matches ? start + 8000 : now);
+                lastDraw = now;
+              });
+            }
+          },
+          { passive: true },
+        );
+
+        let resizeTimer;
+        const scheduleResize = () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(run, 100);
+        };
+        addEventListener("resize", scheduleResize);
+        // Opening/closing game details or changing filters changes page height.
+        // Keep the buffered canvas within the updated document bounds.
+        new ResizeObserver(scheduleResize).observe(page);
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) stop();
+          else run();
+        });
+        canvas.addEventListener("webglcontextlost", (event) => {
+          event.preventDefault();
+          stop();
+          useFallback();
+        });
+        schemeMq.addEventListener("change", run);
+        motionMq.addEventListener("change", run);
+        run();
       };
-      addEventListener('resize', scheduleResize);
-      // Opening/closing game details or changing filters changes page height.
-      // Keep the buffered canvas within the updated document bounds.
-      new ResizeObserver(scheduleResize).observe(page);
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) stop();
-        else run();
-      });
-      canvas.addEventListener('webglcontextlost', event => {
-        event.preventDefault();
-        stop();
-        useFallback();
-      });
-      schemeMq.addEventListener('change', run);
-      motionMq.addEventListener('change', run);
-      run();
-    };
 
-    // Delay GPU compilation until the main document and its game list can paint.
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(initBackground, { timeout: 1500 });
-    } else {
-      addEventListener('load', initBackground, { once: true });
-    }
-  </script>
-</body>
-
+      // Delay GPU compilation until the main document and its game list can paint.
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(initBackground, { timeout: 1500 });
+      } else {
+        addEventListener("load", initBackground, { once: true });
+      }
+    </script>
+  </body>
 </html>

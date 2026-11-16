@@ -63,7 +63,8 @@ async function convertImages() {
   }
 
   // Scrive di nuovo games.js aggiornato (classico, client-side)
-  const newGamesText = "const games = " + JSON.stringify(games, null, 2) + ";\n";
+  const newGamesText =
+    "const games = " + JSON.stringify(games, null, 2) + ";\n";
 
   fs.writeFileSync(gamesFilePath, newGamesText, "utf-8");
   console.log("\n✨ Conversione completata e file aggiornato!");
